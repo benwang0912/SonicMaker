@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/Raw Mocap Data.meta
 guid: 638493761baaa4a46857caf79fef633d
 folderAsset: yes
@@ -8,6 +9,11 @@ guid: 9f92877a96c9ff44a902546a312240ba
 folderAsset: yes
 timeCreated: 1462960545
 >>>>>>> 8e85c2899b447597a15fa1110504baa42bdb3080:Assets/Resources/Icelynn.meta
+=======
+guid: 7b905090bb9678440b18d21c13949cea
+folderAsset: yes
+timeCreated: 1462963156
+>>>>>>> ca6e40789eebaf0f18329c7fde6cd3e261a35081
 licenseType: Free
 DefaultImporter:
   userData: 
