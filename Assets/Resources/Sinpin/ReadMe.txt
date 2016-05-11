@@ -1,0 +1,1 @@
+It is only for Sinpin to store the resources she need

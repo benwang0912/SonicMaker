@@ -1,0 +1,1 @@
+It is for the resources that will be used by everyone
