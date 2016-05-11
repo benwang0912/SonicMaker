@@ -57,12 +57,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -208,6 +202,8 @@
     <Compile Include="Assets\Resources\NGUI\Scripts\UI\UIViewport.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Resources\Caramel\ReadMe.txt" />
+    <None Include="Assets\Resources\Common Resources\ReadMe.txt" />
     <None Include="Assets\Resources\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
     <None Include="Assets\Resources\NGUI\Examples\Atlases\Refractive\Refractive Font - Header.txt" />
     <None Include="Assets\Resources\NGUI\Examples\Atlases\Refractive\Refractive Font - Normal.txt" />
@@ -249,6 +245,13 @@
     <None Include="Assets\Resources\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\Resources\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\Resources\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\Resources\Sinpin\ReadMe.txt" />
+    <None Include="Assets\Resources\Vivienne17\ReadMe.txt" />
+    <None Include="Assets\Resources\icelynn\ReadMe.txt" />
+    <None Include="Assets\Scripts\Caramel\ReadMe.txt" />
+    <None Include="Assets\Scripts\Sinpin\ReadMe.txt" />
+    <None Include="Assets\Scripts\Vivienne17\ReadMe.txt" />
+    <None Include="Assets\Scripts\icelynn\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

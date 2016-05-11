@@ -90,30 +90,6 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.EditorTestsRunner">
-      <HintPath>Library\UnityAssemblies\UnityEditor.EditorTestsRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>Library\UnityAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.TreeEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.TreeEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="SonicMaker.CSharp.csproj">
@@ -209,6 +185,8 @@
     <Compile Include="Assets\Resources\NGUI\Scripts\Editor\UIWrapContentEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Resources\Caramel\ReadMe.txt" />
+    <None Include="Assets\Resources\Common Resources\ReadMe.txt" />
     <None Include="Assets\Resources\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
     <None Include="Assets\Resources\NGUI\Examples\Atlases\Refractive\Refractive Font - Header.txt" />
     <None Include="Assets\Resources\NGUI\Examples\Atlases\Refractive\Refractive Font - Normal.txt" />
@@ -250,6 +228,13 @@
     <None Include="Assets\Resources\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\Resources\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\Resources\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\Resources\Sinpin\ReadMe.txt" />
+    <None Include="Assets\Resources\Vivienne17\ReadMe.txt" />
+    <None Include="Assets\Resources\icelynn\ReadMe.txt" />
+    <None Include="Assets\Scripts\Caramel\ReadMe.txt" />
+    <None Include="Assets\Scripts\Sinpin\ReadMe.txt" />
+    <None Include="Assets\Scripts\Vivienne17\ReadMe.txt" />
+    <None Include="Assets\Scripts\icelynn\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

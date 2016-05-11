@@ -1,0 +1,1 @@
+It is only for Caramel to store the resources he need
