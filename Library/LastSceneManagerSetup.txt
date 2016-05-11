@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/NGUI/Examples/Scenes/Example 10 - Localization.unity
+- path: Assets/Scenes/Sinpin.unity
   isLoaded: 1
   isActive: 1
