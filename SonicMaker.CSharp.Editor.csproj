@@ -226,8 +226,8 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\Raw Mocap Data\Animations\_CompleteAnimationList.txt" />
     <None Include="Assets\Resources\Caramel\ReadMe.txt" />
-    <None Include="Assets\Resources\Common Resources\Raw Mocap Data\Animations\_CompleteAnimationList.txt" />
     <None Include="Assets\Resources\Common Resources\ReadMe.txt" />
     <None Include="Assets\Resources\Sinpin\ReadMe.txt" />
     <None Include="Assets\Resources\Vivienne17\ReadMe.txt" />
