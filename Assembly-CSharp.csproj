@@ -183,6 +183,13 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\Animator_trig.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\ProjectileFlyScript.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\ProjectileScript.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\cameraFollowing.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\genProjectile.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\jumpOnSpring.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\springTrigger.cs" />
      <None Include="Assets\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI\ReadMe - 3.9.7.txt" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Masked 1.shader" />
