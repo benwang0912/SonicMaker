@@ -9,7 +9,7 @@ public class genProjectile : MonoBehaviour {
     private float countDownToGen = 5.0f;
     // Use this for initialization
     void Start () {
-        projectile = Resources.Load("Projectile", typeof(GameObject)) as GameObject;
+        projectile = Resources.Load("Sinpin/Projectile", typeof(GameObject)) as GameObject;
         if (ProjectileScript.ProjectileCount < 3 && proj[0] == null)
         {
             proj[0] = Instantiate<GameObject>(projectile);

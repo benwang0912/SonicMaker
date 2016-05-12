@@ -7,7 +7,7 @@ public class ProjectileFlyScript : MonoBehaviour {
     Vector3 shootDir;
     // Use this for initialization
     void Start () {
-        playerPosition = GameObject.Find("sonic3").transform;
+        playerPosition = GameObject.Find("Sonic").transform;
         shootDir = playerPosition.forward;
     }
 	

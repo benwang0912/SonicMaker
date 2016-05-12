@@ -15,7 +15,7 @@ public class springTrigger : MonoBehaviour {
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "sonic3")
+        if (collision.gameObject.name == "Sonic" && collision.relativeVelocity.y < 0)
         {
             animator.SetInteger("trigger", 1);
         }

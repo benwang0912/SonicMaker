@@ -187,6 +187,7 @@
      <Compile Include="Assets\Scripts\Sinpin\ProjectileFlyScript.cs" />
      <Compile Include="Assets\Scripts\Sinpin\ProjectileScript.cs" />
      <Compile Include="Assets\Scripts\Sinpin\cameraFollowing.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\enemyMoving.cs" />
      <Compile Include="Assets\Scripts\Sinpin\genProjectile.cs" />
      <Compile Include="Assets\Scripts\Sinpin\jumpOnSpring.cs" />
      <Compile Include="Assets\Scripts\Sinpin\springTrigger.cs" />

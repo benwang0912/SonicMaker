@@ -9,7 +9,7 @@ public class ProjectileScript : MonoBehaviour {
     int Num;
 	// Use this for initialization
 	void Start () {
-        playerPosition = GameObject.Find("sonic3").transform;
+        playerPosition = GameObject.Find("Sonic").transform;
         ProjectileCount++;
         Num = ProjectileCount;
     }
