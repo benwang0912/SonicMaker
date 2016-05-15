@@ -1,24 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
-public class Animator_trig : MonoBehaviour {
+public class PlayerMoving : MonoBehaviour {
     private Animator animator;
     public Rigidbody rb;
     public float speed =10.0f;
     //public float turn_speed = 60.0f;
     public Vector3 moveDirection = Vector3.zero;
-    public float jumpHeight=40f;
+    private float jumpHeight=40f;
     //---------------------------------------ground checking
     public LayerMask groundLayer;
     public Transform groundCheck;
     Collider[] groundCollisions;
     float groundCheckRadius = 0.2f;
-    bool grounded = false;
-
+    public bool grounded = false;
+    //---------------------------------------player stats
+    private float Health = 10.0f;
+    private float deathCountDown = 2.0f;
     // Use this for initialization
     void Start () {
         animator = gameObject.GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+        jumpHeight = rb.mass * 40;
     }
 
     /*bool IsGrounded(){
@@ -67,10 +70,8 @@ public class Animator_trig : MonoBehaviour {
         {
             animator.SetInteger("Jump", 0);
         }
-       // IsGrounded();
-       /* float turn = Input.GetAxis("Horizontal");
-        transform.Rotate(0,turn*turn_speed*Time.deltaTime,0);*/
-        if (transform.position.y<-10)
+       
+        if (isDead())
         {
             transform.position = Vector3.zero;
         }
@@ -82,5 +83,25 @@ public class Animator_trig : MonoBehaviour {
             grounded = true;
         else
             grounded = false;
+    }
+
+    private bool isDead()
+    {
+        RaycastHit hit;
+        if (!Physics.Raycast(transform.position + new Vector3(0, 1, 0), -transform.up, out hit))
+        {
+            deathCountDown -= Time.deltaTime;
+        }
+        else
+        {
+            deathCountDown = 2.0f;
+        }
+        if (Health <= 0)
+        {
+            return true;
+        }
+        if (deathCountDown <= 0)
+            return true;
+        return false;
     }
 }

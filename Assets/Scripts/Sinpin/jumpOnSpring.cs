@@ -5,12 +5,13 @@ using System.Collections;
 public class jumpOnSpring : MonoBehaviour {
     private Rigidbody rb;
     private Animator animator;
-    public float bounceHeight = 400.0f;
+    private float bounceHeight = 400.0f;
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-	}
+        bounceHeight = rb.mass * 400;
+    }
 	
 	// Update is called once per frame
 	void Update () {
