@@ -14,9 +14,7 @@ public class PlayerMoving : MonoBehaviour {
     Collider[] groundCollisions;
     float groundCheckRadius = 0.2f;
     public bool grounded = false;
-    //---------------------------------------player stats
-    private float Health = 10.0f;
-    private float deathCountDown = 2.0f;
+    
     // Use this for initialization
     void Start () {
         animator = gameObject.GetComponentInChildren<Animator>();
@@ -71,10 +69,7 @@ public class PlayerMoving : MonoBehaviour {
             animator.SetInteger("Jump", 0);
         }
        
-        if (isDead())
-        {
-            transform.position = Vector3.zero;
-        }
+        
 	}
     void FixedUpdate()
     {
@@ -85,23 +80,5 @@ public class PlayerMoving : MonoBehaviour {
             grounded = false;
     }
 
-    private bool isDead()
-    {
-        RaycastHit hit;
-        if (!Physics.Raycast(transform.position + new Vector3(0, 1, 0), -transform.up, out hit))
-        {
-            deathCountDown -= Time.deltaTime;
-        }
-        else
-        {
-            deathCountDown = 2.0f;
-        }
-        if (Health <= 0)
-        {
-            return true;
-        }
-        if (deathCountDown <= 0)
-            return true;
-        return false;
-    }
+    
 }

@@ -49,7 +49,7 @@ public class genProjectile : MonoBehaviour {
         if (ProjectileScript.ProjectileCount > 0)
         {
             Destroy(script[ProjectileScript.ProjectileCount - 1]);
-            proj[ProjectileScript.ProjectileCount - 1].AddComponent<ProjectileFlyScript>();
+            proj[ProjectileScript.ProjectileCount - 1].AddComponent<mouseAiming>();
             ProjectileScript.ProjectileCount--;
         }
     }

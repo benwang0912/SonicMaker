@@ -7,6 +7,7 @@ public class enemyMoving : MonoBehaviour {
     Rigidbody RB;
     private float jumpDistance = 10.0f;
     private bool forward = true;
+    private Vector3 lastPosition;
 
     public LayerMask groundLayer;
     public Transform groundCheck;
@@ -49,8 +50,9 @@ public class enemyMoving : MonoBehaviour {
             {
                 transform.rotation = Quaternion.AngleAxis(90, Vector3.up);
             }
-            if(grounded)
-                RB.AddForce(transform.up * 20 + new Vector3 (playerDir.x / Mathf.Abs(playerDir.x), 0, 0) * jumpDistance);
+            if(grounded || lastPosition == transform.position)
+                RB.AddForce(transform.up * 20 + transform.forward * jumpDistance);
+            lastPosition = transform.position;
         }
     }
     void FixedUpdate()
