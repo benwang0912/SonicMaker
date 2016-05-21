@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/NGUI.meta
+guid: 5ef6bf6eb26e85940a09b2314c53fcc3
+folderAsset: yes
+timeCreated: 1462961045
+=======
 guid: 96553ac3e9852b54e8c85c6c4b44df42
 folderAsset: yes
 timeCreated: 1462962560
+>>>>>>> ca6e40789eebaf0f18329c7fde6cd3e261a35081:Assets/NGUI.meta
 licenseType: Free
 DefaultImporter:
   userData: 
