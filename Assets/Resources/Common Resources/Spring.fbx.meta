@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 23ddc1e93ef9441489db06ef40880d10
-timeCreated: 1462971704
+guid: d6fcd3094b3401d478d17c39262ac95b
+timeCreated: 1462976758
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -12,10 +12,8 @@ ModelImporter:
     100008: Bone.001
     100010: Bone.001_end
     100012: Bone.002
-    100014: Camera
-    100016: Cone
-    100018: Point
-    100020: //RootNode
+    100014: Cone
+    100016: //RootNode
     400000: Armature
     400002: Armature.001
     400004: Armature.002
@@ -23,12 +21,13 @@ ModelImporter:
     400008: Bone.001
     400010: Bone.001_end
     400012: Bone.002
-    400014: Camera
-    400016: Cone
-    400018: Point
-    400020: //RootNode
+    400014: Cone
+    400016: //RootNode
     4300000: Cone
     7400000: Armature.002|Armature.002Action
+    7400002: Armature.002|ArmatureAction.001
+    7400004: Armature.002|ArmatureAction
+    7400006: Armature.002|ArmatureAction.002
     9500000: //RootNode
     13700000: Cone
   materials:
