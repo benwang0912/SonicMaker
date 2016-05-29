@@ -4,9 +4,10 @@ using System.Collections;
 public class playerStats : MonoBehaviour {
     Rigidbody rb;
     //---------------------------------------player stats
-    private float Health = 10.0f;
+    public float Health = 10.0f;
     private float deathCountDown = 2.0f;
     private Transform lastPosition;
+    public Vector3 revivePosition;
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
@@ -16,7 +17,8 @@ public class playerStats : MonoBehaviour {
 	void Update () {
         if (isDead())
         {
-            transform.position = Vector3.zero;
+            rb.velocity = Vector3.zero;
+            transform.position = revivePosition;
             Health = 10;
         }
     }
