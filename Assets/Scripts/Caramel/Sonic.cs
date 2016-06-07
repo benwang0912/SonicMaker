@@ -9,27 +9,37 @@ public static class GameConstants
         DEAD,
         JUMPING,
         SQUATTING,
+        TOROLL,
         ROLLING
     }
+
+    public static SonicState sonicstate;
+    public static Vector3 velocity;
 }
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(BoxCollider))]
 public class Sonic : MonoBehaviour {
 
     //in the Sonic
     Animator animator;
-    AnimatorStateInfo first_info;
+    //AnimatorStateInfo first_info;
     BoxCollider mcollider;
-    SkinnedMeshRenderer skin1, skin2;
+    //SkinnedMeshRenderer skin1, skin2;
     Rigidbody rb;
-    Vector3 original_collidersize, original_collidercenter, squatting_collidersize = new Vector3(1f, 2.243595f, 1.886265f), squatting_collidercenter = new Vector3(0f, 1.075213f, -0.3038063f), shieldposition = new Vector3(-3f, 2f, 0f), original_position, faceright, faceleft, dead;
+    Vector3 original_collidersize, original_collidercenter, squatting_collidersize = new Vector3(1f, 2.243595f, 1.886265f), squatting_collidercenter = new Vector3(0f, 1.075213f, -0.3038063f), original_position, dead;
     GameObject rollingball;
-    WaitForSeconds delay = new WaitForSeconds(1.7f), jumpdelay = new WaitForSeconds(.1f);
-    GameConstants.SonicState sonicstate;
+    WaitForSeconds delay = new WaitForSeconds(1.7f);
 
     [SerializeField]
-    float speed, turnspeed, jumpforce;
+    float walkspeed = 0f;
+
+    enum BallMode
+    {
+        JUMPING,
+        TOROLL
+    }
 
     // Use this for initialization
     void Start()
@@ -37,32 +47,59 @@ public class Sonic : MonoBehaviour {
         animator = GetComponent<Animator>();
         mcollider = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
-        skin1 = transform.FindChild("Cube/Cube_MeshPart0").GetComponent<SkinnedMeshRenderer>();
-        skin2 = transform.FindChild("Cube/Cube_MeshPart1").GetComponent<SkinnedMeshRenderer>();
+        //skin1 = transform.FindChild("Cube/Cube_MeshPart0").GetComponent<SkinnedMeshRenderer>();
+        //skin2 = transform.FindChild("Cube/Cube_MeshPart1").GetComponent<SkinnedMeshRenderer>();
         original_collidersize = mcollider.size;
         original_collidercenter = mcollider.center;
         original_position = transform.localPosition;
-        sonicstate = GameConstants.SonicState.NORMAL;
-        rollingball = GameObject.Find("RollingBall");
-        //rollingball.SetActive(false);
+        GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
 
-        faceright = new Vector3(0f, 90f, 0f);
-        faceleft = new Vector3(0f, 270f, 0f);
+        rollingball = GameObject.Find("RollingBall");
+        rollingball.SetActive(false);
+
+        //faceright = new Vector3(0f, 90f, 0f);
+        //faceleft = new Vector3(0f, 270f, 0f);
         dead = new Vector3(0.01f, 0.01f, 0.01f);
 
         //faceleft = new Quaternion(0f, Quaternion.Angle, 0f, 0f);
         //faceright = new Quaternion(0f, 180f, 0f, 0f);
     }
 
-    IEnumerator timer()
+    void ChangeToBall(GameConstants.SonicState s)
     {
-        //two seconds delay, and then speed up to 3f
-        yield return delay;
-        animator.speed = 3f;
-        speed = 3f;
-        mcollider.size = original_collidersize;
-        yield break;
+        rollingball.SetActive(true);
+        gameObject.SetActive(false);
+
+        GameConstants.velocity = rb.velocity;
+        rb.velocity = Vector3.zero;
+        rollingball.transform.localPosition = transform.localPosition + Vector3.up * .5f;
+
+        switch (s)
+        {
+            case GameConstants.SonicState.JUMPING:
+                rollingball.SendMessage("BackToBall", GameConstants.SonicState.JUMPING);
+                break;
+            case GameConstants.SonicState.TOROLL:
+                GameConstants.sonicstate = GameConstants.SonicState.TOROLL;
+                rollingball.SendMessage("BackToBall", GameConstants.SonicState.TOROLL);
+                break;
+        }
     }
+
+    public void BackToSonic(GameConstants.SonicState s)
+    {
+        rb.velocity = GameConstants.velocity;
+
+        switch(s)
+        {
+            case GameConstants.SonicState.NORMAL:
+                break;
+            case GameConstants.SonicState.DEAD:
+                GameOver();
+                break;
+        }
+    }
+
 
     IEnumerator revive()
     {
@@ -70,35 +107,43 @@ public class Sonic : MonoBehaviour {
         //two seconds delay
         yield return delay;
         Debug.Log("Revive");
-        sonicstate = GameConstants.SonicState.NORMAL;
+        GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
         transform.localScale = Vector3.one;
         yield break;
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        /*
         if (collision.relativeVelocity.y > 1f)
         {
-            animator.SetBool("Jump", false);
-            sonicstate = GameConstants.SonicState.NORMAL;
+            //animator.SetBool("Jump", false);
+            GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
         }
+        */
 
         switch (collision.transform.name)
         {
+            /*
             case "Wall":
                 skin1.material.color = Color.red;
                 skin2.material.color = Color.red;
 
                 break;
+            */
+
+            /*
             case "Spring":
                 if (collision.relativeVelocity.y > 1f)
                 {
-                    sonicstate = GameConstants.SonicState.JUMPING;
+                    GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
                     animator.SetBool("Jump", true);
                     rb.AddForce(transform.up * 600f);
                 }
 
                 break;
+            */
+
             case "Enemy1":
                 if (collision.relativeVelocity.y > 1f)
                     Destroy(collision.gameObject);
@@ -109,27 +154,43 @@ public class Sonic : MonoBehaviour {
         }
     }
 
-    public void SuperMode()
-    {
-        //to slow everything
-        skin1.material.color = Color.yellow;
-        skin2.material.color = Color.yellow;
-        animator.speed = .1f;
-        speed = .1f;
-    }
-
-    public void NormalMode()
-    {
-        animator.speed = 2f;
-    }
-
-    public void GameOver()
+    void GameOver()
     {
         transform.localPosition = original_position;
-        sonicstate = GameConstants.SonicState.DEAD;
+        GameConstants.sonicstate = GameConstants.SonicState.DEAD;
         StartCoroutine("revive");
         Debug.Log("GameOver");
     }
+    
+
+    /*
+IEnumerator timer()
+{
+    //two seconds delay, and then speed up to 3f
+    yield return delay;
+    animator.speed = 3f;
+    speed = 3f;
+    mcollider.size = original_collidersize;
+    yield break;
+}
+*/
+
+    /*
+public void SuperMode()
+{
+//to slow everything
+skin1.material.color = Color.yellow;
+skin2.material.color = Color.yellow;
+animator.speed = .1f;
+speed = .1f;
+}
+
+
+public void NormalMode()
+{
+animator.speed = 2f;
+}
+*/
 
     // Update is called once per frame
     void Update()
@@ -137,63 +198,80 @@ public class Sonic : MonoBehaviour {
         if (transform.localPosition.y < -10.0f)
             GameOver();
 
+
         //first_info = animator.GetCurrentAnimatorStateInfo(1);
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) && sonicstate == GameConstants.SonicState.NORMAL)
-        {
-            //Jump();
-
-            //isJump = true;
-            sonicstate = GameConstants.SonicState.JUMPING;
-            animator.SetBool("Jump", true);
-            rb.AddForce(transform.up * jumpforce);
-            
-            //transform.localPosition += transform.up * jumpforce * speed * Time.deltaTime; ;
-            //StartCoroutine("jumping");
-        }
 
         //to move
         //going forward action 
         if (Input.GetAxis("Horizontal") > 0f)
         {
             //to turn right
-            transform.localRotation = Quaternion.Euler(faceright);
+            transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
             animator.SetInteger("Mode", 1);
+            //there is a bug that Sonic sometimes cannot walk!
+            rb.AddForce(transform.forward * walkspeed);
         }
 
         if (Input.GetAxis("Horizontal") < 0f)
         {
             //to turn left
-            transform.localRotation = Quaternion.Euler(faceleft);
+            transform.localRotation = Quaternion.Euler(Vector3.up*270f);
             animator.SetInteger("Mode", 1);
+            rb.AddForce(transform.forward * walkspeed);
         }
 
-        //not 0 => forward
+        //not 0 => forward, reset to 0
         animator.SetInteger("Mode", Input.GetAxis("Horizontal") != 0f ? 1 : 0);
 
         //for 3D
         //transform.Rotate(0, Input.GetAxis("Horizontal") * turnspeed * Time.deltaTime, 0);
-        transform.localPosition += Vector3.right * Input.GetAxis("Horizontal") * speed * Time.deltaTime; ;
+        //transform.localPosition += Vector3.right * Input.GetAxis("Horizontal") * speed * 
 
-
-        if (Input.GetKey(KeyCode.DownArrow) && (sonicstate == GameConstants.SonicState.NORMAL || sonicstate == GameConstants.SonicState.SQUATTING))
+        //to squat
+        if (Input.GetKey(KeyCode.DownArrow) && (GameConstants.sonicstate == GameConstants.SonicState.NORMAL || GameConstants.sonicstate == GameConstants.SonicState.SQUATTING))
         {
-            sonicstate = GameConstants.SonicState.SQUATTING;
+            GameConstants.sonicstate = GameConstants.SonicState.SQUATTING;
             mcollider.size = squatting_collidersize;
             mcollider.center = squatting_collidercenter;
             animator.SetInteger("Mode", 2);
-            Debug.Log("down");
         }
-
-        if(Input.GetKeyDown(KeyCode.Return) && sonicstate == GameConstants.SonicState.SQUATTING)
+        //from squatting to normal
+        if(Input.GetKeyUp(KeyCode.DownArrow) && GameConstants.sonicstate == GameConstants.SonicState.SQUATTING)
         {
+            GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
+            mcollider.size = original_collidersize;
+            mcollider.center = original_collidercenter;
+        }
+        
+
+        if(Input.GetKeyDown(KeyCode.Return) && (GameConstants.sonicstate == GameConstants.SonicState.SQUATTING || GameConstants.sonicstate == GameConstants.SonicState.TOROLL))
+        {
+            ChangeToBall(GameConstants.SonicState.TOROLL);
+
+            /*
+            GameConstants.sonicstate = GameConstants.SonicState.ROLLING;
             gameObject.SetActive(false);
             rollingball.SetActive(true);
 
             rollingball.transform.localPosition = transform.localPosition + Vector3.up * .7f;
-
-            rollingball.SendMessage("QuickRolling", true);
+            rollingball.SendMessage("QuickRolling", (transform.localRotation.eulerAngles.y - 91f) < 0 ? 1 : 0);
+            */
         }
+
+        //to jump
+        if (Input.GetKeyDown(KeyCode.Return) && GameConstants.sonicstate == GameConstants.SonicState.NORMAL)
+        {
+            //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+            //animator.SetBool("Jump", true);
+            //rb.AddForce(transform.up * jumpforce);
+            ChangeToBall(GameConstants.SonicState.JUMPING);
+
+            //rollingball
+
+            //transform.localPosition += transform.up * jumpforce * speed * Time.deltaTime; ;
+            //StartCoroutine("jumping");
+        }
+
 
         /*
         //to create a shield
@@ -221,6 +299,22 @@ public class Sonic : MonoBehaviour {
             animator.SetBool("Space", false);
         }
         */
+
+        /*
+if (Input.GetKeyDown(KeyCode.UpArrow) && GameConstants.sonicstate == GameConstants.SonicState.NORMAL)
+{
+    GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+    animator.SetBool("Jump", true);
+    rb.AddForce(transform.up * jumpforce);
+    //rollingball.SetActive(true);
+    //gameObject.SetActive(false);
+
+    //rollingball
+
+    //transform.localPosition += transform.up * jumpforce * speed * Time.deltaTime; ;
+    //StartCoroutine("jumping");
+}
+*/
 
     }
 }
