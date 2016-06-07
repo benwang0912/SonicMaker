@@ -231,6 +231,11 @@
      <Compile Include="Assets\Scripts\Sinpin\ProjectileFlyScript.cs" />
      <Compile Include="Assets\Scripts\Sinpin\ProjectileScript.cs" />
      <Compile Include="Assets\Scripts\Sinpin\cameraFollowing.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\cannonBullet.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\cannonShooter.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\cannonShooter90.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\checkPoint.cs" />
+     <Compile Include="Assets\Scripts\Sinpin\checkPointSpin.cs" />
      <Compile Include="Assets\Scripts\Sinpin\enemyMoving.cs" />
      <Compile Include="Assets\Scripts\Sinpin\genProjectile.cs" />
      <Compile Include="Assets\Scripts\Sinpin\jumpOnSpring.cs" />
