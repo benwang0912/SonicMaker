@@ -227,6 +227,9 @@
      <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\TimedObjectDestructor.cs" />
      <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\WaypointCircuit.cs" />
      <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\WaypointProgressTracker.cs" />
+     <Compile Include="Assets\Scripts\Caramel\Ground.cs" />
+     <Compile Include="Assets\Scripts\Caramel\Rolling.cs" />
+     <Compile Include="Assets\Scripts\Caramel\Sonic.cs" />
      <Compile Include="Assets\Scripts\Sinpin\PlayerMoving.cs" />
      <Compile Include="Assets\Scripts\Sinpin\ProjectileFlyScript.cs" />
      <Compile Include="Assets\Scripts\Sinpin\ProjectileScript.cs" />

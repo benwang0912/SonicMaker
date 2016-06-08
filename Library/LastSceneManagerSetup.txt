@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Caramel.unity
+- path: Assets/Scenes/Sinpin.unity
   isLoaded: 1
   isActive: 1
