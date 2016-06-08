@@ -3,7 +3,7 @@
 /[Tt]emp/
 /[Oo]bj/
 
-.vs
+/.vs/
 
 
 # ignore the data with .xxx
