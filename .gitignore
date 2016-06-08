@@ -1,0 +1,13 @@
+# ignore the folders
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+
+.vs
+
+
+# ignore the data with .xxx
+*csproj
+*.sln
+
+
