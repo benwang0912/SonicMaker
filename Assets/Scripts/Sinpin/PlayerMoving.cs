@@ -14,26 +14,19 @@ public class PlayerMoving : MonoBehaviour {
     Collider[] groundCollisions;
     float groundCheckRadius = 0.2f;
     public bool grounded = false;
-    
+    //--------------------------------------wall checking
+    public LayerMask wallLayer;
+    public Transform wallCheck;
+    Collider[] wallCollisions;
+    float wallCheckRadius = 0.8f;
+    private bool hitWall = false;
+    private bool doubleJump = false;
     // Use this for initialization
     void Start () {
         animator = gameObject.GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-        jumpHeight = rb.mass * 40;
+        jumpHeight = rb.mass * 60;
     }
-
-    /*bool IsGrounded(){
-        RaycastHit hit;
-        //Debug.DrawRay(transform.position, transform.up * 10f, Color.yellow);
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit,0.5f))
-        {
-            Debug.Log(hit.collider.gameObject.name + Vector3.Distance(transform.position, hit.collider.transform.position));
-            if (Vector3.Distance(transform.position, hit.collider.transform.position) <= 0.2f)
-                return true;
-        }
-        
-        return false;
-    }*/
 
 // Update is called once per frame
     void Update () {
@@ -42,8 +35,14 @@ public class PlayerMoving : MonoBehaviour {
             Quaternion desireRotate = Quaternion.Euler(0, 90, 0);
             transform.rotation = desireRotate;
             if (grounded)
-                animator.SetInteger("Anim",1);
-            transform.position += new Vector3(1,0,0) *  speed * Time.deltaTime;
+            {
+                animator.SetInteger("Anim", 1);
+                transform.position += new Vector3(1, 0, 0) * speed * Time.deltaTime;
+            }
+            else {
+                transform.position += new Vector3(0.6f, 0, 0) * speed * Time.deltaTime;
+                
+            }
         }
         else
         {
@@ -54,12 +53,19 @@ public class PlayerMoving : MonoBehaviour {
             Quaternion desireRotate = Quaternion.Euler(0, -90, 0);
             transform.rotation = desireRotate;
             if (grounded)
+            {
                 animator.SetInteger("Anim", 1);
-            transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
+                transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
+            }
+            else {
+                transform.position += new Vector3(-0.6f, 0, 0) * speed * Time.deltaTime;
+                
+            }
         }
         
         if (Input.GetAxis("Jump")>0 && grounded)
         {
+            animator.SetInteger("Anim", 0);
             animator.SetInteger("Jump", 1);
             rb.AddForce(transform.up * jumpHeight);
             grounded = false;
@@ -68,9 +74,40 @@ public class PlayerMoving : MonoBehaviour {
         {
             animator.SetInteger("Jump", 0);
         }
-       
+        if ( hitWall && !grounded && !doubleJump ){
+            
+            if (Input.GetAxis("Jump") > 0  )
+            {
+        
+                animator.SetInteger("Anim", 0);
+                animator.SetInteger("wallJump", 1);
+                rb.AddForce(transform.up*100  - transform.forward*100, ForceMode.Impulse);
+                if (!doubleJump)
+                {
+                       doubleJump = true;
+                }
+                //--------------flip
+                Vector3 theScale = transform.localScale;
+                theScale.x *= -1;
+                transform.localScale = theScale;
+            }
+            else
+            {
+                doubleJump = false;
+                animator.SetInteger("wallJump", 0);
+            }
+        }
+        else
+        {
+            //doubleJump = false;
+            animator.SetInteger("wallJump", 0);
+        }
+        if (grounded || hitWall)
+            doubleJump = false;
+        
         
 	}
+    
     void FixedUpdate()
     {
         groundCollisions = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundLayer);
@@ -78,6 +115,12 @@ public class PlayerMoving : MonoBehaviour {
             grounded = true;
         else
             grounded = false;
+        
+        wallCollisions = Physics.OverlapSphere(wallCheck.position, wallCheckRadius, wallLayer);
+        if (wallCollisions.Length > 0)
+            hitWall = true;
+        else
+            hitWall = false;
     }
 
     
