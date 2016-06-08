@@ -245,28 +245,27 @@
     <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\TimedObjectDestructor.cs" />
     <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\WaypointProgressTracker.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Assets\Scripts\Caramel\Ground.cs" />
     <Compile Include="Assets\Scripts\Caramel\Rolling.cs" />
     <Compile Include="Assets\Scripts\Caramel\Sonic.cs" />
->>>>>>> cd3eca2747c3003fb654cbd479d02a69895cdeae
     <Compile Include="Assets\Scripts\Sinpin\PlayerMoving.cs" />
     <Compile Include="Assets\Scripts\Sinpin\ProjectileFlyScript.cs" />
     <Compile Include="Assets\Scripts\Sinpin\ProjectileScript.cs" />
     <Compile Include="Assets\Scripts\Sinpin\cameraFollowing.cs" />
+    <Compile Include="Assets\Scripts\Sinpin\cannonBullet.cs" />
+    <Compile Include="Assets\Scripts\Sinpin\cannonShooter.cs" />
+    <Compile Include="Assets\Scripts\Sinpin\cannonShooter90.cs" />
+    <Compile Include="Assets\Scripts\Sinpin\checkPoint.cs" />
+    <Compile Include="Assets\Scripts\Sinpin\checkPointSpin.cs" />
     <Compile Include="Assets\Scripts\Sinpin\enemyMoving.cs" />
     <Compile Include="Assets\Scripts\Sinpin\genProjectile.cs" />
     <Compile Include="Assets\Scripts\Sinpin\jumpOnSpring.cs" />
     <Compile Include="Assets\Scripts\Sinpin\mouseAiming.cs" />
     <Compile Include="Assets\Scripts\Sinpin\playerStats.cs" />
     <Compile Include="Assets\Scripts\Sinpin\springTrigger.cs" />
-<<<<<<< HEAD
     <Compile Include="Assets\Scripts\Vivienne17\BallMove.cs" />
     <Compile Include="Assets\Scripts\Vivienne17\HPManager.cs" />
     <Compile Include="Assets\Scripts\Vivienne17\SonicMove.cs" />
-=======
->>>>>>> cd3eca2747c3003fb654cbd479d02a69895cdeae
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
