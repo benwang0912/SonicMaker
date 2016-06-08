@@ -271,6 +271,9 @@
     <Compile Include="Assets\Scripts\Sinpin\mouseAiming.cs" />
     <Compile Include="Assets\Scripts\Sinpin\playerStats.cs" />
     <Compile Include="Assets\Scripts\Sinpin\springTrigger.cs" />
+    <Compile Include="Assets\Scripts\Vivienne17\BallMove.cs" />
+    <Compile Include="Assets\Scripts\Vivienne17\HPManager.cs" />
+    <Compile Include="Assets\Scripts\Vivienne17\SonicMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />

@@ -227,6 +227,9 @@
      <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\TimedObjectDestructor.cs" />
      <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\WaypointCircuit.cs" />
      <Compile Include="Assets\Resources\Common Resources\ParticleSystems\Utility\WaypointProgressTracker.cs" />
+     <Compile Include="Assets\Scripts\Caramel\Ground.cs" />
+     <Compile Include="Assets\Scripts\Caramel\Rolling.cs" />
+     <Compile Include="Assets\Scripts\Caramel\Sonic.cs" />
      <Compile Include="Assets\Scripts\Sinpin\PlayerMoving.cs" />
      <Compile Include="Assets\Scripts\Sinpin\ProjectileFlyScript.cs" />
      <Compile Include="Assets\Scripts\Sinpin\ProjectileScript.cs" />
@@ -242,6 +245,9 @@
      <Compile Include="Assets\Scripts\Sinpin\mouseAiming.cs" />
      <Compile Include="Assets\Scripts\Sinpin\playerStats.cs" />
      <Compile Include="Assets\Scripts\Sinpin\springTrigger.cs" />
+     <Compile Include="Assets\Scripts\Vivienne17\BallMove.cs" />
+     <Compile Include="Assets\Scripts\Vivienne17\HPManager.cs" />
+     <Compile Include="Assets\Scripts\Vivienne17\SonicMove.cs" />
      <None Include="Assets\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI\ReadMe - 3.9.7.txt" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Masked 1.shader" />
