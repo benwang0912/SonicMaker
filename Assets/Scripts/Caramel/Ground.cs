@@ -7,7 +7,7 @@ public class Ground : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        int groundcount = 20;
+        int groundcount = 60;
 
         for (int i = 0; i<groundcount; ++i)
         {

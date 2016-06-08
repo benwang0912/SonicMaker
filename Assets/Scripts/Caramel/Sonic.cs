@@ -132,17 +132,20 @@ public class Sonic : MonoBehaviour {
                 break;
             */
 
-            /*
+            
             case "Spring":
                 if (collision.relativeVelocity.y > 1f)
                 {
+                    /*
                     GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
                     animator.SetBool("Jump", true);
                     rb.AddForce(transform.up * 600f);
+                    */
+                    ChangeToBall(GameConstants.SonicState.JUMPING);
                 }
 
                 break;
-            */
+            
 
             case "Enemy1":
                 if (collision.relativeVelocity.y > 1f)

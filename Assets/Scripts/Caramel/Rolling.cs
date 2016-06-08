@@ -90,6 +90,15 @@ public class Rolling : MonoBehaviour {
         rb.AddForce(Vector3.up * jumpforce);
     }
 
+    public void JumpRolling(float f)
+    {
+        GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+        material.SetColor("_EmissionColor", slowrolling);
+        rollingspeed = 900f;
+        isvibration = false;
+        rb.AddForce(Vector3.up * f);
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         
@@ -110,17 +119,18 @@ public class Rolling : MonoBehaviour {
                 break;
             */
 
-            /*
+            
             case "Spring":
                 if (collision.relativeVelocity.y > 1f)
                 {
-                    GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
-                    animator.SetBool("Jump", true);
-                    rb.AddForce(transform.up * 600f);
+                    //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+                    //animator.SetBool("Jump", true);
+                    //rb.AddForce(transform.up * 600f);
+                    JumpRolling(600f);
                 }
 
                 break;
-            */
+            
 
             case "Enemy1":
                 Destroy(collision.gameObject);
