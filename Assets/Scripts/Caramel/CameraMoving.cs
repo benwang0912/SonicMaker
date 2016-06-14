@@ -7,7 +7,6 @@ public class CameraMoving : MonoBehaviour {
 
     Transform sonic, rollingball;
     Vector3 ToChangePosition;
-    float speed = 5f;
     // Use this for initialization
     void Start()
     {

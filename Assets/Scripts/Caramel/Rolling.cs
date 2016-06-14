@@ -101,14 +101,6 @@ public class Rolling : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        
-        if (collision.relativeVelocity.y > 1f)
-        {
-            //animator.SetBool("Jump", false);
-            ChangeToSonic(GameConstants.SonicState.NORMAL);
-        }
-        
-
         switch (collision.transform.name)
         {
             /*
@@ -126,15 +118,21 @@ public class Rolling : MonoBehaviour {
                     //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
                     //animator.SetBool("Jump", true);
                     //rb.AddForce(transform.up * 600f);
-                    JumpRolling(600f);
+                    JumpRolling(500f);
                 }
 
-                break;
+                return;
             
 
             case "Enemy1":
                 Destroy(collision.gameObject);
-                break;
+                return;
+        }
+
+        if (collision.relativeVelocity.y > 1f)
+        {
+            //animator.SetBool("Jump", false);
+            ChangeToSonic(GameConstants.SonicState.NORMAL);
         }
     }
 

@@ -160,6 +160,7 @@ public class Sonic : MonoBehaviour {
     void GameOver()
     {
         transform.localPosition = original_position;
+        rb.velocity = Vector3.zero;
         GameConstants.sonicstate = GameConstants.SonicState.DEAD;
         StartCoroutine("revive");
         Debug.Log("GameOver");
@@ -275,6 +276,7 @@ animator.speed = 2f;
             //StartCoroutine("jumping");
         }
 
+        Debug.Log(GameConstants.sonicstate);
 
         /*
         //to create a shield
