@@ -7,8 +7,8 @@ public class CameraMoving : MonoBehaviour {
 
     Transform sonic, rollingball;
     Vector3 ToChangePosition;
-    // Use this for initialization
-    void Start()
+
+    void Awake()
     {
         sonic = GameObject.Find("Sonic").transform;
         rollingball = GameObject.Find("RollingBall").transform;

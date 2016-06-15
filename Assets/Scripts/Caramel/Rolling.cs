@@ -110,7 +110,6 @@ public class Rolling : MonoBehaviour {
 
                 break;
             */
-
             
             case "Spring":
                 if (collision.relativeVelocity.y > 1f)

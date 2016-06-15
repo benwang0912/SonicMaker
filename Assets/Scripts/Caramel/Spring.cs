@@ -22,7 +22,7 @@ public class Spring : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.relativeVelocity);
+        //Debug.Log(collision.relativeVelocity);
 
         if(collision.relativeVelocity.y < 0f)
         {

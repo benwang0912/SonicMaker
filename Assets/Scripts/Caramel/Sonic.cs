@@ -121,7 +121,6 @@ public class Sonic : MonoBehaviour {
             GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
         }
         */
-
         switch (collision.transform.name)
         {
             /*
@@ -131,21 +130,28 @@ public class Sonic : MonoBehaviour {
 
                 break;
             */
-
             
-            case "Spring":
-                if (collision.relativeVelocity.y > 1f)
+            case "Spring (1)":
+                if (collision.relativeVelocity.x > 0f)
                 {
                     /*
                     GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
                     animator.SetBool("Jump", true);
                     rb.AddForce(transform.up * 600f);
                     */
-                    ChangeToBall(GameConstants.SonicState.JUMPING);
+                    rb.AddForce(Vector3.left * 500f);
                 }
 
                 break;
-            
+
+            case "Spring (2)":
+                if (collision.relativeVelocity.x < 0f)
+                {
+                    rb.AddForce(Vector3.right * 500f);
+                }
+
+                break;
+
 
             case "Enemy1":
                 if (collision.relativeVelocity.y > 1f)
@@ -275,8 +281,6 @@ animator.speed = 2f;
             //transform.localPosition += transform.up * jumpforce * speed * Time.deltaTime; ;
             //StartCoroutine("jumping");
         }
-
-        Debug.Log(GameConstants.sonicstate);
 
         /*
         //to create a shield
