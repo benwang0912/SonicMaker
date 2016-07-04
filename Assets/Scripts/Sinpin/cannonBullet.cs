@@ -37,7 +37,7 @@ public class cannonBullet : MonoBehaviour {
             Destroy(gameObject);
             playerStats p;
             p = other.gameObject.GetComponent<playerStats>();
-            p.Health -= 2; 
+            p.Health -= 1; 
         }
         else
         {

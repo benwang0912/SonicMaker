@@ -56,6 +56,7 @@ public class checkPoint : MonoBehaviour {
             }
             playerScript.revivePosition = transform.position;
             playerScript.revivePosition.y += 1;
+            
             GameObject s = Instantiate(star);
             s.transform.position = transform.position;
             Destroy(s, 2);
