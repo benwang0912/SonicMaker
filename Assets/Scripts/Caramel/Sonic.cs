@@ -19,6 +19,7 @@ public static class Game
     public static GameConstants.SonicState sonicstate;
     public static Vector3 velocity;
     public static int coins = 0;
+    public static float time = 0f;
 }
 
 [RequireComponent(typeof(Rigidbody))]
@@ -154,10 +155,11 @@ public class Sonic : MonoBehaviour {
                 transform.localRotation = s > 0f ? Quaternion.Euler(Vector3.up * 90f) : Quaternion.Euler(Vector3.up * 270f);
 
                 break;
-
+                
             case "Coin":
                 Destroy(collision.gameObject);
                 Game.coins += 1;
+                coins.text = Game.coins.ToString();
                 break;
                 /*
             case "Spring (2)":
@@ -170,8 +172,41 @@ public class Sonic : MonoBehaviour {
                 */
 
             case "Enemy":
+                if(Game.coins != 0)
+                {
+                    Coin coin = ((GameObject)Instantiate(Resources.Load("Caramel/Components/Coin"), transform.localPosition + Vector3.up * 5f, Quaternion.identity)).GetComponent<Coin>();
+                    Vector3 v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 5f), 0f);
+                    coin.Throw(v * 200f);
+                    --Game.coins;
+
+                    while(Game.coins > 0)
+                    {
+                        Instantiate(coin, transform.localPosition + Vector3.up * 5f, Quaternion.identity);
+                        v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 5f), 0f);
+                        coin.Throw(v * 200f);
+                        --Game.coins;
+                    }
+
+                    Debug.Log(collision.relativeVelocity.x);
+
+                    rb.AddForce((collision.relativeVelocity.x > 0f ? Vector3.right : Vector3.left) * 700f);
+                    coins.text = Game.coins.ToString();
+                }
+                else
+                {
                     GameOver();
+                }
                 break;
+        }
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        if (c.transform.tag == "Coin")
+        {
+            ++Game.coins;
+            coins.text = Game.coins.ToString();
+            Destroy(c.gameObject);
         }
     }
 
@@ -220,79 +255,87 @@ animator.speed = 2f;
         if (transform.localPosition.y < -10.0f)
             GameOver();
 
-
-        //first_info = animator.GetCurrentAnimatorStateInfo(1);
-
-        //to move
-        //going forward action 
-        if (Input.GetAxis("Horizontal") > 0f)
+        if(Game.sonicstate != GameConstants.SonicState.DEAD)
         {
-            //to turn right
-            transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
-            //animator.SetInteger("Mode", 1);
-            //there is a bug that Sonic sometimes cannot walk!
-            rb.AddForce(transform.forward * walkspeed);
+
+
+            Game.time += Time.deltaTime;
+            time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
+
+            //first_info = animator.GetCurrentAnimatorStateInfo(1);
+
+            //to move
+            //going forward action 
+            if (Input.GetAxis("Horizontal") > 0f)
+            {
+                //to turn right
+                transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
+                //animator.SetInteger("Mode", 1);
+                //there is a bug that Sonic sometimes cannot walk!
+                rb.AddForce(transform.forward * walkspeed);
+            }
+
+            if (Input.GetAxis("Horizontal") < 0f)
+            {
+                //to turn left
+                transform.localRotation = Quaternion.Euler(Vector3.up * 270f);
+                //animator.SetInteger("Mode", 1);
+                rb.AddForce(transform.forward * walkspeed);
+            }
+
+            //not 0 => forward, reset to 0
+            animator.SetInteger("Mode", rb.velocity != Vector3.zero ? 1 : 0);
+
+            //for 3D
+            //transform.Rotate(0, Input.GetAxis("Horizontal") * turnspeed * Time.deltaTime, 0);
+            //transform.localPosition += Vector3.right * Input.GetAxis("Horizontal") * speed * 
+
+            //to squat
+            if (Input.GetKey(KeyCode.DownArrow) && (Game.sonicstate == GameConstants.SonicState.NORMAL || Game.sonicstate == GameConstants.SonicState.SQUATTING))
+            {
+                Game.sonicstate = GameConstants.SonicState.SQUATTING;
+                ccollider.height = scheight;
+                ccollider.center = sccenter;
+                animator.SetInteger("Mode", 2);
+            }
+            //from squatting to normal
+            if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.SQUATTING)
+            {
+                Game.sonicstate = GameConstants.SonicState.NORMAL;
+                ccollider.height = ocheight;
+                ccollider.center = occenter;
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Return) && (Game.sonicstate == GameConstants.SonicState.SQUATTING || Game.sonicstate == GameConstants.SonicState.TOROLL))
+            {
+                ChangeToBall(GameConstants.SonicState.TOROLL);
+
+                /*
+                GameConstants.sonicstate = GameConstants.SonicState.ROLLING;
+                gameObject.SetActive(false);
+                rollingball.SetActive(true);
+
+                rollingball.transform.localPosition = transform.localPosition + Vector3.up * .7f;
+                rollingball.SendMessage("QuickRolling", (transform.localRotation.eulerAngles.y - 91f) < 0 ? 1 : 0);
+                */
+            }
+
+            //to jump
+            if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.NORMAL)
+            {
+                //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+                //animator.SetBool("Jump", true);
+                //rb.AddForce(transform.up * jumpforce);
+                ChangeToBall(GameConstants.SonicState.JUMPING);
+
+                //rollingball
+
+                //transform.localPosition += transform.up * jumpforce * speed * Time.deltaTime; ;
+                //StartCoroutine("jumping");
+            }
         }
 
-        if (Input.GetAxis("Horizontal") < 0f)
-        {
-            //to turn left
-            transform.localRotation = Quaternion.Euler(Vector3.up*270f);
-            //animator.SetInteger("Mode", 1);
-            rb.AddForce(transform.forward * walkspeed);
-        }
-
-        //not 0 => forward, reset to 0
-        animator.SetInteger("Mode", rb.velocity != Vector3.zero ? 1 : 0);
-
-        //for 3D
-        //transform.Rotate(0, Input.GetAxis("Horizontal") * turnspeed * Time.deltaTime, 0);
-        //transform.localPosition += Vector3.right * Input.GetAxis("Horizontal") * speed * 
-
-        //to squat
-        if (Input.GetKey(KeyCode.DownArrow) && (Game.sonicstate == GameConstants.SonicState.NORMAL || Game.sonicstate == GameConstants.SonicState.SQUATTING))
-        {
-            Game.sonicstate = GameConstants.SonicState.SQUATTING;
-            ccollider.height = scheight;
-            ccollider.center = sccenter;
-            animator.SetInteger("Mode", 2);
-        }
-        //from squatting to normal
-        if(Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.SQUATTING)
-        {
-            Game.sonicstate = GameConstants.SonicState.NORMAL;
-            ccollider.height = ocheight;
-            ccollider.center = occenter;
-        }
-        
-
-        if(Input.GetKeyDown(KeyCode.Return) && (Game.sonicstate == GameConstants.SonicState.SQUATTING || Game.sonicstate == GameConstants.SonicState.TOROLL))
-        {
-            ChangeToBall(GameConstants.SonicState.TOROLL);
-
-            /*
-            GameConstants.sonicstate = GameConstants.SonicState.ROLLING;
-            gameObject.SetActive(false);
-            rollingball.SetActive(true);
-
-            rollingball.transform.localPosition = transform.localPosition + Vector3.up * .7f;
-            rollingball.SendMessage("QuickRolling", (transform.localRotation.eulerAngles.y - 91f) < 0 ? 1 : 0);
-            */
-        }
-
-        //to jump
-        if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.NORMAL)
-        {
-            //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
-            //animator.SetBool("Jump", true);
-            //rb.AddForce(transform.up * jumpforce);
-            ChangeToBall(GameConstants.SonicState.JUMPING);
-
-            //rollingball
-
-            //transform.localPosition += transform.up * jumpforce * speed * Time.deltaTime; ;
-            //StartCoroutine("jumping");
-        }
 
         /*
         //to create a shield

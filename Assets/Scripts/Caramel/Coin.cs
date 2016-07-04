@@ -2,18 +2,39 @@
 using System.Collections;
 
 [RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class Coin : MonoBehaviour
 {
     //in the Coin
 
     //Animator an;
-    //WaitForSeconds jumptime = new WaitForSeconds(0.1f);
-    public float rotationspeed;
     float r = 0f;
+    Rigidbody rb;
+    CapsuleCollider c;
+
+    public float rotationspeed;
 
     void Awake()
     {
         //an = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+        c = GetComponent<CapsuleCollider>();
+    }
+
+    public void Throw(Vector3 f)
+    {
+        rb.useGravity = true;
+        //c.isTrigger = false;
+        rb.AddForce(f);
+        Destroy(gameObject, 2f);
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        if(c.transform.tag == "Ground")
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * 0.5f, 0f);
+        }
     }
 
     void Update()
