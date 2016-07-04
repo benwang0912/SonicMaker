@@ -32,14 +32,14 @@ public class Rolling : MonoBehaviour {
         sonic.SetActive(true);
         gameObject.SetActive(false);
 
-        GameConstants.velocity = rb.velocity;
+        Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
         sonic.transform.localPosition = transform.localPosition - Vector3.up * .2f;
 
         switch (s)
         {
             case GameConstants.SonicState.NORMAL:
-                GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
+                Game.sonicstate = GameConstants.SonicState.NORMAL;
                 sonic.SendMessage("BackToSonic", GameConstants.SonicState.NORMAL);
                 break;
             case GameConstants.SonicState.DEAD:
@@ -50,7 +50,7 @@ public class Rolling : MonoBehaviour {
 
     public void BackToBall(GameConstants.SonicState s)
     {
-        rb.velocity = GameConstants.velocity;
+        rb.velocity = Game.velocity;
 
         switch(s)
         {
@@ -83,33 +83,25 @@ public class Rolling : MonoBehaviour {
 
     public void JumpRolling()
     {
-        GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+        Game.sonicstate = GameConstants.SonicState.JUMPING;
         material.SetColor("_EmissionColor", slowrolling);
         rollingspeed = 900f;
         isvibration = false;
         rb.AddForce(Vector3.up * jumpforce);
     }
 
-    public void JumpRolling(float f)
+    public void JumpRolling(Vector3 v)
     {
-        GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+        Game.sonicstate = GameConstants.SonicState.JUMPING;
         material.SetColor("_EmissionColor", slowrolling);
         rollingspeed = 900f;
         isvibration = false;
-        rb.AddForce(Vector3.up * f);
+        rb.AddForce(v);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        
-        if (collision.relativeVelocity.y > 1f)
-        {
-            //animator.SetBool("Jump", false);
-            ChangeToSonic(GameConstants.SonicState.NORMAL);
-        }
-        
-
-        switch (collision.transform.name)
+        switch (collision.transform.tag)
         {
             /*
             case "Wall":
@@ -118,23 +110,31 @@ public class Rolling : MonoBehaviour {
 
                 break;
             */
-
             
-            case "Spring":
-                if (collision.relativeVelocity.y > 1f)
-                {
+            case "Spring_Y":
+
                     //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
                     //animator.SetBool("Jump", true);
                     //rb.AddForce(transform.up * 600f);
-                    JumpRolling(600f);
-                }
+                    JumpRolling( Vector3.up * 500f * Mathf.Sign(collision.relativeVelocity.y));
+
+                return;
+
+            case "Spring_X":
+                float s = Mathf.Sign(collision.relativeVelocity.x);
+                rb.AddForce(Vector3.right * 150f * s);
 
                 break;
-            
 
-            case "Enemy1":
+            case "Enemy":
                 Destroy(collision.gameObject);
-                break;
+                return;
+        }
+
+        if (collision.relativeVelocity.y > 1f)
+        {
+            //animator.SetBool("Jump", false);
+            ChangeToSonic(GameConstants.SonicState.NORMAL);
         }
     }
 
@@ -155,10 +155,10 @@ public class Rolling : MonoBehaviour {
             ChangeToSonic(GameConstants.SonicState.DEAD);
 
         //to return to sonic
-        if (rb.velocity.magnitude <= 1f && (GameConstants.sonicstate == GameConstants.SonicState.ROLLING))
+        if (rb.velocity.magnitude <= 1f && (Game.sonicstate == GameConstants.SonicState.ROLLING))
         {
             gameObject.SetActive(false);
-            GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
+            Game.sonicstate = GameConstants.SonicState.NORMAL;
             sonic.transform.localPosition = transform.localPosition;
             sonic.SetActive(true);
         }
@@ -175,24 +175,24 @@ public class Rolling : MonoBehaviour {
         }
 
         //to keep rolling
-        if (Input.GetKeyDown(KeyCode.Return) && GameConstants.sonicstate == GameConstants.SonicState.TOROLL)
+        if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
             //music!?
         }
 
-        if (Input.GetKeyUp(KeyCode.DownArrow) && GameConstants.sonicstate == GameConstants.SonicState.TOROLL)
+        if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
-            GameConstants.sonicstate = GameConstants.SonicState.ROLLING;
+            Game.sonicstate = GameConstants.SonicState.ROLLING;
             SlowRolling(600f);
         }
 
         //to jump in rolling
-        if(Input.GetKey(KeyCode.Return) && GameConstants.sonicstate == GameConstants.SonicState.ROLLING)
+        if(Input.GetKey(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             JumpRolling();
         }
 
-        if((Input.GetAxis("Horizontal") != 0 && GameConstants.sonicstate == GameConstants.SonicState.JUMPING))
+        if((Input.GetAxis("Horizontal") != 0 && Game.sonicstate == GameConstants.SonicState.JUMPING))
         {
             rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * walkspeed);
         }

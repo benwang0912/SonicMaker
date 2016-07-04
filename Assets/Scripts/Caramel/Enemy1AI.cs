@@ -57,7 +57,6 @@ public class Enemy1AI : MonoBehaviour
         if (Vector3.Distance(sonic.position, transform.position) <= 5f && sonic.localScale.x != 0.01f)
         {
             //to attack
-            Debug.Log("attack");
             attack();
         }
         else
