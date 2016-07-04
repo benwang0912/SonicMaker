@@ -13,6 +13,8 @@ public class Rolling : MonoBehaviour {
     float rollingspeed, jumpforce = 400f, walkspeed = 5f, vibration = .02f;
     bool isvibration = false, right = true;
 
+    public UILabel time, coins;
+
     enum SonicMode
     {
         DEAD,
@@ -124,6 +126,11 @@ public class Rolling : MonoBehaviour {
                 float s = Mathf.Sign(collision.relativeVelocity.x);
                 rb.AddForce(Vector3.right * 150f * s);
 
+                break;
+
+            case "Coin":
+                Destroy(collision.gameObject);
+                Game.coins += 1;
                 break;
 
             case "Enemy":

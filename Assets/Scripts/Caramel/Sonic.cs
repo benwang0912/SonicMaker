@@ -39,6 +39,7 @@ public class Sonic : MonoBehaviour {
 
     //squatting_collidersize = new Vector3(1f, 2.243595f, 1.886265f)
     public float walkspeed, scheight;
+    public UILabel time, coins;
 
     enum BallMode
     {
