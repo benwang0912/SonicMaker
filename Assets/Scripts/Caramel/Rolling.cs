@@ -13,6 +13,8 @@ public class Rolling : MonoBehaviour {
     float rollingspeed, jumpforce = 400f, walkspeed = 5f, vibration = .02f;
     bool isvibration = false, right = true;
 
+    public UILabel time, coins;
+
     enum SonicMode
     {
         DEAD,
@@ -125,6 +127,12 @@ public class Rolling : MonoBehaviour {
                 rb.AddForce(Vector3.right * 150f * s);
 
                 break;
+                
+            case "Coin":
+                Destroy(collision.gameObject);
+                Game.coins += 1;
+                coins.text = Game.coins.ToString();
+                break;
 
             case "Enemy":
                 Destroy(collision.gameObject);
@@ -135,6 +143,16 @@ public class Rolling : MonoBehaviour {
         {
             //animator.SetBool("Jump", false);
             ChangeToSonic(GameConstants.SonicState.NORMAL);
+        }
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        if (c.transform.tag == "Coin")
+        {
+            ++Game.coins;
+            coins.text = Game.coins.ToString();
+            Destroy(c.gameObject);
         }
     }
 
@@ -153,6 +171,9 @@ public class Rolling : MonoBehaviour {
     {
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
+
+        Game.time += Time.deltaTime;
+        time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
 
         //to return to sonic
         if (rb.velocity.magnitude <= 1f && (Game.sonicstate == GameConstants.SonicState.ROLLING))
@@ -183,7 +204,7 @@ public class Rolling : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
             Game.sonicstate = GameConstants.SonicState.ROLLING;
-            SlowRolling(600f);
+            SlowRolling(900f);
         }
 
         //to jump in rolling
