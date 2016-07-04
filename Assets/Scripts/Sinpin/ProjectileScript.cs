@@ -16,9 +16,9 @@ public class ProjectileScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void LateUpdate () {
-        transform.position = new Vector3 ((playerPosition.transform.position.x) + radius * Mathf.Sin(Time.time*3 + 40*Num), 
+        transform.position = new Vector3 ((playerPosition.transform.position.x) + radius * Mathf.Sin(Time.time*3 + 360 / ProjectileCount / 3 * Num), 
                                              playerPosition.transform.position.y + 2, 
-                                                playerPosition.transform.position.z + radius*Mathf.Cos(Time.time*3+40*Num));
+                                                playerPosition.transform.position.z + radius*Mathf.Cos(Time.time*3+360/ProjectileCount/3*Num));
 
         //transform.RotateAround(transform.parent.position, Vector3.up, 120*Time.deltaTime);
 
