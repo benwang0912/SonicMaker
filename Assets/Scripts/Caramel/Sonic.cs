@@ -31,12 +31,14 @@ public class Sonic : MonoBehaviour {
     Animator animator;
     //AnimatorStateInfo first_info;
     CapsuleCollider ccollider;
-    //SkinnedMeshRenderer skin1, skin2;
+    SkinnedMeshRenderer skin1, skin2;
     Rigidbody rb;
     Vector3 occenter, sccenter = new Vector3(0f, 1.075213f, -0.3038063f), original_position, dead;
     GameObject rollingball;
     WaitForSeconds delay = new WaitForSeconds(1.7f);
+    Color ocskin1, ocskin2, hcskin1, hcskin2;
     float ocheight;
+    bool hurting = false;
 
     //squatting_collidersize = new Vector3(1f, 2.243595f, 1.886265f)
     public float walkspeed, scheight;
@@ -54,8 +56,8 @@ public class Sonic : MonoBehaviour {
         animator = GetComponent<Animator>();
         ccollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-        //skin1 = transform.FindChild("Cube/Cube_MeshPart0").GetComponent<SkinnedMeshRenderer>();
-        //skin2 = transform.FindChild("Cube/Cube_MeshPart1").GetComponent<SkinnedMeshRenderer>();
+        skin1 = transform.FindChild("Cube/Cube_MeshPart0").GetComponent<SkinnedMeshRenderer>();
+        skin2 = transform.FindChild("Cube/Cube_MeshPart1").GetComponent<SkinnedMeshRenderer>();
         ocheight = ccollider.height;
         occenter = ccollider.center;
         original_position = transform.localPosition;
@@ -67,6 +69,11 @@ public class Sonic : MonoBehaviour {
         //faceright = new Vector3(0f, 90f, 0f);
         //faceleft = new Vector3(0f, 270f, 0f);
         dead = new Vector3(0.01f, 0.01f, 0.01f);
+
+        ocskin1 = skin1.material.color;
+        ocskin2 = skin2.material.color;
+        hcskin1 = new Color(ocskin1.r, ocskin1.g, ocskin1.b, .5f);
+        hcskin2 = new Color(ocskin2.r, ocskin2.g, ocskin2.b, .5f);
 
         //faceleft = new Quaternion(0f, Quaternion.Angle, 0f, 0f);
         //faceright = new Quaternion(0f, 180f, 0f, 0f);
@@ -123,6 +130,18 @@ public class Sonic : MonoBehaviour {
         yield break;
     }
 
+    IEnumerator hurt()
+    {
+        skin1.material.color = hcskin1;
+        skin2.material.color = hcskin2;
+        yield return delay;
+
+        skin1.material.color = ocskin1;
+        skin2.material.color = ocskin2;
+        hurting = false;
+        yield break;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         /*
@@ -157,9 +176,14 @@ public class Sonic : MonoBehaviour {
                 break;
                 
             case "Coin":
-                Destroy(collision.gameObject);
-                Game.coins += 1;
-                coins.text = Game.coins.ToString();
+
+                if(!hurting)
+                {
+                    Destroy(collision.gameObject);
+                    Game.coins += 1;
+                    coins.text = Game.coins.ToString();
+                }
+
                 break;
                 /*
             case "Spring (2)":
@@ -172,30 +196,36 @@ public class Sonic : MonoBehaviour {
                 */
 
             case "Enemy":
-                if(Game.coins != 0)
+                if(!hurting)
                 {
-                    Coin coin = ((GameObject)Instantiate(Resources.Load("Caramel/Components/Coin"), transform.localPosition + Vector3.up * 5f, Quaternion.identity)).GetComponent<Coin>();
-                    Vector3 v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 5f), 0f);
-                    coin.Throw(v * 200f);
-                    --Game.coins;
-
-                    while(Game.coins > 0)
+                    if (Game.coins != 0)
                     {
-                        Instantiate(coin, transform.localPosition + Vector3.up * 5f, Quaternion.identity);
-                        v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 5f), 0f);
-                        coin.Throw(v * 200f);
+                        hurting = true;
+
+                        Coin coin = ((GameObject)Instantiate(Resources.Load("Caramel/Components/Coin"), transform.localPosition + Vector3.up * 5f, Quaternion.identity)).GetComponent<Coin>();
+                        Vector3 v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 4f), 0f);
+                        coin.Throw(v * 150f);
                         --Game.coins;
+
+                        while (Game.coins > 0)
+                        {
+                            coin = ((GameObject)Instantiate(coin.gameObject, transform.localPosition + Vector3.up * 5f, Quaternion.identity)).GetComponent<Coin>();
+                            v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 5f), 0f);
+                            coin.Throw(v * 150f);
+                            --Game.coins;
+                        }
+
+                        rb.AddForce((collision.relativeVelocity.x > 0f ? Vector3.right : Vector3.left) * 700f);
+                        coins.text = Game.coins.ToString();
+
+                        StartCoroutine("hurt");
                     }
-
-                    Debug.Log(collision.relativeVelocity.x);
-
-                    rb.AddForce((collision.relativeVelocity.x > 0f ? Vector3.right : Vector3.left) * 700f);
-                    coins.text = Game.coins.ToString();
+                    else
+                    {
+                        GameOver();
+                    }
                 }
-                else
-                {
-                    GameOver();
-                }
+
                 break;
         }
     }

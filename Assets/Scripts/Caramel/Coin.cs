@@ -12,7 +12,7 @@ public class Coin : MonoBehaviour
     Rigidbody rb;
     CapsuleCollider c;
 
-    public float rotationspeed;
+    public float rotationspeed, groundreflect;
 
     void Awake()
     {
@@ -26,14 +26,14 @@ public class Coin : MonoBehaviour
         rb.useGravity = true;
         //c.isTrigger = false;
         rb.AddForce(f);
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 4f);
     }
 
     void OnTriggerEnter(Collider c)
     {
         if(c.transform.tag == "Ground")
         {
-            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * 0.5f, 0f);
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * groundreflect, 0f);
         }
     }
 
