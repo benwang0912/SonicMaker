@@ -13,6 +13,8 @@ public class Rolling : MonoBehaviour {
     float rollingspeed, jumpforce = 400f, walkspeed = 5f, vibration = .02f;
     bool isvibration = false, right = true;
 
+    public UILabel time, coins;
+
     enum SonicMode
     {
         DEAD,
@@ -32,14 +34,14 @@ public class Rolling : MonoBehaviour {
         sonic.SetActive(true);
         gameObject.SetActive(false);
 
-        GameConstants.velocity = rb.velocity;
+        Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
         sonic.transform.localPosition = transform.localPosition - Vector3.up * .2f;
 
         switch (s)
         {
             case GameConstants.SonicState.NORMAL:
-                GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
+                Game.sonicstate = GameConstants.SonicState.NORMAL;
                 sonic.SendMessage("BackToSonic", GameConstants.SonicState.NORMAL);
                 break;
             case GameConstants.SonicState.DEAD:
@@ -50,7 +52,7 @@ public class Rolling : MonoBehaviour {
 
     public void BackToBall(GameConstants.SonicState s)
     {
-        rb.velocity = GameConstants.velocity;
+        rb.velocity = Game.velocity;
 
         switch(s)
         {
@@ -83,25 +85,25 @@ public class Rolling : MonoBehaviour {
 
     public void JumpRolling()
     {
-        GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+        Game.sonicstate = GameConstants.SonicState.JUMPING;
         material.SetColor("_EmissionColor", slowrolling);
         rollingspeed = 900f;
         isvibration = false;
         rb.AddForce(Vector3.up * jumpforce);
     }
 
-    public void JumpRolling(float f)
+    public void JumpRolling(Vector3 v)
     {
-        GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
+        Game.sonicstate = GameConstants.SonicState.JUMPING;
         material.SetColor("_EmissionColor", slowrolling);
         rollingspeed = 900f;
         isvibration = false;
-        rb.AddForce(Vector3.up * f);
+        rb.AddForce(v);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        switch (collision.transform.name)
+        switch (collision.transform.tag)
         {
             /*
             case "Wall":
@@ -111,19 +113,28 @@ public class Rolling : MonoBehaviour {
                 break;
             */
             
-            case "Spring":
-                if (collision.relativeVelocity.y > 1f)
-                {
+            case "Spring_Y":
+
                     //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
                     //animator.SetBool("Jump", true);
                     //rb.AddForce(transform.up * 600f);
-                    JumpRolling(500f);
-                }
+                    JumpRolling( Vector3.up * 500f * Mathf.Sign(collision.relativeVelocity.y));
 
                 return;
-            
 
-            case "Enemy1":
+            case "Spring_X":
+                float s = Mathf.Sign(collision.relativeVelocity.x);
+                rb.AddForce(Vector3.right * 150f * s);
+
+                break;
+                
+            case "Coin":
+                Destroy(collision.gameObject);
+                Game.coins += 1;
+                coins.text = Game.coins.ToString();
+                break;
+
+            case "Enemy":
                 Destroy(collision.gameObject);
                 return;
         }
@@ -132,6 +143,16 @@ public class Rolling : MonoBehaviour {
         {
             //animator.SetBool("Jump", false);
             ChangeToSonic(GameConstants.SonicState.NORMAL);
+        }
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        if (c.transform.tag == "Coin")
+        {
+            ++Game.coins;
+            coins.text = Game.coins.ToString();
+            Destroy(c.gameObject);
         }
     }
 
@@ -151,11 +172,14 @@ public class Rolling : MonoBehaviour {
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
 
+        Game.time += Time.deltaTime;
+        time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
+
         //to return to sonic
-        if (rb.velocity.magnitude <= 1f && (GameConstants.sonicstate == GameConstants.SonicState.ROLLING))
+        if (rb.velocity.magnitude <= 1f && (Game.sonicstate == GameConstants.SonicState.ROLLING))
         {
             gameObject.SetActive(false);
-            GameConstants.sonicstate = GameConstants.SonicState.NORMAL;
+            Game.sonicstate = GameConstants.SonicState.NORMAL;
             sonic.transform.localPosition = transform.localPosition;
             sonic.SetActive(true);
         }
@@ -172,24 +196,24 @@ public class Rolling : MonoBehaviour {
         }
 
         //to keep rolling
-        if (Input.GetKeyDown(KeyCode.Return) && GameConstants.sonicstate == GameConstants.SonicState.TOROLL)
+        if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
             //music!?
         }
 
-        if (Input.GetKeyUp(KeyCode.DownArrow) && GameConstants.sonicstate == GameConstants.SonicState.TOROLL)
+        if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
-            GameConstants.sonicstate = GameConstants.SonicState.ROLLING;
-            SlowRolling(600f);
+            Game.sonicstate = GameConstants.SonicState.ROLLING;
+            SlowRolling(900f);
         }
 
         //to jump in rolling
-        if(Input.GetKey(KeyCode.Return) && GameConstants.sonicstate == GameConstants.SonicState.ROLLING)
+        if(Input.GetKey(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             JumpRolling();
         }
 
-        if((Input.GetAxis("Horizontal") != 0 && GameConstants.sonicstate == GameConstants.SonicState.JUMPING))
+        if((Input.GetAxis("Horizontal") != 0 && Game.sonicstate == GameConstants.SonicState.JUMPING))
         {
             rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * walkspeed);
         }

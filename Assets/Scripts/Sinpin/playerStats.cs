@@ -4,10 +4,12 @@ using System.Collections;
 public class playerStats : MonoBehaviour {
     Rigidbody rb;
     //---------------------------------------player stats
-    public float Health = 10.0f;
+    public float Health = 2.0f;
+    public float maxHealth = 2.0f;
     private float deathCountDown = 2.0f;
     private Transform lastPosition;
     public Vector3 revivePosition;
+ 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
@@ -18,8 +20,11 @@ public class playerStats : MonoBehaviour {
         if (isDead())
         {
             rb.velocity = Vector3.zero;
-            transform.position = revivePosition;
-            Health = 10;
+            transform.position = revivePosition + new Vector3(0.0f,1.0f,0.0f);
+            if(Health == 0)
+            {
+                Health = 1;
+            }
         }
     }
 
@@ -27,7 +32,7 @@ public class playerStats : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            Health -= 2;
+            Health -= 1;
             rb.AddForce(new Vector3(collision.relativeVelocity.x/ Mathf.Abs(collision.relativeVelocity.x)*2, 1.5f, 0.0f)*rb.mass*100);
             Debug.Log(Health);
         }
