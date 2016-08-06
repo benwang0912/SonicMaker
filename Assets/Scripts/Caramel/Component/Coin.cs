@@ -24,7 +24,7 @@ public class Coin : MonoBehaviour
     public void Throw(Vector3 f)
     {
         rb.useGravity = true;
-        //c.isTrigger = false;
+        rb.constraints = RigidbodyConstraints.FreezePositionZ;
         rb.AddForce(f);
         Destroy(gameObject, 4f);
     }

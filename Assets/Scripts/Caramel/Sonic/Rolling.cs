@@ -2,7 +2,8 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Rolling : MonoBehaviour {
+public class Rolling : MonoBehaviour
+{
 
     Vector3 rolling = new Vector3(1f, 90f, 0f);
     Material material;
@@ -10,7 +11,8 @@ public class Rolling : MonoBehaviour {
     GameObject sonic;
     Color slowrolling = new Color(0.102f, 0.102f, 0.102f, 1f), quickrolling = new Color(0.75f, 0.75f, 0.75f, 1f);
     //Vector3 original_position;
-    float rollingspeed, jumpforce = 400f, walkspeed = 5f, vibration = .02f;
+
+    public float rollingspeed, jumpforce = 400f, walkspeed = 5f, vibration = .02f;
     bool isvibration = false, right = true;
 
     public UILabel time, coins;
@@ -22,14 +24,14 @@ public class Rolling : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         material = (Material)Resources.Load("Caramel/Materials/Material.001");
         rb = GetComponent<Rigidbody>();
         sonic = GameObject.Find("Sonic");
     }
 
-    void ChangeToSonic(GameConstants.SonicState s)
+    public void ChangeToSonic(GameConstants.SonicState s)
     {
         sonic.SetActive(true);
         gameObject.SetActive(false);
@@ -204,7 +206,7 @@ public class Rolling : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
             Game.sonicstate = GameConstants.SonicState.ROLLING;
-            SlowRolling(900f);
+            SlowRolling(5000f);
         }
 
         //to jump in rolling

@@ -1,35 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class GameConstants
-{
-    public enum SonicState
-    {
-        NORMAL,
-        DEAD,
-        JUMPING,
-        SQUATTING,
-        TOROLL,
-        ROLLING
-    }
-}
-
-public static class Game
-{
-    public static GameConstants.SonicState sonicstate;
-    public static Vector3 velocity;
-    public static int coins = 0;
-    public static float time = 0f;
-}
-
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider))]
-public class Sonic : MonoBehaviour {
-
+public class Sonic : MonoBehaviour
+{
     //in the Sonic
+    public Vector3 ontopccenter = new Vector3(0f, .8f, 0f);
+    public float ontopcheight = 2f, ontopcradius = 3f, upforce;
+    //public GameObject sonicontop;
+
     Animator animator;
-    //AnimatorStateInfo first_info;
     CapsuleCollider ccollider;
     SkinnedMeshRenderer skin1, skin2;
     Rigidbody rb;
@@ -37,7 +18,8 @@ public class Sonic : MonoBehaviour {
     GameObject rollingball;
     WaitForSeconds delay = new WaitForSeconds(1.7f);
     Color ocskin1, ocskin2, hcskin1, hcskin2;
-    float ocheight;
+    float ocheight, ocradius;
+    int ocdirection = 1, ontopcdirection = 2;
     bool hurting = false;
 
     //squatting_collidersize = new Vector3(1f, 2.243595f, 1.886265f)
@@ -51,7 +33,7 @@ public class Sonic : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         ccollider = GetComponent<CapsuleCollider>();
@@ -60,6 +42,7 @@ public class Sonic : MonoBehaviour {
         skin2 = transform.FindChild("Cube/Cube_MeshPart1").GetComponent<SkinnedMeshRenderer>();
         ocheight = ccollider.height;
         occenter = ccollider.center;
+        ocradius = ccollider.radius;
         original_position = transform.localPosition;
         Game.sonicstate = GameConstants.SonicState.NORMAL;
 
@@ -72,8 +55,9 @@ public class Sonic : MonoBehaviour {
 
         ocskin1 = skin1.material.color;
         ocskin2 = skin2.material.color;
-        hcskin1 = new Color(ocskin1.r, ocskin1.g, ocskin1.b, .5f);
-        hcskin2 = new Color(ocskin2.r, ocskin2.g, ocskin2.b, .5f);
+        hcskin1 = Color.red;
+        hcskin2 = Color.red;
+        
 
         //faceleft = new Quaternion(0f, Quaternion.Angle, 0f, 0f);
         //faceright = new Quaternion(0f, 180f, 0f, 0f);
@@ -83,6 +67,14 @@ public class Sonic : MonoBehaviour {
     {
         rollingball.SetActive(true);
         gameObject.SetActive(false);
+
+        if(ccollider.height != ocheight)
+        {
+            ccollider.center = occenter;
+            ccollider.height = ocheight;
+            ccollider.radius = ocradius;
+            ccollider.direction = ocdirection;
+        }
 
         Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
@@ -105,6 +97,14 @@ public class Sonic : MonoBehaviour {
         rb.velocity = Game.velocity;
         ccollider.height = ocheight;
         ccollider.center = occenter;
+        ccollider.radius = ocradius;
+
+        if(hurting)
+        {
+            skin1.material.color = ocskin1;
+            skin2.material.color = ocskin2;
+            hurting = false;
+        }
 
         switch(s)
         {
@@ -177,14 +177,15 @@ public class Sonic : MonoBehaviour {
                 
             case "Coin":
 
-                if(!hurting)
-                {
-                    Destroy(collision.gameObject);
-                    Game.coins += 1;
-                    coins.text = Game.coins.ToString();
-                }
+                //if(!hurting)
+                //{
+                Destroy(collision.gameObject);
+                Game.coins += 1;
+                coins.text = Game.coins.ToString();
+                //}
 
                 break;
+                
                 /*
             case "Spring (2)":
                 if (collision.relativeVelocity.x < 0f)
@@ -202,15 +203,15 @@ public class Sonic : MonoBehaviour {
                     {
                         hurting = true;
 
-                        Coin coin = ((GameObject)Instantiate(Resources.Load("Caramel/Components/Coin"), transform.localPosition + Vector3.up * 5f, Quaternion.identity)).GetComponent<Coin>();
-                        Vector3 v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 4f), 0f);
+                        Coin coin = ((GameObject)Instantiate(Resources.Load("Caramel/Components/Coin"), transform.localPosition + Vector3.up * 10f, Quaternion.identity)).GetComponent<Coin>();
+                        Vector3 v = new Vector3(Random.Range(-3f, 3f), Random.Range(4f, 8f), 0f);
                         coin.Throw(v * 150f);
                         --Game.coins;
 
                         while (Game.coins > 0)
                         {
-                            coin = ((GameObject)Instantiate(coin.gameObject, transform.localPosition + Vector3.up * 5f, Quaternion.identity)).GetComponent<Coin>();
-                            v = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, 5f), 0f);
+                            coin = ((GameObject)Instantiate(coin.gameObject, transform.localPosition + Vector3.up * 10f, Quaternion.identity)).GetComponent<Coin>();
+                            v = new Vector3(Random.Range(-1f, 1f), Random.Range(4f, 8f), 0f);
                             coin.Throw(v * 150f);
                             --Game.coins;
                         }
@@ -228,6 +229,23 @@ public class Sonic : MonoBehaviour {
 
                 break;
         }
+    }
+
+    public void Ontop()
+    {
+        Debug.Log("sonic top");
+        ccollider.center = ontopccenter;
+        ccollider.height = ontopcheight;
+        ccollider.radius = ontopcradius;
+        ccollider.direction = ontopcdirection;
+    }
+
+    public void Normal()
+    {
+        ccollider.height = ocheight;
+        ccollider.center = occenter;
+        ccollider.radius = ocradius;
+        ccollider.direction = ocdirection;
     }
 
     void OnTriggerEnter(Collider c)
@@ -287,8 +305,6 @@ animator.speed = 2f;
 
         if(Game.sonicstate != GameConstants.SonicState.DEAD)
         {
-
-
             Game.time += Time.deltaTime;
             time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
 
