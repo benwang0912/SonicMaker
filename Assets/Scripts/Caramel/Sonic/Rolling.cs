@@ -1,34 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Rolling : MonoBehaviour
 {
+    //in the Rolling Ball
 
-    Vector3 rolling = new Vector3(1f, 90f, 0f);
-    Material material;
-    Rigidbody rb;
-    GameObject sonic;
-    Color slowrolling = new Color(0.102f, 0.102f, 0.102f, 1f), quickrolling = new Color(0.75f, 0.75f, 0.75f, 1f);
-    //Vector3 original_position;
-
-    public float rollingspeed, jumpforce = 400f, walkspeed = 5f, vibration = .02f;
-    bool isvibration = false, right = true;
-
+    public float quickrollingspeed, slowrollingspeed, rollingpower, jumpforce, walkspeed, vibration, springforce;
     public UILabel time, coins;
-
-    enum SonicMode
-    {
-        DEAD,
-        NORMAL
-    }
-
-	// Use this for initialization
+    public GameObject sonic;
+    
 	void Awake ()
     {
         material = (Material)Resources.Load("Caramel/Materials/Material.001");
         rb = GetComponent<Rigidbody>();
-        sonic = GameObject.Find("Sonic");
     }
 
     public void ChangeToSonic(GameConstants.SonicState s)
@@ -47,6 +31,7 @@ public class Rolling : MonoBehaviour
                 sonic.SendMessage("BackToSonic", GameConstants.SonicState.NORMAL);
                 break;
             case GameConstants.SonicState.DEAD:
+                Game.sonicstate = GameConstants.SonicState.DEAD;
                 sonic.SendMessage("BackToSonic", GameConstants.SonicState.DEAD);
                 break;
         }
@@ -59,7 +44,7 @@ public class Rolling : MonoBehaviour
         switch(s)
         {
             case GameConstants.SonicState.JUMPING:
-                JumpRolling();
+                JumpRolling(Vector3.up * jumpforce);
                 break;
             case GameConstants.SonicState.TOROLL:
                 QuickRolling((sonic.transform.localRotation.eulerAngles.y - 91f) < 0 ? true : false);
@@ -69,36 +54,28 @@ public class Rolling : MonoBehaviour
 
     public void QuickRolling(bool r)
     {
-        material.SetColor("_EmissionColor", quickrolling);
-        rollingspeed = 1500f;
-        //original_position = transform.localPosition;
+        Game.sonicstate = GameConstants.SonicState.TOROLL;
+        material.SetColor("_EmissionColor", quickrollingcolor);
+        rollingspeed = quickrollingspeed;
         isvibration = true;
-        right = r;
+        isright = r;
     }
 
-    public void SlowRolling(float force)
+    public void SlowRolling()
     {
-        material.SetColor("_EmissionColor", slowrolling);
-        rollingspeed = 900f;
+        Game.sonicstate = GameConstants.SonicState.ROLLING;
+        material.SetColor("_EmissionColor", slowrollingcolor);
+        rollingspeed = slowrollingspeed;
         isvibration = false;
 
-        rb.AddForce((right ? Vector3.right : Vector3.left) * force);
-    }
-
-    public void JumpRolling()
-    {
-        Game.sonicstate = GameConstants.SonicState.JUMPING;
-        material.SetColor("_EmissionColor", slowrolling);
-        rollingspeed = 900f;
-        isvibration = false;
-        rb.AddForce(Vector3.up * jumpforce);
+        rb.AddForce((isright ? Vector3.right : Vector3.left) * rollingpower);
     }
 
     public void JumpRolling(Vector3 v)
     {
         Game.sonicstate = GameConstants.SonicState.JUMPING;
-        material.SetColor("_EmissionColor", slowrolling);
-        rollingspeed = 900f;
+        material.SetColor("_EmissionColor", slowrollingcolor);
+        rollingspeed = slowrollingspeed;
         isvibration = false;
         rb.AddForce(v);
     }
@@ -107,73 +84,41 @@ public class Rolling : MonoBehaviour
     {
         switch (collision.transform.tag)
         {
-            /*
-            case "Wall":
-                skin1.material.color = Color.red;
-                skin2.material.color = Color.red;
-
-                break;
-            */
-            
             case "Spring_Y":
-
-                    //GameConstants.sonicstate = GameConstants.SonicState.JUMPING;
-                    //animator.SetBool("Jump", true);
-                    //rb.AddForce(transform.up * 600f);
-                    JumpRolling( Vector3.up * 500f * Mathf.Sign(collision.relativeVelocity.y));
-
+                    JumpRolling( Vector3.up * springforce * Mathf.Sign(collision.relativeVelocity.y));
                 return;
 
             case "Spring_X":
-                float s = Mathf.Sign(collision.relativeVelocity.x);
-                rb.AddForce(Vector3.right * 150f * s);
-
-                break;
+                rb.AddForce(Vector3.right * springforce * Mathf.Sign(collision.relativeVelocity.x));
+                return;
                 
             case "Coin":
                 Destroy(collision.gameObject);
                 Game.coins += 1;
                 coins.text = Game.coins.ToString();
-                break;
+                return;
 
             case "Enemy":
                 Destroy(collision.gameObject);
                 return;
-        }
 
-        if (collision.relativeVelocity.y > 1f)
-        {
-            //animator.SetBool("Jump", false);
-            ChangeToSonic(GameConstants.SonicState.NORMAL);
-        }
-    }
-
-    void OnTriggerEnter(Collider c)
-    {
-        if (c.transform.tag == "Coin")
-        {
-            ++Game.coins;
-            coins.text = Game.coins.ToString();
-            Destroy(c.gameObject);
+            case "Ground":
+                if (collision.relativeVelocity.y > 5f)
+                {
+                    //jumping end
+                    ChangeToSonic(GameConstants.SonicState.NORMAL);
+                }
+                return;
         }
     }
-
-
-
-    /*
-    public void Vibration(bool b)
-    {
-        original_position = transform.localPosition;
-        isvibration = b;
-    }
-	*/
-
-    // Update is called once per frame
+    
     void Update ()
     {
+        //falling
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
 
+        //game time setting
         Game.time += Time.deltaTime;
         time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
 
@@ -203,16 +148,16 @@ public class Rolling : MonoBehaviour
             //music!?
         }
 
+        //to change into rolling state
         if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.TOROLL)
         {
-            Game.sonicstate = GameConstants.SonicState.ROLLING;
-            SlowRolling(5000f);
+            SlowRolling();
         }
 
-        //to jump in rolling
+        //to jump in rolling state
         if(Input.GetKey(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
-            JumpRolling();
+            JumpRolling(Vector3.up * jumpforce);
         }
 
         if((Input.GetAxis("Horizontal") != 0 && Game.sonicstate == GameConstants.SonicState.JUMPING))
@@ -220,22 +165,30 @@ public class Rolling : MonoBehaviour
             rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * walkspeed);
         }
 
-        //to slow only
-        if (Input.GetAxis("Horizontal") > 0f && !right)
+        //to move in rolling state (slow only)
+        if (Input.GetAxis("Horizontal") > 0f && !isright && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             //to turn right
-            //transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
-            //animator.SetInteger("Mode", 1);
-            //there is a bug that Sonic sometimes cannot walk!
             rb.AddForce(Vector3.right * walkspeed);
         }
 
-        if (Input.GetAxis("Horizontal") < 0f && right)
+        if (Input.GetAxis("Horizontal") < 0f && isright && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             //to turn left
-            //transform.localRotation = Quaternion.Euler(Vector3.up * 270f);
-            //animator.SetInteger("Mode", 1);
             rb.AddForce(Vector3.left * walkspeed);
         }
+    }
+
+    Vector3 rolling = new Vector3(0f, 90f, 0f);
+    Material material;
+    Rigidbody rb;
+    Color slowrollingcolor = new Color(0.102f, 0.102f, 0.102f, 1f), quickrollingcolor = new Color(0.75f, 0.75f, 0.75f, 1f);
+    bool isvibration = false, isright = true;
+    float rollingspeed;
+
+    enum SonicMode
+    {
+        DEAD,
+        NORMAL
     }
 }

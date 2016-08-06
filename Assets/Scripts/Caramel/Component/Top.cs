@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
@@ -24,24 +23,24 @@ public class Top : MonoBehaviour
         switch(ct.tag)
         {
             case "Sonic":
-                Debug.Log("enter");
-                start = true;
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-                //bc.enabled = false;
-                //rb.useGravity = false;
-
-                if(stage != null)
-                    Destroy(stage.gameObject);
-
-                if (ct.name == "RollingBall" && collision.relativeVelocity.y < 0f)
+                if(collision.relativeVelocity.y < -2f)
                 {
-                    ct.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                    sonic.gameObject.SendMessage("Ontop");
+                    start = true;
+                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+
+                    if (stage != null)
+                        Destroy(stage.gameObject);
+
+                    if (ct.name == "RollingBall")
+                    {
+                        ct.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
+                        sonic.gameObject.SendMessage("Ontop");
+                    }
                 }
 
                 break;
+
             case "Ground":
-                Debug.Log("ground");
                 Vector3 f = new Vector3(-Mathf.Sign(collision.relativeVelocity.x), 0f) * forwardforce;
                 rb.velocity = f;
                 if (start)
@@ -67,7 +66,6 @@ public class Top : MonoBehaviour
         switch(collision.transform.tag)
         {
             case "Sonic":
-                Debug.Log("exit1");
                 start = false;
                 rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
                 sonic.GetComponent<Sonic>().Normal();
@@ -88,21 +86,19 @@ public class Top : MonoBehaviour
                 Debug.Log("exit");
                 start = false;
                 rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-                //sonic.GetComponent<Sonic>().Normal();
+                return;
             }
 
             //to move
             //going forward action 
             if (Input.GetAxis("Horizontal") > 0f)
             {
-                rb.AddForce(transform.forward * walkspeed);
-                rb.AddForce(transform.up * upforce);
+                rb.AddForce(transform.forward * walkspeed + transform.up * upforce);
             }
 
             if (Input.GetAxis("Horizontal") < 0f)
             {
-                rb.AddForce(transform.forward * walkspeed);
-                rb.AddForce(transform.up * upforce);
+                rb.AddForce(transform.forward * walkspeed + transform.up * upforce);
             }
         }
 	}
