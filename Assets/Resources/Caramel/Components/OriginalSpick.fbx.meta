@@ -1,10 +1,21 @@
 fileFormatVersion: 2
-guid: b4ebb19872a2f7049b6dfe5a5ca71765
-timeCreated: 1470462330
+guid: 04f7e7267ffcc9a4f8fa194fbb0e6319
+timeCreated: 1470555068
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    100000: Camera
+    100002: Cone
+    100004: Lamp
+    100006: //RootNode
+    400000: Camera
+    400002: Cone
+    400004: Lamp
+    400006: //RootNode
+    2300000: Cone
+    3300000: Cone
+    4300000: Cone
   materials:
     importMaterials: 1
     materialName: 0
@@ -63,7 +74,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

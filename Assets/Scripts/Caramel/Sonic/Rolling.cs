@@ -47,18 +47,18 @@ public class Rolling : MonoBehaviour
                 JumpRolling(Vector3.up * jumpforce);
                 break;
             case GameConstants.SonicState.TOROLL:
-                QuickRolling((sonic.transform.localRotation.eulerAngles.y - 91f) < 0 ? true : false);
+                QuickRolling((sonic.transform.localRotation.eulerAngles.y - 91f) < 0 ? 1f : -1f);
                 break;
         }
     }
 
-    public void QuickRolling(bool r)
+    public void QuickRolling(float face)
     {
         Game.sonicstate = GameConstants.SonicState.TOROLL;
         material.SetColor("_EmissionColor", quickrollingcolor);
         rollingspeed = quickrollingspeed;
         isvibration = true;
-        isright = r;
+        facedirection = face;
     }
 
     public void SlowRolling()
@@ -68,7 +68,7 @@ public class Rolling : MonoBehaviour
         rollingspeed = slowrollingspeed;
         isvibration = false;
 
-        rb.AddForce((isright ? Vector3.right : Vector3.left) * rollingpower);
+        rb.AddForce((facedirection == 1f ? Vector3.right : Vector3.left) * rollingpower);
     }
 
     public void JumpRolling(Vector3 v)
@@ -103,8 +103,9 @@ public class Rolling : MonoBehaviour
                 return;
 
             case "Ground":
-                if (collision.relativeVelocity.y > 5f)
+                if (Game.sonicstate == GameConstants.SonicState.JUMPING)
                 {
+                    Debug.Log("YO");
                     //jumping end
                     ChangeToSonic(GameConstants.SonicState.NORMAL);
                 }
@@ -122,8 +123,28 @@ public class Rolling : MonoBehaviour
         Game.time += Time.deltaTime;
         time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
 
+        //isground
+        groundray = new Ray(transform.position, Vector3.down);
+        if (Physics.Raycast(groundray, out groundrch))
+        {
+            if (groundrch.transform.tag == "Ground" && groundrch.distance < 1f)
+            {
+                //to calculate the movingdirection
+                Vector3 normal = groundrch.normal;
+
+                float y = -(normal.x * facedirection) / normal.y;
+                movingdirection = new Vector3(facedirection, y);
+
+                isground = true;
+            }
+            else
+            {
+                isground = false;
+            }
+        }
+
         //to return to sonic
-        if (rb.velocity.magnitude <= 1f && (Game.sonicstate == GameConstants.SonicState.ROLLING))
+        if (rb.velocity.magnitude <= 1f && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             gameObject.SetActive(false);
             Game.sonicstate = GameConstants.SonicState.NORMAL;
@@ -155,7 +176,7 @@ public class Rolling : MonoBehaviour
         }
 
         //to jump in rolling state
-        if(Input.GetKey(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.ROLLING)
+        if(Input.GetKey(KeyCode.Return) && (Game.sonicstate == GameConstants.SonicState.ROLLING || (Game.sonicstate == GameConstants.SonicState.JUMPING && isground)))
         {
             JumpRolling(Vector3.up * jumpforce);
         }
@@ -166,25 +187,27 @@ public class Rolling : MonoBehaviour
         }
 
         //to move in rolling state (slow only)
-        if (Input.GetAxis("Horizontal") > 0f && !isright && Game.sonicstate == GameConstants.SonicState.ROLLING)
+        if (Input.GetAxis("Horizontal") > 0f && facedirection != 1f && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             //to turn right
             rb.AddForce(Vector3.right * walkspeed);
         }
 
-        if (Input.GetAxis("Horizontal") < 0f && isright && Game.sonicstate == GameConstants.SonicState.ROLLING)
+        if (Input.GetAxis("Horizontal") < 0f && facedirection == 1f && Game.sonicstate == GameConstants.SonicState.ROLLING)
         {
             //to turn left
             rb.AddForce(Vector3.left * walkspeed);
         }
     }
 
-    Vector3 rolling = new Vector3(0f, 90f, 0f);
+    Vector3 rolling = new Vector3(0f, 90f, 0f), movingdirection;
     Material material;
     Rigidbody rb;
     Color slowrollingcolor = new Color(0.102f, 0.102f, 0.102f, 1f), quickrollingcolor = new Color(0.75f, 0.75f, 0.75f, 1f);
-    bool isvibration = false, isright = true;
-    float rollingspeed;
+    Ray groundray;
+    RaycastHit groundrch;
+    bool isvibration = false, isground = false;
+    float rollingspeed, facedirection;
 
     enum SonicMode
     {
