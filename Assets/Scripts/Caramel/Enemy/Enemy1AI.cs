@@ -29,7 +29,7 @@ public class Enemy1AI : MonoBehaviour
                 ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
                 break;
             case "RollingBall":
-                Destroy(this);
+                Destroy(gameObject);
                 break;
         }
     }

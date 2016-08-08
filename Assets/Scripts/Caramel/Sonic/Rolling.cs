@@ -91,10 +91,6 @@ public class Rolling : MonoBehaviour
                 coins.text = Game.coins.ToString();
                 return;
 
-            case "Enemy":
-                Destroy(collision.gameObject);
-                return;
-
             case "Ground":
                 if (Game.sonicstate == GameConstants.SonicState.JUMPING && collision.contacts[0].point.y > collision.transform.position.y)
                 {
@@ -107,6 +103,7 @@ public class Rolling : MonoBehaviour
     
     void Update ()
     {
+        Debug.Log("ball");
         //falling
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
@@ -126,69 +123,81 @@ public class Rolling : MonoBehaviour
 
                 float y = -(normal.x * facedirection) / normal.y;
                 movingdirection = new Vector3(facedirection, y);
-
                 isground = true;
             }
             else
             {
+                movingdirection = Vector3.zero;
                 isground = false;
             }
         }
-
-        //to return to sonic
-        if (rb.velocity.magnitude <= 1f && Game.sonicstate == GameConstants.SonicState.ROLLING)
-        {
-            gameObject.SetActive(false);
-            Game.sonicstate = GameConstants.SonicState.NORMAL;
-            sonic.transform.localPosition = transform.localPosition;
-            sonic.SetActive(true);
-        }
-
+        
         //to roll
         rolling.x += Time.deltaTime * rollingspeed;
         transform.localRotation = Quaternion.Euler(rolling);
 
         //to vibrate
-        if(isvibration)
+        if (isvibration)
         {
             //be shifting??
             transform.localPosition += Vector3.right * vibration * Mathf.Cos(9.42f * Time.time);
         }
 
-        //to keep rolling
-        if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.TOROLL)
+        switch (Game.sonicstate)
         {
-            //music!?
-        }
+            case GameConstants.SonicState.TOROLL:
 
-        //to change into rolling state
-        if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.TOROLL)
-        {
-            SlowRolling();
-        }
+                if (Input.GetKeyUp(KeyCode.DownArrow))
+                {
+                    SlowRolling();
+                }
+                else if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    //to keep rolling
+                    //music!?
+                }
+                
+                break;
 
-        //to jump in rolling state
-        if(Input.GetKey(KeyCode.Return) && (Game.sonicstate == GameConstants.SonicState.ROLLING || (Game.sonicstate == GameConstants.SonicState.JUMPING && isground)))
-        {
-            JumpRolling(Vector3.up * jumpforce);
-        }
+            case GameConstants.SonicState.ROLLING:
+                //to return to sonic
+                if (rb.velocity.magnitude <= 1f)
+                {
+                    ChangeToSonic(GameConstants.SonicState.NORMAL);
+                    return;
+                }
 
-        if((Input.GetAxis("Horizontal") != 0 && Game.sonicstate == GameConstants.SonicState.JUMPING))
-        {
-            rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * walkspeed);
-        }
+                if (Input.GetKey(KeyCode.Return) && isground)
+                {
+                    JumpRolling(Vector3.up * jumpforce);
+                }
 
-        //to move in rolling state (slow only)
-        if (Input.GetAxis("Horizontal") > 0f && facedirection != 1f && Game.sonicstate == GameConstants.SonicState.ROLLING)
-        {
-            //to turn right
-            rb.AddForce(Vector3.right * walkspeed);
-        }
+                
+                //to move in rolling (slow only)
+                if (Input.GetAxis("Horizontal") > 0f && facedirection != 1f)
+                {
+                    //face left => add right force
+                    rb.AddForce(Vector3.right * walkspeed);
+                }
+                else if (Input.GetAxis("Horizontal") < 0f && facedirection == 1f)
+                {
+                    //face right => add left force
+                    rb.AddForce(Vector3.left * walkspeed);
+                }
 
-        if (Input.GetAxis("Horizontal") < 0f && facedirection == 1f && Game.sonicstate == GameConstants.SonicState.ROLLING)
-        {
-            //to turn left
-            rb.AddForce(Vector3.left * walkspeed);
+                break;
+
+            case GameConstants.SonicState.JUMPING:
+                //seldom use
+                if (Input.GetKey(KeyCode.Return) && isground)
+                {
+                    JumpRolling(Vector3.up * jumpforce);
+                }
+
+                //to move in jumping
+                rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * walkspeed);
+
+                break;
         }
     }
 

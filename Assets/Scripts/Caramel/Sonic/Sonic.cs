@@ -61,10 +61,15 @@ public class Sonic : MonoBehaviour
                      }
                      coins.text = Game.coins.ToString();
 
-                     Debug.Log(relativeVelocity);
-
                      rb.velocity = new Vector3(-Mathf.Sign(relativeVelocity.x) * hurtxv, hurtyv);
+                     Debug.Log(rb.velocity);
+
+
+                     skin1.material.color = hcskin1;
+                     skin2.material.color = hcskin2;
+
                      StartCoroutine("hurt");
+                     //Invoke("hurt", delay);
                  }
                  else
                  {
@@ -139,11 +144,6 @@ public class Sonic : MonoBehaviour
 
     IEnumerator revive()
     {
-        transform.localScale = deadsize;
-
-        //two seconds delay
-        yield return delay;
-
         Game.sonicstate = GameConstants.SonicState.NORMAL;
         transform.localScale = Vector3.one;
         Normal();
@@ -152,10 +152,6 @@ public class Sonic : MonoBehaviour
 
     IEnumerator hurt()
     {
-        skin1.material.color = hcskin1;
-        skin2.material.color = hcskin2;
-        yield return delay;
-
         skin1.material.color = ocskin1;
         skin2.material.color = ocskin2;
         hurting = false;
@@ -189,6 +185,7 @@ public class Sonic : MonoBehaviour
 
     void SetMovingSpeed()
     {
+        //isground
         groundray = new Ray(transform.position, Vector3.down);
         if (Physics.Raycast(groundray, out groundrch))
         {
@@ -255,97 +252,95 @@ public class Sonic : MonoBehaviour
     
     void GameOver()
     {
+        Debug.Log("GameOver");
         transform.localPosition = original_position;
+        transform.localScale = deadsize;
         rb.velocity = Vector3.zero;
         Game.sonicstate = GameConstants.SonicState.DEAD;
         StartCoroutine("revive");
-        Debug.Log("GameOver");
+        //Invoke("revive", delay);
     }
 
     void Update()
     {
-        Debug.Log(GetHurt.ToString());
-
         //falling
         if (transform.localPosition.y < -10.0f)
             GameOver();
 
-        if(Game.sonicstate != GameConstants.SonicState.DEAD)
+        //game time setting
+        Game.time += Time.deltaTime;
+        time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
+        
+        //bigger than 1f => walking animation
+        animator.SetInteger("Mode", rb.velocity.magnitude > 1f ? 1 : 0);
+        
+        switch (Game.sonicstate)
         {
-            //game time setting
-            Game.time += Time.deltaTime;
-            time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
-            
-            //to move
-            //going forward action 
-            /*
-            if (Input.GetAxis("Horizontal") > 0f && Game.sonicstate != GameConstants.SonicState.SQUATTING)
-            {
-                //to turn right
-                transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
-                facedirection = 1f;
-                SetMovingSpeed();
-                rb.AddForce(movingdirection * walkspeed);
-            }
-            else if (Input.GetAxis("Horizontal") < 0f && Game.sonicstate != GameConstants.SonicState.SQUATTING)
-            {
-                //to turn left
-                transform.localRotation = Quaternion.Euler(Vector3.up * 270f);
-                facedirection = -1f;
-                SetMovingSpeed();
-                rb.AddForce(movingdirection * walkspeed);
-            }*/
-
-            if(Input.GetAxis("Horizontal") != 0f && Game.sonicstate != GameConstants.SonicState.SQUATTING)
-            {
-                facedirection = Mathf.Sign(Input.GetAxis("Horizontal"));
-                transform.localRotation = Quaternion.Euler((facedirection == 1f ? 90f : 270f) * Vector3.up);
-                SetMovingSpeed();
-                rb.AddForce(movingdirection * walkspeed);
-            }
-
-            //not 0 => forward, reset to 0
-            animator.SetInteger("Mode", rb.velocity.magnitude > 1f ? 1 : 0);
-
-            //for 3D
-            //transform.Rotate(0, Input.GetAxis("Horizontal") * turnspeed * Time.deltaTime, 0);
-            //transform.localPosition += Vector3.right * Input.GetAxis("Horizontal") * speed * 
-
-            //to squat
-            if (Input.GetKey(KeyCode.DownArrow) && (Game.sonicstate == GameConstants.SonicState.NORMAL || Game.sonicstate == GameConstants.SonicState.SQUATTING))
-            {
-                Game.sonicstate = GameConstants.SonicState.SQUATTING;
-                ccollider.height = scheight;
-                ccollider.center = sccenter;
-
-                if (rb.velocity.x < 5f && rb.velocity.x > -5f && Game.sonicstate == GameConstants.SonicState.NORMAL)
+            case GameConstants.SonicState.NORMAL:
+                //to move
+                if (Input.GetAxis("Horizontal") != 0f)
                 {
-                    Debug.Log("STop");
-                    rb.velocity = Vector3.zero;
+                    facedirection = Mathf.Sign(Input.GetAxis("Horizontal"));
+                    transform.localRotation = Quaternion.Euler((facedirection == 1f ? 90f : 270f) * Vector3.up);
+                    SetMovingSpeed();
+                    Debug.Log(movingdirection);
+                    rb.AddForce(movingdirection * walkspeed);
                 }
 
-                animator.SetInteger("Mode", 2);
-            }
+                //to squat
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    Game.sonicstate = GameConstants.SonicState.SQUATTING;
+                    ccollider.height = scheight;
+                    ccollider.center = sccenter;
 
-            //from squatting to normal
-            if (Input.GetKeyUp(KeyCode.DownArrow) && Game.sonicstate == GameConstants.SonicState.SQUATTING)
-            {
-                Game.sonicstate = GameConstants.SonicState.NORMAL;
-                ccollider.height = ocheight;
-                ccollider.center = occenter;
-            }
-            
-            //to toroll state
-            if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.SQUATTING)
-            {
-                ChangeToBall(GameConstants.SonicState.TOROLL);
-            }
+                    if (rb.velocity.x < 5f && rb.velocity.x > -5f)
+                    {
+                        rb.velocity = Vector3.zero;
+                    }
 
-            //to jump
-            if (Input.GetKeyDown(KeyCode.Return) && Game.sonicstate == GameConstants.SonicState.NORMAL)
-            {
-                ChangeToBall(GameConstants.SonicState.JUMPING);
-            }
+                    animator.SetInteger("Mode", 2);
+                }
+                else if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    //to jump
+                    ChangeToBall(GameConstants.SonicState.JUMPING);
+                }
+
+                break;
+
+            case GameConstants.SonicState.SQUATTING:
+                //to squat
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    ccollider.height = scheight;
+                    ccollider.center = sccenter;
+
+                    if (rb.velocity.x < 5f && rb.velocity.x > -5f)
+                    {
+                        rb.velocity = Vector3.zero;
+                    }
+
+                    animator.SetInteger("Mode", 2);
+                }
+                else if (Input.GetKeyUp(KeyCode.DownArrow))
+                {
+                    //from squatting to normal
+                    Game.sonicstate = GameConstants.SonicState.NORMAL;
+                    ccollider.height = ocheight;
+                    ccollider.center = occenter;
+                }
+
+                //to toroll state
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    ChangeToBall(GameConstants.SonicState.TOROLL);
+                }
+
+                break;
+
+            case GameConstants.SonicState.DEAD:
+                return;
         }
     }
 
@@ -354,11 +349,10 @@ public class Sonic : MonoBehaviour
     SkinnedMeshRenderer skin1, skin2;
     Rigidbody rb;
     Vector3 occenter, sccenter = new Vector3(0f, 1.075213f, -0.3038063f), original_position, deadsize = new Vector3(0.01f, 0.01f, 0.01f), movingdirection;
-    WaitForSeconds delay = new WaitForSeconds(1.7f);
     Color ocskin1, ocskin2, hcskin1, hcskin2;
     Ray groundray;
     RaycastHit groundrch;
-    float ocheight, ocradius, facedirection = 1f;
+    float ocheight, ocradius, facedirection = 1f, delay = 1.7f;
     int ocdirection = 1, ontopcdirection = 2;
     bool hurting = false;
     

@@ -41,10 +41,10 @@ public class Top : MonoBehaviour
                     if (collision.transform.name == "RollingBall")
                     {
                         collision.transform.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                        Game.sonic.GetComponent<Sonic>().Ontop();
                     }
-                    
-                    Game.sonic.GetComponent<Sonic>().GetHurt += hurt;
+
+                    Game.sonic.GetComponent<Sonic>().Ontop();
+                    //Game.sonic.GetComponent<Sonic>().GetHurt += hurt;
                 }
 
                 break;
