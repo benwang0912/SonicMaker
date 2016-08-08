@@ -1,23 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ground : MonoBehaviour {
-
+public class Ground : MonoBehaviour
+{
     //in the Ground
-    // Use this for initialization
+    
     public int groundcount;
 
-    void Start ()
+    void Awake ()
     {
-        for (int i = 0; i<groundcount; ++i)
+        Transform ground = transform.GetChild(0);
+        
+        for (int i = 1; i <= groundcount; ++i)
         {
-            transform.GetChild(i).localPosition = new Vector3(i - groundcount/2, 0f, 0f);
+            Transform newground = Instantiate(ground);
+            newground.parent = transform;
+            newground.localPosition = new Vector3(i - groundcount/2, 0f, 0f);
         }
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

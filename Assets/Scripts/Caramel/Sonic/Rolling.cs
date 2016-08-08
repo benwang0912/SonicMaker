@@ -77,6 +77,7 @@ public class Rolling : MonoBehaviour
         material.SetColor("_EmissionColor", slowrollingcolor);
         rollingspeed = slowrollingspeed;
         isvibration = false;
+        transform.localPosition += Vector3.up;
         rb.AddForce(v);
     }
 
@@ -84,14 +85,6 @@ public class Rolling : MonoBehaviour
     {
         switch (collision.transform.tag)
         {
-            case "Spring_Y":
-                    JumpRolling( Vector3.up * springforce * Mathf.Sign(collision.relativeVelocity.y));
-                return;
-
-            case "Spring_X":
-                rb.AddForce(Vector3.right * springforce * Mathf.Sign(collision.relativeVelocity.x));
-                return;
-                
             case "Coin":
                 Destroy(collision.gameObject);
                 Game.coins += 1;
@@ -103,9 +96,8 @@ public class Rolling : MonoBehaviour
                 return;
 
             case "Ground":
-                if (Game.sonicstate == GameConstants.SonicState.JUMPING)
+                if (Game.sonicstate == GameConstants.SonicState.JUMPING && collision.contacts[0].point.y > collision.transform.position.y)
                 {
-                    Debug.Log("YO");
                     //jumping end
                     ChangeToSonic(GameConstants.SonicState.NORMAL);
                 }
@@ -127,7 +119,7 @@ public class Rolling : MonoBehaviour
         groundray = new Ray(transform.position, Vector3.down);
         if (Physics.Raycast(groundray, out groundrch))
         {
-            if (groundrch.transform.tag == "Ground" && groundrch.distance < 1f)
+            if (groundrch.distance < .8f)
             {
                 //to calculate the movingdirection
                 Vector3 normal = groundrch.normal;

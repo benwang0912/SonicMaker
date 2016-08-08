@@ -1,60 +1,76 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Enemy1AI : MonoBehaviour
 {
     //in the Enemy1
 
-    Transform sonic;
+    public float speed;
+    
     Vector3 faceright, faceleft;
-    float original_x, speed = 4f;
+    Rigidbody rb;
+    float original_x;
     bool face = true;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-        sonic = GameObject.Find("Sonic").transform;
-        original_x = transform.localPosition.x;
-        faceright = new Vector3(0f, 90f, 0f);
-        faceleft = new Vector3(0f, 270f, 0f);
+        original_x = transform.position.x;
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Transform ct = collision.transform;
+
+        switch(ct.name)
+        {
+            case "Sonic":
+                ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                break;
+            case "RollingBall":
+                Destroy(this);
+                break;
+        }
     }
 
     void patrol()
     {
-        if ((transform.localPosition.x - original_x) >= 3f)
+        if ((transform.position.x - original_x) >= 3f)
         {
             //to left
             face = false;
-            transform.localRotation = Quaternion.Euler(faceleft);
+            transform.localRotation = Quaternion.Euler(Vector3.up * 270f);
         }
 
-        if ((transform.localPosition.x - original_x) <= -3f)
+        if ((transform.position.x - original_x) <= -3f)
         {
             //to right
             face = true;
-            transform.localRotation = Quaternion.Euler(faceright);
+            transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
         }
 
-        transform.localPosition += face ? Vector3.right * speed * Time.deltaTime : Vector3.left * speed * Time.deltaTime;
+        //to stay the same velocity
+        rb.velocity = face ? Vector3.right * speed : Vector3.left * speed;
     }
 
     void attack()
     {
-        if ((transform.localPosition.x - original_x) <= 10f && (transform.localPosition.x - original_x) >= -10f)
+        if ((transform.position.x - original_x) <= 10f && (transform.position.x - original_x) >= -10f)
         {
-            transform.localRotation = (transform.localPosition.x - sonic.localPosition.x) < 0 ? Quaternion.Euler(faceright) : Quaternion.Euler(faceleft);
-            transform.localPosition += (transform.localPosition.x - sonic.localPosition.x) < 0 ? Vector3.right * speed * Time.deltaTime : Vector3.left * speed * Time.deltaTime;
+            transform.localRotation = (transform.position.x - Game.sonic.position.x) < 0 ? Quaternion.Euler(Vector3.up * 90f) : Quaternion.Euler(Vector3.up * 270f);
+            rb.velocity = (transform.position.x - Game.sonic.position.x) < 0 ? Vector3.right * speed : Vector3.left * speed;
         }
         else
         {
             patrol();
         }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        if (Vector3.Distance(sonic.position, transform.position) <= 5f && sonic.localScale.x != 0.01f)
+        
+        if (Vector3.Distance(Game.sonic.position, transform.position) <= 5f && Game.sonicstate != GameConstants.SonicState.DEAD)
         {
             //to attack
             attack();

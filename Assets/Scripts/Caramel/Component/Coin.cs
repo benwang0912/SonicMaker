@@ -21,11 +21,11 @@ public class Coin : MonoBehaviour
         c = GetComponent<CapsuleCollider>();
     }
 
-    public void Throw(Vector3 f)
+    public void Throw(Vector3 v)
     {
         rb.useGravity = true;
         rb.constraints = RigidbodyConstraints.FreezePositionZ;
-        rb.AddForce(f);
+        rb.velocity = v;
         Destroy(gameObject, 4f);
     }
 

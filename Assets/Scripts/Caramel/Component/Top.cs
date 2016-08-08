@@ -1,59 +1,70 @@
 ﻿using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class Top : MonoBehaviour
 {
-    public Rigidbody rb;
-    public Transform sonic, stage;
-    public float upforce, forwardforce;
-    public BoxCollider bc;
-    public CapsuleCollider cc;
-    public UILabel coins;
+    public Transform stage;
+    public float upforce, forwardvelocity;
     
-    void Awake ()
+    void Awake()
     {
-        walkspeed = sonic.GetComponent<Sonic>().walkspeed;
+        rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
+
+        hurt = (v) =>
+        {
+            DestoryTop();
+            Game.sonic.GetComponent<Sonic>().GetHurt -= hurt;
+        };
+    }
+
+    void Start()
+    {
+        walkspeed = Game.sonic.GetComponent<Sonic>().walkspeed;
 	}
 
     void OnCollisionEnter(Collision collision)
     {
-        Transform ct = collision.transform;
-
-        switch(ct.tag)
+        switch (collision.transform.tag)
         {
             case "Sonic":
-                if(collision.relativeVelocity.y < -2f)
+                if(!start && collision.contacts[0].point.y > transform.position.y + 1f)
                 {
                     start = true;
                     rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
 
-                    if (stage != null)
+                    if(stage != null)
                         Destroy(stage.gameObject);
 
-                    if (ct.name == "RollingBall")
+                    if (collision.transform.name == "RollingBall")
                     {
-                        ct.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                        sonic.gameObject.SendMessage("Ontop");
+                        collision.transform.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
+                        Game.sonic.GetComponent<Sonic>().Ontop();
                     }
+                    
+                    Game.sonic.GetComponent<Sonic>().GetHurt += hurt;
                 }
 
                 break;
-
+                
             case "Ground":
-                Vector3 f = new Vector3(-Mathf.Sign(collision.relativeVelocity.x), 0f) * forwardforce;
+                //start = true
+                Vector3 f = new Vector3(-Mathf.Sign(collision.relativeVelocity.x), 0f) * forwardvelocity;
                 rb.velocity = f;
-                if (start)
-                {
-                    sonic.GetComponent<Rigidbody>().velocity = f;
-                }
+                Game.sonic.GetComponent<Rigidbody>().velocity = f;
 
                 break;
 
             case "Coin":
-                Destroy(collision.gameObject);
-                Game.coins += 1;
-                coins.text = Game.coins.ToString();
+                if(start)
+                {
+                    Destroy(collision.gameObject);
+                    Game.coins += 1;
+                    Game.coinslabel.text = Game.coins.ToString();
+                }
+
                 break;
 
             default:
@@ -61,48 +72,40 @@ public class Top : MonoBehaviour
         }
     }
 
-    void OnCollisionExit(Collision collision)
+    void DestoryTop()
     {
-        switch(collision.transform.tag)
-        {
-            case "Sonic":
-                start = false;
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-                sonic.GetComponent<Sonic>().Normal();
-                break;
-        }
+        start = false;
+        cc.isTrigger = true;
+        rb.velocity = Vector3.zero;
+        Game.sonic.GetComponent<Sonic>().Normal();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (transform.localPosition.y < -10.0f)
             Destroy(gameObject);
-
+        
         if (start)
         {
-            if(!sonic.gameObject.activeSelf)
+            if(Vector3.Distance(transform.position, Game.sonic.position) > 5f || Game.sonicstate != GameConstants.SonicState.NORMAL)
             {
-                Debug.Log("exit");
-                start = false;
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                DestoryTop();
                 return;
             }
 
-            //to move
-            //going forward action 
-            if (Input.GetAxis("Horizontal") > 0f)
+            //to move and fly
+            if (Input.GetAxis("Horizontal") != 0f)
             {
-                rb.AddForce(transform.forward * walkspeed + transform.up * upforce);
-            }
-
-            if (Input.GetAxis("Horizontal") < 0f)
-            {
-                rb.AddForce(transform.forward * walkspeed + transform.up * upforce);
+                rb.AddForce(Vector3.right * walkspeed * Input.GetAxis("Horizontal") + transform.up * upforce);
             }
         }
 	}
 
-    bool start = false;
+    Rigidbody rb;
+    CapsuleCollider cc;
+    Ray ray;
+    RaycastHit rch;
+    Action<Vector3> hurt;
     float walkspeed;
+    bool start = false;
 }

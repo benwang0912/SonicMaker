@@ -9,10 +9,11 @@ public class Sonic : MonoBehaviour
     //in the Sonic
 
     public Vector3 ontopccenter = new Vector3(0f, .8f, 0f);
-    public float ontopcheight, ontopcradius, scheight, walkspeed, springforce, throwcoinforce, hurtxv, hurtyv;
+    public float ontopcheight, ontopcradius, scheight, walkspeed, springforce, throwcoinv, hurtxv, hurtyv;
     public UILabel time, coins;
     public GameObject rollingball;
     public Action<Vector3> GetHurt;
+    
 
     void Awake()
     {
@@ -36,8 +37,10 @@ public class Sonic : MonoBehaviour
         hcskin1 = Color.red;
         hcskin2 = Color.red;
 
-        Game.sonic = gameObject;
-        Game.rollingball = rollingball;
+        Game.sonic = transform;
+        Game.rollingball = rollingball.transform;
+        Game.coinslabel = coins;
+        Game.timelabel = time;
 
         //GetHurt action
         GetHurt = (relativeVelocity) =>
@@ -60,7 +63,7 @@ public class Sonic : MonoBehaviour
 
                      Debug.Log(relativeVelocity);
 
-                     rb.velocity = new Vector3(Mathf.Sign(relativeVelocity.x) * hurtxv, hurtyv);
+                     rb.velocity = new Vector3(-Mathf.Sign(relativeVelocity.x) * hurtxv, hurtyv);
                      StartCoroutine("hurt");
                  }
                  else
@@ -71,7 +74,7 @@ public class Sonic : MonoBehaviour
          };
     }
 
-    void ChangeToBall(GameConstants.SonicState s)
+    public void ChangeToBall(GameConstants.SonicState s)
     {
         rollingball.SetActive(true);
         gameObject.SetActive(false);
@@ -83,7 +86,7 @@ public class Sonic : MonoBehaviour
 
         Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
-        rollingball.transform.localPosition = transform.localPosition + Vector3.up * .5f;
+        rollingball.transform.localPosition = transform.localPosition + Vector3.up;
 
         switch (s)
         {
@@ -124,8 +127,13 @@ public class Sonic : MonoBehaviour
     void throwcoin(Coin coin)
     {
         Vector3 v = new Vector3(UnityEngine.Random.Range(-3f, 3f), UnityEngine.Random.Range(4f, 8f), 0f);
-        coin.Throw(v * 150f);
+        coin.Throw(v * throwcoinv);
         --Game.coins;
+    }
+
+    public void Jump(Vector3 v)
+    {
+        rb.AddForce(v);
     }
 
 
@@ -158,52 +166,11 @@ public class Sonic : MonoBehaviour
     {
         switch (collision.transform.tag)
         {
-            case "Spring_X":
-                float s = Mathf.Sign(collision.relativeVelocity.x);
-                rb.AddForce(Vector3.right * springforce * s);
-                transform.localRotation = s > 0f ? Quaternion.Euler(Vector3.up * 90f) : Quaternion.Euler(Vector3.up * 270f);
-
-                break;
-                
             case "Coin":
                 Destroy(collision.gameObject);
                 Game.coins += 1;
                 coins.text = Game.coins.ToString();
 
-                break;
-
-            case "Enemy":
-                if(!hurting)
-                {
-                    if (Game.coins != 0)
-                    {
-                        hurting = true;
-
-                        Coin coin = ((GameObject)Instantiate(Resources.Load("Caramel/Components/Coin"), transform.localPosition + Vector3.up * 10f, Quaternion.identity)).GetComponent<Coin>();
-                        throwcoin(coin);
-
-                        while (Game.coins > 0)
-                        {
-                            coin = ((GameObject)Instantiate(coin.gameObject, transform.localPosition + Vector3.up * 10f, Quaternion.identity)).GetComponent<Coin>();
-                            throwcoin(coin);
-                        }
-                        coins.text = Game.coins.ToString();
-
-                        Debug.Log(collision.relativeVelocity);
-
-                        rb.velocity = new Vector3(Mathf.Sign(collision.relativeVelocity.x) * hurtxv, hurtyv);
-                        StartCoroutine("hurt");
-                    }
-                    else
-                    {
-                        GameOver();
-                    }
-                }
-
-                break;
-
-            case "Ground":
-                //isground = true;
                 break;
         }
     }
@@ -219,6 +186,26 @@ public class Sonic : MonoBehaviour
         }
     }
     */
+
+    void SetMovingSpeed()
+    {
+        groundray = new Ray(transform.position, Vector3.down);
+        if (Physics.Raycast(groundray, out groundrch))
+        {
+            if (groundrch.distance < .8f)
+            {
+                //to calculate the movingdirection
+                Vector3 normal = groundrch.normal;
+
+                float y = -(normal.x * facedirection) / normal.y;
+                movingdirection = new Vector3(facedirection, y);
+            }
+            else
+            {
+                movingdirection = Vector3.zero;
+            }
+        }
+    }
 
     public void Ontop()
     {
@@ -277,6 +264,8 @@ public class Sonic : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(GetHurt.ToString());
+
         //falling
         if (transform.localPosition.y < -10.0f)
             GameOver();
@@ -286,44 +275,37 @@ public class Sonic : MonoBehaviour
             //game time setting
             Game.time += Time.deltaTime;
             time.text = ((int)Game.time / 60).ToString() + " : " + ((int)Game.time % 60).ToString();
-
-            //isground
-            groundray = new Ray(transform.position, Vector3.down);
-            if (Physics.Raycast(groundray, out groundrch))
-            {
-                if(groundrch.transform.tag == "Ground" && groundrch.distance < .5f)
-                {
-                    //to calculate the movingdirection
-                    Vector3 normal = groundrch.normal;
-
-                    float y = -(normal.x * facedirection) / normal.y;
-                    movingdirection = new Vector3(facedirection, y);
-                }
-                else
-                {
-                }
-            }
-
-
+            
             //to move
             //going forward action 
-            if (Input.GetAxis("Horizontal") > 0f)
+            /*
+            if (Input.GetAxis("Horizontal") > 0f && Game.sonicstate != GameConstants.SonicState.SQUATTING)
             {
                 //to turn right
                 transform.localRotation = Quaternion.Euler(Vector3.up * 90f);
                 facedirection = 1f;
+                SetMovingSpeed();
                 rb.AddForce(movingdirection * walkspeed);
             }
-            else if (Input.GetAxis("Horizontal") < 0f)
+            else if (Input.GetAxis("Horizontal") < 0f && Game.sonicstate != GameConstants.SonicState.SQUATTING)
             {
                 //to turn left
                 transform.localRotation = Quaternion.Euler(Vector3.up * 270f);
                 facedirection = -1f;
+                SetMovingSpeed();
+                rb.AddForce(movingdirection * walkspeed);
+            }*/
+
+            if(Input.GetAxis("Horizontal") != 0f && Game.sonicstate != GameConstants.SonicState.SQUATTING)
+            {
+                facedirection = Mathf.Sign(Input.GetAxis("Horizontal"));
+                transform.localRotation = Quaternion.Euler((facedirection == 1f ? 90f : 270f) * Vector3.up);
+                SetMovingSpeed();
                 rb.AddForce(movingdirection * walkspeed);
             }
 
             //not 0 => forward, reset to 0
-            animator.SetInteger("Mode", rb.velocity != Vector3.zero ? 1 : 0);
+            animator.SetInteger("Mode", rb.velocity.magnitude > 1f ? 1 : 0);
 
             //for 3D
             //transform.Rotate(0, Input.GetAxis("Horizontal") * turnspeed * Time.deltaTime, 0);
@@ -376,7 +358,7 @@ public class Sonic : MonoBehaviour
     Color ocskin1, ocskin2, hcskin1, hcskin2;
     Ray groundray;
     RaycastHit groundrch;
-    float ocheight, ocradius, facedirection;
+    float ocheight, ocradius, facedirection = 1f;
     int ocdirection = 1, ontopcdirection = 2;
     bool hurting = false;
     
