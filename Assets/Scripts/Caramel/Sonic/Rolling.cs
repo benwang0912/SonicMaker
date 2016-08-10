@@ -5,7 +5,7 @@ public class Rolling : MonoBehaviour
 {
     //in the Rolling Ball
 
-    public float quickrollingspeed, slowrollingspeed, rollingpower, jumpforce, walkspeed, vibration, springforce;
+    public float QuickRollingSpeed, SlowRollingSpeed, rollingpower, jumpforce, walkspeed, vibration, springforce;
     public UILabel time, coins;
     public GameObject sonic;
     
@@ -56,7 +56,7 @@ public class Rolling : MonoBehaviour
     {
         Game.sonicstate = GameConstants.SonicState.TOROLL;
         material.SetColor("_EmissionColor", quickrollingcolor);
-        rollingspeed = quickrollingspeed;
+        rollingspeed = QuickRollingSpeed;
         isvibration = true;
         facedirection = face;
     }
@@ -65,7 +65,7 @@ public class Rolling : MonoBehaviour
     {
         Game.sonicstate = GameConstants.SonicState.ROLLING;
         material.SetColor("_EmissionColor", slowrollingcolor);
-        rollingspeed = slowrollingspeed;
+        rollingspeed = SlowRollingSpeed;
         isvibration = false;
 
         rb.AddForce((facedirection == 1f ? Vector3.right : Vector3.left) * rollingpower);
@@ -75,7 +75,7 @@ public class Rolling : MonoBehaviour
     {
         Game.sonicstate = GameConstants.SonicState.JUMPING;
         material.SetColor("_EmissionColor", slowrollingcolor);
-        rollingspeed = slowrollingspeed;
+        rollingspeed = SlowRollingSpeed;
         isvibration = false;
         transform.localPosition += Vector3.up;
         rb.AddForce(v);
@@ -85,12 +85,6 @@ public class Rolling : MonoBehaviour
     {
         switch (collision.transform.tag)
         {
-            case "Coin":
-                Destroy(collision.gameObject);
-                Game.coins += 1;
-                coins.text = Game.coins.ToString();
-                return;
-
             case "Ground":
                 if (Game.sonicstate == GameConstants.SonicState.JUMPING && collision.contacts[0].point.y > collision.transform.position.y)
                 {
@@ -103,7 +97,6 @@ public class Rolling : MonoBehaviour
     
     void Update ()
     {
-        Debug.Log("ball");
         //falling
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);

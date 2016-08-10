@@ -15,18 +15,22 @@ public class Spick : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         GameObject cg = collision.gameObject;
-        
-        if(collision.relativeVelocity.y < -5f)
+
+        Debug.Log(collision.contacts[0].point.y);
+        Debug.Log(transform.position.y);
+
+        if (collision.contacts[0].point.y > transform.position.y + 3f)
         {
             switch (cg.tag)
             {
                 case "Sonic":
-                    if(cg.name == "RollingBall")
+                    if (cg.name == "RollingBall")
                     {
                         cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
                     }
 
                     Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                    
                     break;
             }
         }

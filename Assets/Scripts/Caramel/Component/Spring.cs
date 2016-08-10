@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 public class Spring : MonoBehaviour
@@ -21,9 +20,8 @@ public class Spring : MonoBehaviour
         an = GetComponent<Animator>();
     }
     
-    IEnumerator Jumptime()
+    void Jumptime()
     {
-        yield return jumptime;
         an.SetBool("Jump", false);
     }
     
@@ -72,11 +70,10 @@ public class Spring : MonoBehaviour
         {
             //spring animation
             an.SetBool("Jump", true);
-            StartCoroutine("Jumptime");
+            Invoke("Jumptime", .1f);
         }
     }
 
     Animator an;
-    WaitForSeconds jumptime = new WaitForSeconds(0.1f);
     float surface = 2.5f;
 }

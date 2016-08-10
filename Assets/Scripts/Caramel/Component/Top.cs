@@ -44,7 +44,7 @@ public class Top : MonoBehaviour
                     }
 
                     Game.sonic.GetComponent<Sonic>().Ontop();
-                    //Game.sonic.GetComponent<Sonic>().GetHurt += hurt;
+                    Game.sonic.GetComponent<Sonic>().GetHurt += hurt;
                 }
 
                 break;
