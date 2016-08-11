@@ -5,7 +5,7 @@ public class Rolling : MonoBehaviour
 {
     //in the Rolling Ball
 
-    public float QuickRollingSpeed, SlowRollingSpeed, rollingpower, jumpforce, walkspeed, vibration, springforce;
+    public float QuickRollingSpeed, SlowRollingSpeed, RollingPower, JumpForce, WalkSpeed, Vibration, SpringForce;
     public UILabel time, coins;
     public GameObject sonic;
     
@@ -44,7 +44,7 @@ public class Rolling : MonoBehaviour
         switch(s)
         {
             case GameConstants.SonicState.JUMPING:
-                JumpRolling(Vector3.up * jumpforce);
+                JumpRolling(Vector3.up * JumpForce);
                 break;
             case GameConstants.SonicState.TOROLL:
                 QuickRolling((sonic.transform.localRotation.eulerAngles.y - 91f) < 0 ? 1f : -1f);
@@ -68,7 +68,7 @@ public class Rolling : MonoBehaviour
         rollingspeed = SlowRollingSpeed;
         isvibration = false;
 
-        rb.AddForce((facedirection == 1f ? Vector3.right : Vector3.left) * rollingpower);
+        rb.AddForce(movingdirection * RollingPower);
     }
 
     public void JumpRolling(Vector3 v)
@@ -109,7 +109,7 @@ public class Rolling : MonoBehaviour
         groundray = new Ray(transform.position, Vector3.down);
         if (Physics.Raycast(groundray, out groundrch))
         {
-            if (groundrch.distance < .8f)
+            if (groundrch.distance < 1f)
             {
                 //to calculate the movingdirection
                 Vector3 normal = groundrch.normal;
@@ -123,18 +123,26 @@ public class Rolling : MonoBehaviour
                 movingdirection = Vector3.zero;
                 isground = false;
             }
+
+            Debug.Log("ball movingdirection = " + movingdirection);
         }
+
+        //to correct the moving direction
+
+        //rb.velocity = movingdirection.magnitude != 0f ? movingdirection / movingdirection.magnitude * rb.velocity.magnitude : rb.velocity;
         
         //to roll
         rolling.x += Time.deltaTime * rollingspeed;
         transform.localRotation = Quaternion.Euler(rolling);
 
+        
         //to vibrate
         if (isvibration)
         {
             //be shifting??
-            transform.localPosition += Vector3.right * vibration * Mathf.Cos(9.42f * Time.time);
+            transform.localPosition += Vector3.right * Vibration * Mathf.Cos(9.42f * Time.time);
         }
+        
 
         switch (Game.sonicstate)
         {
@@ -162,7 +170,7 @@ public class Rolling : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Return) && isground)
                 {
-                    JumpRolling(Vector3.up * jumpforce);
+                    JumpRolling(Vector3.up * JumpForce);
                 }
 
                 
@@ -170,12 +178,12 @@ public class Rolling : MonoBehaviour
                 if (Input.GetAxis("Horizontal") > 0f && facedirection != 1f)
                 {
                     //face left => add right force
-                    rb.AddForce(Vector3.right * walkspeed);
+                    rb.AddForce(Vector3.right * WalkSpeed);
                 }
                 else if (Input.GetAxis("Horizontal") < 0f && facedirection == 1f)
                 {
                     //face right => add left force
-                    rb.AddForce(Vector3.left * walkspeed);
+                    rb.AddForce(Vector3.left * WalkSpeed);
                 }
 
                 break;
@@ -184,11 +192,11 @@ public class Rolling : MonoBehaviour
                 //seldom use
                 if (Input.GetKey(KeyCode.Return) && isground)
                 {
-                    JumpRolling(Vector3.up * jumpforce);
+                    JumpRolling(Vector3.up * JumpForce);
                 }
 
                 //to move in jumping
-                rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * walkspeed);
+                rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * WalkSpeed);
 
                 break;
         }

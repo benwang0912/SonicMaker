@@ -127,6 +127,7 @@ public class Sonic : MonoBehaviour
     {
         Game.sonicstate = GameConstants.SonicState.NORMAL;
         transform.localScale = Vector3.one;
+        gameObject.SetActive(true);
         Normal();
     }
 
@@ -156,6 +157,8 @@ public class Sonic : MonoBehaviour
                 movingdirection = Vector3.zero;
             }
         }
+
+        Debug.Log("movingdirection = " + movingdirection);
     }
 
     public void Ontop()
@@ -183,7 +186,8 @@ public class Sonic : MonoBehaviour
     {
         Debug.Log("GameOver");
         transform.localPosition = original_position;
-        transform.localScale = deadsize;
+        //transform.localScale = deadsize;
+        gameObject.SetActive(false);
         rb.velocity = Vector3.zero;
         Game.sonicstate = GameConstants.SonicState.DEAD;
         Invoke("revive", delay);
