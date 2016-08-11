@@ -18,12 +18,12 @@ public class cannonBullet : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
-        {
+        {/*
             GameObject e = Instantiate(explosionE);
             e.transform.position = transform.position;
             Destroy(e, 5f);
             Destroy(gameObject);
-            Destroy(other.gameObject);
+            Destroy(other.gameObject);*/
         }
         else if (other.gameObject.tag == "Cannon")
         {

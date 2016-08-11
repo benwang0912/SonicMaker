@@ -19,7 +19,7 @@ public class jumpOnSpring : MonoBehaviour {
 	}
     void OnCollisionEnter(Collision collision)
     {   
-        if (collision.gameObject.name == "Spring" && collision.relativeVelocity.y>0)
+        if (collision.gameObject.tag == "Spring" && collision.relativeVelocity.y>0)
         {
             rb.AddForce(transform.up * bounceHeight);
             animator.SetInteger("Jump", 1);

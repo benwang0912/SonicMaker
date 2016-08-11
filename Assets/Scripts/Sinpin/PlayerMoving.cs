@@ -15,97 +15,99 @@ public class PlayerMoving : MonoBehaviour {
     float groundCheckRadius = 0.2f;
     public bool grounded = false;
     //--------------------------------------wall checking
+    public bool wallJumpLearned = false;
     public LayerMask wallLayer;
     public Transform wallCheck;
     Collider[] wallCollisions;
     float wallCheckRadius = 0.8f;
     private bool hitWall = false;
-    private bool doubleJump = false;
+
     // Use this for initialization
     void Start () {
         animator = gameObject.GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-        jumpHeight = rb.mass * 60;
+        jumpHeight = 100;
     }
 
 // Update is called once per frame
-    void Update () {
-        if (Input.GetKey(KeyCode.RightArrow)|| Input.GetKey(KeyCode.D))
+    void Update ()
+    {
+        showAnimation();
+        
+        if (Input.GetAxis("Jump") > 0 && grounded && !animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
         {
+            rb.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
+        }
+        
+        if (Input.GetKey(KeyCode.RightArrow)|| Input.GetKey(KeyCode.D))
+        {   
             Quaternion desireRotate = Quaternion.Euler(0, 90, 0);
             transform.rotation = desireRotate;
             if (grounded)
             {
-                animator.SetInteger("Anim", 1);
                 transform.position += new Vector3(1, 0, 0) * speed * Time.deltaTime;
             }
             else {
                 transform.position += new Vector3(0.6f, 0, 0) * speed * Time.deltaTime;
-                
             }
         }
-        else
-        {
-            animator.SetInteger("Anim", 0);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             Quaternion desireRotate = Quaternion.Euler(0, -90, 0);
             transform.rotation = desireRotate;
             if (grounded)
             {
-                animator.SetInteger("Anim", 1);
                 transform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
             }
             else {
                 transform.position += new Vector3(-0.6f, 0, 0) * speed * Time.deltaTime;
-                
             }
         }
-        
-        if (Input.GetAxis("Jump")>0 && grounded)
+
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
-            animator.SetInteger("Anim", 0);
-            animator.SetInteger("Jump", 1);
-            rb.AddForce(transform.up * jumpHeight);
-            grounded = false;
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+            {
+                animator.speed = 1.6f;
+                transform.position -= new Vector3(0, 10f, 0) * Time.deltaTime;
+            }
+            else if(!grounded)
+            {
+                transform.position -= new Vector3(0, 10f, 0) * Time.deltaTime;
+            }
         }
         else
         {
-            animator.SetInteger("Jump", 0);
+            animator.speed = 1;
         }
-        if ( hitWall && !grounded && !doubleJump ){
-            
-            if (Input.GetAxis("Jump") > 0  )
+
+        if (wallJumpLearned)
+        {
+            if (hitWall && !grounded)
             {
-        
-                animator.SetInteger("Anim", 0);
-                animator.SetInteger("wallJump", 1);
-                rb.AddForce(transform.up*100  - transform.forward*100, ForceMode.Impulse);
-                if (!doubleJump)
+
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                       doubleJump = true;
+                    animator.SetInteger("Anim", 0);
+                    animator.SetInteger("wallJump", 1);
+                    rb.AddForce(transform.up * 800 - transform.forward * 400, ForceMode.Impulse);
+
+                    //--------------flip
+                    Vector3 theScale = transform.localScale;
+                    theScale.x *= -1;
+                    transform.localScale = theScale;
                 }
-                //--------------flip
-                Vector3 theScale = transform.localScale;
-                theScale.x *= -1;
-                transform.localScale = theScale;
+                else
+                {
+                    if (animator.GetCurrentAnimatorStateInfo(0).IsName("WallJump"))
+                        animator.SetInteger("wallJump", 0);
+                }
             }
-            else
+            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("WallJump"))
             {
-                doubleJump = false;
                 animator.SetInteger("wallJump", 0);
             }
         }
-        else
-        {
-            //doubleJump = false;
-            animator.SetInteger("wallJump", 0);
-        }
-        if (grounded || hitWall)
-            doubleJump = false;
-        
-        
 	}
     
     void FixedUpdate()
@@ -123,5 +125,26 @@ public class PlayerMoving : MonoBehaviour {
             hitWall = false;
     }
 
-    
+    void showAnimation()
+    {
+        if((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && grounded)
+        {
+            animator.SetInteger("Anim", 1);
+        }
+        else
+        {
+            animator.SetInteger("Anim", 0);
+        }
+        if (Input.GetKey(KeyCode.Space) && grounded)
+        {
+            animator.SetInteger("Jump", 1);
+        }else if(animator.GetCurrentAnimatorStateInfo(0).IsName("Jump") && animator.GetInteger("Jump") == 1 )
+        {
+            animator.SetInteger("Jump", 0);
+        }
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Jump") && grounded)
+        {
+            animator.Play("Idle");
+        }
+    }
 }

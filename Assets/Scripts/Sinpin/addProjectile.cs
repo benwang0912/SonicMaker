@@ -16,6 +16,7 @@ public class addProjectile : MonoBehaviour {
 
         if (other.gameObject.name == "Sonic")
         {
+            script.addProjectileUI();
             script.countDownToGen = 0;
             script.projectileGot++;
             Destroy(this.gameObject);

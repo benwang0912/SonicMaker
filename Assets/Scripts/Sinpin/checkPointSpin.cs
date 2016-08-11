@@ -6,7 +6,7 @@ public class checkPointSpin : MonoBehaviour {
     private checkPoint script;
 	// Use this for initialization
 	void Start () {
-        script = transform.root.GetComponent<checkPoint>();
+        script = transform.GetComponent<checkPoint>();
 	}
 	
 	// Update is called once per frame

@@ -6,7 +6,7 @@ public class mouseAiming : MonoBehaviour {
     private Vector3 shootDirection;
     private float counter = 0.318f;
     GameObject explosionE, explosionG;
-
+    private GameObject enemyDropItem;
     // Use this for initialization
     void Start () {
 
@@ -19,7 +19,9 @@ public class mouseAiming : MonoBehaviour {
         mousePosition.y -= 1;
         mousePosition.z = 0;
         shootDirection = (mousePosition - transform.position).normalized;
-        
+
+        enemyDropItem = Resources.Load("Sinpin/HeartForRecovery", typeof(GameObject)) as GameObject;
+
     }
 	
 	// Update is called once per frame
@@ -37,8 +39,18 @@ public class mouseAiming : MonoBehaviour {
             GameObject e = Instantiate(explosionE);
             e.transform.position = transform.position;
             Destroy(e, 5f);
+
+            //drop item
+            float odds = Random.Range(0.0f, 1.0f);
+            if (odds <= 0.3f)
+            {
+                GameObject drop = Instantiate(enemyDropItem);
+                drop.transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f );
+            }    
+
             Destroy(gameObject);
             Destroy(other.gameObject);
+            
         }else if(other.gameObject.name == "Sonic")
         {
             //donothing

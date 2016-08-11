@@ -6,7 +6,7 @@ public class cannonShooter : MonoBehaviour {
     private GameObject b;
     private float travelSpeed = 0.3f;
     private Animator animator;
-    private float counter = 2.0f;
+    private float counter = 2.5f;
     // Use this for initialization
     void Start () {
         bullet = Resources.Load("Sinpin/fireBall", typeof(GameObject)) as GameObject;
@@ -21,7 +21,7 @@ public class cannonShooter : MonoBehaviour {
             animator.SetInteger("shoot", 1);
             b = Instantiate(bullet);
             b.transform.position = new Vector3(transform.position.x, transform.position.y + 1.6f, transform.position.z);
-            counter = 1.0f;
+            counter = 2.5f;
         }
         else if (b == null)
         {
@@ -30,6 +30,7 @@ public class cannonShooter : MonoBehaviour {
         }
             animator.SetInteger("shoot", 0);
         b.transform.position += Vector3.Cross(transform.forward, transform.up) * travelSpeed;
+        b.transform.position = new Vector3(b.transform.position.x, b.transform.position.y, 0);
         counter -= Time.deltaTime;
         Destroy(b,2.0f);
 	}

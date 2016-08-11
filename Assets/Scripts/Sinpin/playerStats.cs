@@ -34,16 +34,15 @@ public class playerStats : MonoBehaviour {
         {
             Health -= 1;
             rb.AddForce(new Vector3(collision.relativeVelocity.x/ Mathf.Abs(collision.relativeVelocity.x)*2, 1.5f, 0.0f)*rb.mass*100);
-            Debug.Log(Health);
-        }
-    }
-    void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "Enemy" && collision.gameObject.transform.position.x == lastPosition.position.x)
+
+            Rigidbody enemyRb = collision.gameObject.GetComponent<Rigidbody>();
+            enemyRb.AddForce(new Vector3(-collision.relativeVelocity.x / Mathf.Abs(collision.relativeVelocity.x) * 2, 1.5f, 0.0f) * enemyRb.mass * 100);
+        }else if(collision.gameObject.name == "WallJumpAbility")
         {
-            rb.AddForce(new Vector3(collision.gameObject.transform.forward.x*0.3f , 0.1f, 0.0f) * rb.mass * 100);
+            PlayerMoving temp = transform.GetComponent<PlayerMoving>();
+            temp.wallJumpLearned = true;
+            Destroy(collision.gameObject);
         }
-        lastPosition = collision.gameObject.transform;
     }
     private bool isDead()
     {

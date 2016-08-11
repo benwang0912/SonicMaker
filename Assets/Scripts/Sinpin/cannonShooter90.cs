@@ -24,7 +24,7 @@ public class cannonShooter90 : MonoBehaviour
             animator.SetInteger("shoot", 1);
             b = Instantiate(bullet);
             b.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
-            counter = 1.0f;
+            counter = 2.0f;
         }
         else if (b == null)
         {

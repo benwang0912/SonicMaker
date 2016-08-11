@@ -5,6 +5,7 @@ public class enemyMoving : MonoBehaviour {
 
     Transform targetPosition;
     Rigidbody RB;
+    
     private float jumpDistance = 10.0f;
     private bool forward = true;
     private Vector3 lastPosition;
@@ -14,6 +15,7 @@ public class enemyMoving : MonoBehaviour {
     Collider[] groundCollisions;
     float groundCheckRadius = 0.2f;
     bool grounded = false;
+    
     // Use this for initialization
     void Start () {
         targetPosition = GameObject.Find("Sonic").transform;
@@ -54,6 +56,7 @@ public class enemyMoving : MonoBehaviour {
                 RB.AddForce(transform.up * 20 + transform.forward * jumpDistance);
             lastPosition = transform.position;
         }
+        
     }
     void FixedUpdate()
     {
