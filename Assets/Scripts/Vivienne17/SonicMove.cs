@@ -11,6 +11,10 @@ public class SonicMove : MonoBehaviour {
     public float max_Health = 100f;
     public float cur_Health = 0f;
     public GameObject healthBar;
+    public bool Died = false;
+    public static SonicMove Instance;
+
+    private bool SonicRun = false;
 
     public bool Died = false;
     public static SonicMove Instance;
@@ -27,8 +31,12 @@ public class SonicMove : MonoBehaviour {
         Instance = this;
         anim = GetComponent<Animator>();
         cur_Health = max_Health;
+<<<<<<< HEAD
         //        InvokeRepeating("decreasehealth", 1f, 1f);
         
+=======
+//        InvokeRepeating("decreasehealth", 1f, 1f);
+>>>>>>> 4e3eafc5927d66dd3cfc939a0a54e4667af8070e
         rigid = GetComponent<Rigidbody>();
     }
 	
@@ -51,15 +59,21 @@ public class SonicMove : MonoBehaviour {
                     decreasehealth();
                     time = 0;//reset the time
                 }
+<<<<<<< HEAD
                 //if he drop, he'll die
                 if (transform.position.y == -19) {
                     Died = true;
                 }
+=======
+>>>>>>> 4e3eafc5927d66dd3cfc939a0a54e4667af8070e
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     anim.SetTrigger("isJumping");
                     rigid.AddForce(transform.up * 18000.0f);
+<<<<<<< HEAD
                     jump_sound.Play();
+=======
+>>>>>>> 4e3eafc5927d66dd3cfc939a0a54e4667af8070e
                 }
                 else {
                     transform.position += 5.0f * new Vector3(1, 0, 0) * Time.deltaTime;
@@ -77,9 +91,12 @@ public class SonicMove : MonoBehaviour {
     {
         if (collision.gameObject.name == "Heart")
         {
+<<<<<<< HEAD
             AudioSource audio = GetComponent<AudioSource>();
             audio.PlayOneShot(auGetHeart);
 
+=======
+>>>>>>> 4e3eafc5927d66dd3cfc939a0a54e4667af8070e
             if (cur_Health >= 80f)
             {
                 cur_Health = 100.0f;
@@ -87,6 +104,7 @@ public class SonicMove : MonoBehaviour {
             else {
                 cur_Health += 20f;
             }
+<<<<<<< HEAD
         }
         if (collision.gameObject.name == "cone1_fbx")
         {
@@ -101,6 +119,19 @@ public class SonicMove : MonoBehaviour {
                 cur_Health -= 10f;
             }
         }
+=======
+        }
+        if (collision.gameObject.name == "cone1_fbx")
+        {
+            if (cur_Health <= 10f)
+            {
+                cur_Health = 0.0f;
+            }
+            else {
+                cur_Health -= 10f;
+            }
+        }
+>>>>>>> 4e3eafc5927d66dd3cfc939a0a54e4667af8070e
     }
 
     void decreasehealth() {

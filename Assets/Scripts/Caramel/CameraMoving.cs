@@ -1,17 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraMoving : MonoBehaviour {
-
+public class CameraMoving : MonoBehaviour
+{
     // in the Main Camera
-
-    Transform sonic, rollingball;
+    public Transform sonic, rollingball;
     Vector3 ToChangePosition;
 
     void Awake()
     {
-        sonic = GameObject.Find("Sonic").transform;
-        rollingball = GameObject.Find("RollingBall").transform;
         ToChangePosition = transform.localPosition;
     }
 
