@@ -57,6 +57,8 @@ public class Sonic : MonoBehaviour
 
                      skin1.material.color = hcskin1;
                      skin2.material.color = hcskin2;
+
+                     Debug.Log("hurt");
                      
                      Invoke("hurt", delay);
                  }
@@ -136,6 +138,7 @@ public class Sonic : MonoBehaviour
         skin1.material.color = ocskin1;
         skin2.material.color = ocskin2;
         hurting = false;
+        Debug.Log("false");
     }
     
     void SetMovingSpeed()
@@ -158,7 +161,7 @@ public class Sonic : MonoBehaviour
             }
         }
 
-        Debug.Log("movingdirection = " + movingdirection);
+        //Debug.Log("movingdirection = " + movingdirection);
     }
 
     public void Ontop()

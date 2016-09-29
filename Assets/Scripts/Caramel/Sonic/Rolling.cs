@@ -124,7 +124,7 @@ public class Rolling : MonoBehaviour
                 isground = false;
             }
 
-            Debug.Log("ball movingdirection = " + movingdirection);
+            //Debug.Log("ball movingdirection = " + movingdirection);
         }
 
         //to correct the moving direction
@@ -135,14 +135,14 @@ public class Rolling : MonoBehaviour
         rolling.x += Time.deltaTime * rollingspeed;
         transform.localRotation = Quaternion.Euler(rolling);
 
-        
+        /*
         //to vibrate
         if (isvibration)
         {
             //be shifting??
             transform.localPosition += Vector3.right * Vibration * Mathf.Cos(9.42f * Time.time);
         }
-        
+        */
 
         switch (Game.sonicstate)
         {
@@ -164,6 +164,7 @@ public class Rolling : MonoBehaviour
                 //to return to sonic
                 if (rb.velocity.magnitude <= 1f)
                 {
+                    Debug.Log(rb.velocity);
                     ChangeToSonic(GameConstants.SonicState.NORMAL);
                     return;
                 }
@@ -198,6 +199,9 @@ public class Rolling : MonoBehaviour
                 //to move in jumping
                 rb.AddForce(Vector3.right * Input.GetAxis("Horizontal") * WalkSpeed);
 
+                break;
+
+            case GameConstants.SonicState.CURVEMOTION:
                 break;
         }
     }

@@ -4,9 +4,6 @@ using System.Collections;
 public class PlaneManager : MonoBehaviour
 {
     //in the Plane
-    
-    public int groundcount;
-    public bool temporary = false, isStartFalling = false;
 
     public void StartFalling()
     {
@@ -20,13 +17,14 @@ public class PlaneManager : MonoBehaviour
     void Awake ()
     {
         Transform ground = transform.GetChild(0);
+        Vector3 position = ground.localPosition;
 
         //normal plane ground
         for (int i = 1; i < groundcount; ++i)
         {
             Transform newground = Instantiate(ground);
             newground.parent = transform;
-            newground.localPosition = new Vector3(i, 0f);
+            newground.localPosition = i * Distance * Vector3.right + position;
         }
 
         if(temporary)
@@ -34,7 +32,6 @@ public class PlaneManager : MonoBehaviour
             for(int i = 0; i < groundcount; ++i)
                 transform.GetChild(i).gameObject.AddComponent<TemporaryGround>();
         }
-
 	}
 
     IEnumerator ChildrenFalling()
@@ -50,6 +47,10 @@ public class PlaneManager : MonoBehaviour
 
         yield break;
     }
+
+    public float Distance = 1f;
+    public int groundcount;
+    public bool temporary = false, isStartFalling = false;
 
     WaitForSeconds waiting = new WaitForSeconds(1f), delay = new WaitForSeconds(.3f);
 }

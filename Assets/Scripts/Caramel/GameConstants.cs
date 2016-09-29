@@ -8,6 +8,7 @@
         SQUATTING,
         TOROLL,
         ROLLING,
-        ONTOP
+        ONTOP,
+        CURVEMOTION
     }
 }
