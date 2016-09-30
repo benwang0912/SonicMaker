@@ -32,7 +32,7 @@ public class StartCurveMotion : MonoBehaviour
             {
                 //ending
                 rollingBall.localPosition = OriginalPosition + Distance * Vector3.forward;
-                rollingBall.GetComponent<Rigidbody>().velocity = 40f * Vector3.right;
+                rollingBall.GetComponent<Rigidbody>().velocity = 50f * Vector3.right;
                 Debug.Log(rollingBall.GetComponent<Rigidbody>().velocity);
                 Game.sonicstate = GameConstants.SonicState.ROLLING;
                 start = false;

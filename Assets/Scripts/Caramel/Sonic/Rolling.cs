@@ -115,7 +115,8 @@ public class Rolling : MonoBehaviour
                 Vector3 normal = groundrch.normal;
 
                 float y = -(normal.x * facedirection) / normal.y;
-                movingdirection = new Vector3(facedirection, y);
+                //movingdirection = new Vector3(facedirection, y);
+                movingdirection = Vector3.right;
                 isground = true;
             }
             else
@@ -124,7 +125,7 @@ public class Rolling : MonoBehaviour
                 isground = false;
             }
 
-            //Debug.Log("ball movingdirection = " + movingdirection);
+            Debug.Log("ball movingdirection = " + movingdirection);
         }
 
         //to correct the moving direction
