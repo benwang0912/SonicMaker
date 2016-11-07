@@ -76,10 +76,10 @@ public class PlayerMoving : MonoBehaviour {
         jumpHeight = 65;
     }
 
-// Update is called once per frame
-    void Update ()
+    // Update is called once per frame
+    void Update()
     {
-        if (end())
+        if (end() || Input.GetKey(KeyCode.Tab))
         {
             return;
         }

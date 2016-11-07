@@ -24,6 +24,13 @@ public class cameraFollowing : MonoBehaviour {
     }
 	
 	void LateUpdate () {
+
+        if (Input.GetKey(KeyCode.Tab)) {
+            float current = Camera.main.orthographicSize;
+            Camera.main.orthographicSize = Mathf.Lerp(current, (cameraSize + 30), 2 * Time.deltaTime);
+            return;
+        }
+
         transform.position = new Vector3(target.transform.position.x, target.transform.position.y+offset.y, transform.position.z);
         if (!player.grounded)
         {
