@@ -35,6 +35,8 @@ public class Rolling : MonoBehaviour
                 sonic.SendMessage("BackToSonic", GameConstants.SonicState.DEAD);
                 break;
         }
+
+        //return sonic.GetComponent<Sonic>();
     }
 
     public void BackToBall(GameConstants.SonicState s)
@@ -79,6 +81,11 @@ public class Rolling : MonoBehaviour
         isvibration = false;
         transform.localPosition += Vector3.up;
         rb.AddForce(v);
+    }
+
+    public void JumpBack(Vector3 relativeVelocity)
+    {
+        rb.velocity = new Vector3(-Mathf.Sign(relativeVelocity.x) * BackX, BackY);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -206,6 +213,8 @@ public class Rolling : MonoBehaviour
                 break;
         }
     }
+
+    public float BackX, BackY;
 
     Vector3 rolling = new Vector3(0f, 90f, 0f), movingdirection;
     Material material;

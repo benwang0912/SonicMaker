@@ -1,0 +1,248 @@
+fileFormatVersion: 2
+guid: 659cd476068700948bea55a8e02f4a78
+timeCreated: 1478701442
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bags1
+    100002: Bags2
+    100004: Belt
+    100006: Berries
+    100008: Camera
+    100010: Chains
+    100012: Coat
+    100014: Earring
+    100016: Environment
+    100018: Eyes
+    100020: Head_Accessories
+    100022: Jewellry
+    100024: //RootNode
+    100026: Rope
+    100028: Squirrel
+    100030: Sun
+    400000: Bags1
+    400002: Bags2
+    400004: Belt
+    400006: Berries
+    400008: Camera
+    400010: Chains
+    400012: Coat
+    400014: Earring
+    400016: Environment
+    400018: Eyes
+    400020: Head_Accessories
+    400022: Jewellry
+    400024: //RootNode
+    400026: Rope
+    400028: Squirrel
+    400030: Sun
+    2300000: Bags1
+    2300002: Bags2
+    2300004: Belt
+    2300006: Berries
+    2300008: Chains
+    2300010: Coat
+    2300012: Earring
+    2300014: Environment
+    2300016: Eyes
+    2300018: Head_Accessories
+    2300020: Jewellry
+    2300022: Rope
+    2300024: Squirrel
+    3300000: Bags1
+    3300002: Bags2
+    3300004: Belt
+    3300006: Berries
+    3300008: Chains
+    3300010: Coat
+    3300012: Earring
+    3300014: Environment
+    3300016: Eyes
+    3300018: Head_Accessories
+    3300020: Jewellry
+    3300022: Rope
+    3300024: Squirrel
+    4300000: Environment
+    4300002: Squirrel
+    4300004: Eyes
+    4300006: Earring
+    4300008: Coat
+    4300010: Belt
+    4300012: Bags2
+    4300014: Bags1
+    4300016: Rope
+    4300018: Berries
+    4300020: Head_Accessories
+    4300022: Chains
+    4300024: Jewellry
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human:
+    - boneName: Environment
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Sun
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Camera
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: project_squirrel_magician(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Environment
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 21.059444, y: 21.059444, z: 21.059444}
+      transformModified: 1
+    - name: Camera
+      position: {x: -0, y: -0.016343875, z: 0.004545197}
+      rotation: {x: 0.50000006, y: -0.49999994, z: -0.5, w: 0.5}
+      scale: {x: 0.047484647, y: 0.047484647, z: 0.047484647}
+      transformModified: 1
+    - name: Sun
+      position: {x: 0.0056005805, y: -0.009517149, z: 0.012713179}
+      rotation: {x: 0.7071067, y: -0, z: -0, w: 0.7071068}
+      scale: {x: 0.047484633, y: 0.047484633, z: 0.047484633}
+      transformModified: 1
+    - name: Squirrel
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Belt
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Bags1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Bags2
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Berries
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Rope
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Coat
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Earring
+      position: {x: 3.72529e-11, y: 0, z: 1.4901161e-10}
+      rotation: {x: -0.20864114, y: -0.23080733, z: 0.004356457, w: 0.9503567}
+      scale: {x: 1, y: 1, z: 0.99999994}
+      transformModified: 1
+    - name: Eyes
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Head_Accessories
+      position: {x: 3.72529e-11, y: 3.4924598e-12, z: -7.4505804e-11}
+      rotation: {x: 0.00061959785, y: -0.4053624, z: 0.030519353, w: 0.9136463}
+      scale: {x: 1, y: 0.9999999, z: 1}
+      transformModified: 1
+    - name: Chains
+      position: {x: 2.449807e-11, y: -1.0230749e-11, z: -2.738997e-11}
+      rotation: {x: -0.14855607, y: -0.092631236, z: 0.33400518, w: 0.9261702}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1.0000001}
+      transformModified: 1
+    - name: Jewellry
+      position: {x: -6.87701e-12, y: -1.22387e-12, z: 7.5447695e-12}
+      rotation: {x: -0.00061958656, y: 0.40536213, z: -0.030519342, w: 0.9136464}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

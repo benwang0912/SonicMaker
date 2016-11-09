@@ -1,0 +1,140 @@
+fileFormatVersion: 2
+guid: c00ecb3f340d92845832632a7b2952d7
+timeCreated: 1478701446
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bags1
+    100002: Bags2
+    100004: Belt
+    100006: Berries
+    100008: Chains
+    100010: Coat
+    100012: Earring
+    100014: Environment
+    100016: Eyes
+    100018: Head_Accessories
+    100020: Jewellry
+    100022: //RootNode
+    100024: Rope
+    100026: Squirrel
+    400000: Bags1
+    400002: Bags2
+    400004: Belt
+    400006: Berries
+    400008: Chains
+    400010: Coat
+    400012: Earring
+    400014: Environment
+    400016: Eyes
+    400018: Head_Accessories
+    400020: Jewellry
+    400022: //RootNode
+    400024: Rope
+    400026: Squirrel
+    2300000: Bags1
+    2300002: Bags2
+    2300004: Belt
+    2300006: Berries
+    2300008: Chains
+    2300010: Coat
+    2300012: Earring
+    2300014: Environment
+    2300016: Eyes
+    2300018: Head_Accessories
+    2300020: Jewellry
+    2300022: Rope
+    2300024: Squirrel
+    3300000: Bags1
+    3300002: Bags2
+    3300004: Belt
+    3300006: Berries
+    3300008: Chains
+    3300010: Coat
+    3300012: Earring
+    3300014: Environment
+    3300016: Eyes
+    3300018: Head_Accessories
+    3300020: Jewellry
+    3300022: Rope
+    3300024: Squirrel
+    4300000: Environment
+    4300002: Squirrel
+    4300004: Eyes
+    4300006: Earring
+    4300008: Coat
+    4300010: Belt
+    4300012: Bags2
+    4300014: Bags1
+    4300016: Rope
+    4300018: Berries
+    4300020: Head_Accessories
+    4300022: Chains
+    4300024: Jewellry
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

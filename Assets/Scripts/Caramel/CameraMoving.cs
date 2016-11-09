@@ -14,29 +14,25 @@ public class CameraMoving : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        float temp = transform.localPosition.x - sonic.localPosition.x;
-        if (temp > 0.1f || temp < -0.1f)
+        if (isMoving)
         {
-            transform.localPosition -= temp > 0 ? Vector3.right * speed * Time.deltaTime : Vector3.left * speed * Time.deltaTime;
+            if(Game.sonic.gameObject.activeSelf)
+            {
+                ToChangePosition.x = sonic.localPosition.x;
+                ToChangePosition.y = originalY + sonic.localPosition.y;
+            }
+            else
+            {
+                ToChangePosition.x = rollingball.localPosition.x;
+                ToChangePosition.y = originalY + rollingball.localPosition.y;
+            }
+
+            transform.localPosition = ToChangePosition;
         }
-        */
-        
-        if (Game.sonicstate == GameConstants.SonicState.JUMPING || Game.sonicstate == GameConstants.SonicState.TOROLL || Game.sonicstate == GameConstants.SonicState.ROLLING || Game.sonicstate == GameConstants.SonicState.CURVEMOTION)
-        {
-            ToChangePosition.x = rollingball.localPosition.x;
-            ToChangePosition.y = originalY + rollingball.localPosition.y;
-        }
-        else
-        {
-            ToChangePosition.x = sonic.localPosition.x;
-            ToChangePosition.y = originalY + sonic.localPosition.y;
-        }
-        
-        transform.localPosition = ToChangePosition;
     }
     
     public Transform sonic, rollingball;
+    public bool isMoving = true;
     Vector3 ToChangePosition;
     float originalY;
 }
