@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Heart_AddLife : MonoBehaviour {
-    
+
 	// Use this for initialization
 	void Start () {
 	
@@ -13,8 +13,8 @@ public class Heart_AddLife : MonoBehaviour {
         transform.Rotate(Vector3.up * Time.deltaTime * 35);
     }
 
-    void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.name == "Sonic") {
+    void OnTriggerEnter(Collider collision) {
+        if (collision.gameObject.name == "Sonic" || collision.gameObject.tag == "Shield") {
             Destroy(this.gameObject);
         }
     }
