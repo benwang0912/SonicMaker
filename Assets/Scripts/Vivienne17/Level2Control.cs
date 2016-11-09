@@ -35,7 +35,7 @@ public class Level2Control : MonoBehaviour
     public Text NewName;
 
     public bool isPlaying = false;
-    public bool startPlay = false;
+    public bool startPlay = true;
 
     public bool firstTime = true;
 
@@ -65,36 +65,48 @@ public class Level2Control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startPlay == true)
+        time2 += Time.deltaTime;
+        if (SonicMove2.Instance.Died == false)
         {
-            time += Time.deltaTime;
-            if (time >= 4.0f && firstTime == true)
+            if (time2 > 0.5f && time2 < 1f)
             {
-                time2 += Time.deltaTime;
-                isPlaying = true;
-                firstTime = false;
-                if (SonicMove.Instance.Died == false)
-                {
-                    if (time2 > 0.5f && time2 < 1f)
-                    {
-                        AddScore(5);
-                        time2 = 0;
-                    }
-                }
-                else {
-                    GameOver.SetActive(true);
-                }
-            }
-            if (firstTime == false && SonicMove.Instance.Died == false)
-            {
-                time2 += Time.deltaTime;
-                if (time2 > 0.5f && time2 < 1f)
-                {
-                    AddScore(5);
-                    time2 = 0;
-                }
+                AddScore(5);
+                time2 = 0;
             }
         }
+        else {
+            GameOver.SetActive(true);
+        }
+        /* if (startPlay == true)
+         {
+             time += Time.deltaTime;
+             if (time >= 4.0f && firstTime == true)
+             {
+                 time2 += Time.deltaTime;
+                 isPlaying = true;
+                 firstTime = false;
+                 if (SonicMove2.Instance.Died == false)
+                 {
+                     if (time2 > 0.5f && time2 < 1f)
+                     {
+                         AddScore(5);
+                         time2 = 0;
+                     }
+                 }
+                 else {
+                     GameOver.SetActive(true);
+                 }
+             }
+             if (firstTime == false && SonicMove2.Instance.Died == false)
+             {
+                 time2 += Time.deltaTime;
+                 if (time2 > 0.5f && time2 < 1f)
+                 {
+                     AddScore(5);
+                     time2 = 0;
+                 }
+             }
+         }*/
 
     }
 

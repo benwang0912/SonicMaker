@@ -80,7 +80,7 @@ public class SonicMove2 : MonoBehaviour
                 {
                     Died = true;
                     anim.SetTrigger("isIdling");
-                    GameFunction.Instance.OverGame();
+                    Level2Control.Instance.OverGame();
                 }
 
                 if (Input.GetKeyDown(KeyCode.Space) && transform.position.y < 1.2)
@@ -159,7 +159,7 @@ public class SonicMove2 : MonoBehaviour
 
         if (collision.gameObject.tag == "Coin")
         {
-            GameFunction.Instance.AddScore(20);
+            Level2Control.Instance.AddScore(20);
         }
 
         if (collision.gameObject.tag == "Star")
@@ -179,7 +179,7 @@ public class SonicMove2 : MonoBehaviour
             anim.SetTrigger("isIdling");
             //            cur_Health = max_Health;
             Died = true;
-            GameFunction.Instance.OverGame();
+            Level2Control.Instance.OverGame();
         }
         float calc_Health = cur_Health / max_Health;
         SetHealthBar(calc_Health);
