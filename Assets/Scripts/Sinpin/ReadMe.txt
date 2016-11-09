@@ -1,1 +1,0 @@
-It is only for Sinpin to store the scripts she need

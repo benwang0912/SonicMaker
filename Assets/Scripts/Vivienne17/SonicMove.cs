@@ -20,25 +20,39 @@ public class SonicMove : MonoBehaviour {
     public static SonicMove Instance;
 
     private bool SonicRun = false;
+<<<<<<< HEAD
 
     public ParticleSystem shingshing;
     public GameObject shing;
 
+=======
+    
+>>>>>>> d3dfe028790c50ca31b2b612d7efabd9cf03227b
     //Audio
     public AudioSource jump_sound;
     public AudioClip auGetHeart;
     public AudioClip auTheCone;
+<<<<<<< HEAD
     public AudioClip auPlayingGame;
 
+=======
+    
+>>>>>>> d3dfe028790c50ca31b2b612d7efabd9cf03227b
 
     // Use this for initialization
     void Start () {
         Instance = this;
         anim = GetComponent<Animator>();
         cur_Health = max_Health;
+<<<<<<< HEAD
         shingshing.Stop();
 
         //        InvokeRepeating("decreasehealth", 1f, 1f);
+=======
+        //        InvokeRepeating("decreasehealth", 1f, 1f);
+       
+//        InvokeRepeating("decreasehealth", 1f, 1f);
+>>>>>>> d3dfe028790c50ca31b2b612d7efabd9cf03227b
         rigid = GetComponent<Rigidbody>();
     }
 	
@@ -87,11 +101,18 @@ public class SonicMove : MonoBehaviour {
 
                     jump_sound.Play();
                 }
+<<<<<<< HEAD
                 else if (Input.GetKeyDown(KeyCode.B) && transform.position.y < 1.2)
                 {
                     anim.SetTrigger("isJumping");
                     rigid.AddForce(transform.up * 50000.0f);
 
+=======
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    anim.SetTrigger("isJumping");
+                    rigid.AddForce(transform.up * 18000.0f);
+>>>>>>> d3dfe028790c50ca31b2b612d7efabd9cf03227b
                     jump_sound.Play();
                 }
                 else {
@@ -124,12 +145,16 @@ public class SonicMove : MonoBehaviour {
         {
             AudioSource audio = GetComponent<AudioSource>();
             audio.PlayOneShot(auGetHeart);
+<<<<<<< HEAD
 
             addHPStart = Time.time;
 
             if (!shingshing.isPlaying)
                 shingshing.Play();
 
+=======
+            
+>>>>>>> d3dfe028790c50ca31b2b612d7efabd9cf03227b
             if (cur_Health >= 80f)
             {
                 cur_Health = 100.0f;
@@ -152,6 +177,7 @@ public class SonicMove : MonoBehaviour {
                 cur_Health -= 10f;
             }
         }
+<<<<<<< HEAD
 
         if (collision.gameObject.tag == "Coin")
         {
@@ -163,6 +189,8 @@ public class SonicMove : MonoBehaviour {
             Destroy(collision.gameObject);
             UnityEngine.SceneManagement.SceneManager.LoadScene("ViviLevel2");
         }
+=======
+>>>>>>> d3dfe028790c50ca31b2b612d7efabd9cf03227b
     }
 
     void decreasehealth() {

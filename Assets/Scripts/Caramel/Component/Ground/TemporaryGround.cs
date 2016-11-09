@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(MeshCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class TemporaryGround : MonoBehaviour
 {
     void Awake()
     {
-        bc = GetComponent<BoxCollider>();
+        mc = GetComponent<MeshCollider>();
         rb = GetComponent<Rigidbody>();
     }
 
     public void Falling()
     {
-        bc.isTrigger = true;
+        mc.convex = true;
+        mc.isTrigger = true;
         rb.useGravity = true;
+        rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
     }
 
@@ -28,6 +30,6 @@ public class TemporaryGround : MonoBehaviour
         }
     }
 
-    BoxCollider bc;
+    MeshCollider mc;
     Rigidbody rb;
 }
