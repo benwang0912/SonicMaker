@@ -18,7 +18,7 @@ public class Dropping_Floor : MonoBehaviour {
 	void Update () {
         if (test == true) {
 
-            if (floor_xpos - Sonic.transform.position.x < 20 || transform.position.y> -20) {
+            if (floor_xpos - Sonic.transform.position.x < 7 && transform.position.y> -20) {
                 transform.position -= 5.0f * new Vector3(0, 1, 0) * Time.deltaTime;
             }
 

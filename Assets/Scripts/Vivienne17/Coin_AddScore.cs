@@ -13,12 +13,25 @@ public class Coin_AddScore : MonoBehaviour {
 	
 	}
 
-    void OnCollisionEnter(Collision collision)
+  /*  void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "Sonic")
         {
             Destroy(this.gameObject);
             GameFunction.Instance.AddScore();
+        }
+    }*/
+
+    void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.name == "Sonic" || collision.gameObject.tag == "Shield")
+        {
+            Destroy(this.gameObject);
+           // GameFunction.Instance.AddScore();
+        }
+        if (collision.gameObject.tag == "Shield")
+        {
+            Destroy(this.gameObject);
         }
     }
 }
