@@ -5,7 +5,7 @@ public class Rolling : MonoBehaviour
 {
     //in the Rolling Ball
 
-    public float QuickRollingSpeed, SlowRollingSpeed, RollingPower, JumpForce, WalkSpeed, Vibration, SpringForce;
+    public float QuickRollingSpeed, SlowRollingSpeed, JumpForce, WalkSpeed, Vibration, SpringForce;
     public UILabel time, coins;
     public GameObject sonic;
     
@@ -70,7 +70,7 @@ public class Rolling : MonoBehaviour
         rollingspeed = SlowRollingSpeed;
         isvibration = false;
 
-        rb.AddForce(movingdirection * RollingPower);
+        rb.velocity = RollingSpeed * movingdirection;
     }
 
     public void JumpRolling(Vector3 v)
@@ -122,9 +122,13 @@ public class Rolling : MonoBehaviour
                 Vector3 normal = groundrch.normal;
 
                 float y = -(normal.x * facedirection) / normal.y;
-                //movingdirection = new Vector3(facedirection, y);
-                movingdirection = Vector3.right;
+                movingdirection = new Vector3(facedirection, y);
+                //movingdirection = Vector3.right;
                 isground = true;
+                if(Game.sonicstate == GameConstants.SonicState.ROLLING && rb.velocity.normalized != movingdirection)
+                {
+                    rb.velocity = rb.velocity.magnitude * movingdirection;
+                }
             }
             else
             {
@@ -214,7 +218,7 @@ public class Rolling : MonoBehaviour
         }
     }
 
-    public float BackX, BackY;
+    public float BackX, BackY, RollingSpeed;
 
     Vector3 rolling = new Vector3(0f, 90f, 0f), movingdirection;
     Material material;

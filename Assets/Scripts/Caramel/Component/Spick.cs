@@ -21,9 +21,6 @@ public class Spick : MonoBehaviour
 
             GameObject cg = collision.gameObject;
 
-            Debug.Log("x = " + collision.contacts[0].point.x + " y = " + collision.contacts[0].point.y);
-            Debug.Log(transform.position);
-
             switch (Direction)
             {
                 case Directions.Up:

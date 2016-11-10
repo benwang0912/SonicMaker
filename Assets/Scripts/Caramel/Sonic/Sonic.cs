@@ -138,7 +138,6 @@ public class Sonic : MonoBehaviour
         skin1.material.color = ocskin1;
         skin2.material.color = ocskin2;
         hurting = false;
-        Debug.Log("false");
     }
     
     void SetMovingSpeed()
