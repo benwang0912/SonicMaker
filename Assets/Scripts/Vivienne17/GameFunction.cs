@@ -178,7 +178,7 @@ public class GameFunction : MonoBehaviour {
 
     public void RestartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Vivienne");
     }
 
     public void EnterTheName()

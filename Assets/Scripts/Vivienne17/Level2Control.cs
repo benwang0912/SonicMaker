@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.IO;
+using System.Text;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 public class Level2Control : MonoBehaviour
 {
@@ -34,7 +39,7 @@ public class Level2Control : MonoBehaviour
     public GameObject Enter;
     public Text NewName;
 
-    public bool isPlaying = false;
+    public bool isPlaying = true;
     public bool startPlay = true;
 
     public bool firstTime = true;
@@ -45,23 +50,27 @@ public class Level2Control : MonoBehaviour
         Instance = this;
 
         GameOver.SetActive(false);
-  //      Count_Down.SetActive(false);
+        //      Count_Down.SetActive(false);
         StopButton.SetActive(false);
         Help_image.SetActive(false);
         Pause_Image.SetActive(false);
         Restart_Button.SetActive(false);
         HelpButton2.SetActive(false);
         CloseButton2.SetActive(false);
-  //      CloseButton.SetActive(false);
+        //      CloseButton.SetActive(false);
         Restart_Button2.SetActive(false);
-  //      HelpButton.SetActive(true);
-  //      PlayButton.SetActive(true);
-  //      StartImage.SetActive(true);
-  //      LeaderBoardEntry1.SetActive(true);
-  //      LeaderBoardEntry2.SetActive(true);
-  //      LeaderBoardEntry3.SetActive(true);
-    }
+        //      HelpButton.SetActive(true);
+        //      PlayButton.SetActive(true);
+        //      StartImage.SetActive(true);
+        //      LeaderBoardEntry1.SetActive(true);
+        //      LeaderBoardEntry2.SetActive(true);
+        //      LeaderBoardEntry3.SetActive(true);
 
+        string line;
+        StreamReader theReader = new StreamReader(Application.dataPath + "/Scripts/Vivienne17/scorefile.txt", Encoding.Default);
+        line = theReader.ReadLine();
+        Score = Convert.ToInt32(line);
+    }
     // Update is called once per frame
     void Update()
     {

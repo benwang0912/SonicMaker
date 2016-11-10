@@ -47,19 +47,19 @@ public class SonicMove2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameFunction.Instance.isPlaying == true)
-        {
+      //  if (GameFunction.Instance.isPlaying == true)
+      //  {
             AudioSource audio = GetComponent<AudioSource>();
             if (!audio.isPlaying)
             {
                 audio.PlayOneShot(auPlayingGame, 0.25f);
             }
 
-            if (SonicRun == false)
+     /*       if (SonicRun == false)
             {
                 anim.SetTrigger("isPlaying");
                 SonicRun = true;
-            }
+            }*/
             // anim.SetTrigger("isPlaying");
             //decrease HP, run, jump, throw balls
             if (Died == false)//determine if the game is over
@@ -72,7 +72,7 @@ public class SonicMove2 : MonoBehaviour
                 //decrease the health bar once a second
                 if (time > 1f && time < 2f)
                 {
-                    decreasehealth();
+             //       decreasehealth();
                     time = 0;//reset the time
                 }
                 //if he drop, he'll die
@@ -83,42 +83,56 @@ public class SonicMove2 : MonoBehaviour
                     Level2Control.Instance.OverGame();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Space) && transform.position.y < 1.2)
-                {
-                    anim.SetTrigger("isJumping");
-                    rigid.AddForce(transform.up * 35000.0f);
+            if (Input.GetKeyDown(KeyCode.Space) && transform.position.y < 1.2)
+            {
+                anim.SetTrigger("isJumping");
+                rigid.AddForce(transform.up * 35000.0f);
 
-                    jump_sound.Play();
-                }
-                else if (Input.GetKeyDown(KeyCode.B) && transform.position.y < 1.2)
-                {
-                    anim.SetTrigger("isJumping");
-                    rigid.AddForce(transform.up * 50000.0f);
-
-                    jump_sound.Play();
-                }
-                else {
-                    transform.position += 7.0f * new Vector3(1, 0, 0) * Time.deltaTime;
-                }
-                /*              if (Input.GetKeyDown(KeyCode.V))
-                              {
-                                  GameObject newball = Instantiate(ball);
-                                  Destroy(newball, 4);
-                              }*/
-                if (Input.GetKeyDown(KeyCode.C) && field_times > 0)
-                {
-                    field_times = field_times - 1;
-                    GameObject newShield = Instantiate(shield);
-                    Destroy(newShield, 4);
-                }
+                jump_sound.Play();
             }
+            else if (Input.GetKeyDown(KeyCode.B) && transform.position.y < 1.2)
+            {
+                anim.SetTrigger("isJumping");
+                rigid.AddForce(transform.up * 50000.0f);
+
+                jump_sound.Play();
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                anim.SetTrigger("isPlaying");
+                transform.position += 7.0f * new Vector3(1, 0, 0) * Time.deltaTime;
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                anim.SetTrigger("isPlaying");
+                transform.position -= 7.0f * new Vector3(1, 0, 0) * Time.deltaTime;
+            }
+            else {
+                anim.SetTrigger("isIdling");
+            }
+            /* stop auto moving 
+               else {
+                  transform.position += 7.0f * new Vector3(1, 0, 0) * Time.deltaTime;
+              }*/
+            /*              if (Input.GetKeyDown(KeyCode.V))
+                          {
+                              GameObject newball = Instantiate(ball);
+                              Destroy(newball, 4);
+                          }*/
+            /*             if (Input.GetKeyDown(KeyCode.C) && field_times > 0)
+                         {
+                             field_times = field_times - 1;
+                             GameObject newShield = Instantiate(shield);
+                             Destroy(newShield, 4);
+                         }*/
+        }
             else {
                 if (audio.isPlaying)
                 {
                     audio.Stop();
                 }
             }
-        }
+      //  }
 
     }
 
@@ -134,9 +148,9 @@ public class SonicMove2 : MonoBehaviour
             if (!shingshing.isPlaying)
                 shingshing.Play();
 
-            if (cur_Health >= 80f)
+            if (cur_Health + 20f >= max_Health)
             {
-                cur_Health = 100.0f;
+                cur_Health = max_Health;
             }
             else {
                 cur_Health += 20f;

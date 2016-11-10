@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
+using System.IO;
+using System.Text;
+using UnityEngine.UI;
+using System;
+using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SonicMove : MonoBehaviour {
     private float time;
@@ -127,9 +133,9 @@ public class SonicMove : MonoBehaviour {
             if (!shingshing.isPlaying)
                 shingshing.Play();
 
-            if (cur_Health >= 80f)
+            if (cur_Health + 20f >= max_Health)
             {
-                cur_Health = 100.0f;
+                cur_Health = max_Health;
             }
             else {
                 cur_Health += 20f;
@@ -140,6 +146,8 @@ public class SonicMove : MonoBehaviour {
         {
             AudioSource audio = GetComponent<AudioSource>();
             audio.PlayOneShot(auTheCone);
+
+     //       transform.position -= 50.0f * new Vector3(1, 0, 0) * Time.deltaTime;
 
             if (cur_Health <= 10f)
             {
@@ -158,6 +166,11 @@ public class SonicMove : MonoBehaviour {
         if (collision.gameObject.tag == "Star")
         {
             Destroy(collision.gameObject);
+            FileStream fs = new FileStream(Application.dataPath + "/Scripts/Vivienne17/scorefile.txt", FileMode.Create);
+            StreamWriter theWriter = new StreamWriter(fs);
+
+            theWriter.WriteLine(GameFunction.Instance.Score);
+            theWriter.Close();
             UnityEngine.SceneManagement.SceneManager.LoadScene("ViviLevel2");
         }
     }
