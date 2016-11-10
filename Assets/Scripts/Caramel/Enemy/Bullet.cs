@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     {
         Transform ct = collision.transform;
 
-        switch (ct.name)
+        switch (ct.tag)
         {
             case "Sonic":
                 ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);

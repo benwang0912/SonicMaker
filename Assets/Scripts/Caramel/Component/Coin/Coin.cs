@@ -56,6 +56,7 @@ public class Coin : MonoBehaviour
         switch(collision.transform.tag)
         {
             case "Sonic":
+            case "RollingBall":
                 Destroy(gameObject);
                 ++Game.coins;
                 Game.coinslabel.text = Game.coins.ToString();
