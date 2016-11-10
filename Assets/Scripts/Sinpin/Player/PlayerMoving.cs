@@ -49,6 +49,7 @@ public class PlayerMoving : MonoBehaviour {
     static private UILabel clearTime;
     public float timeCounter = 0;
     static private UILabel clearKD;
+    GameObject continueButton, restartButton;
     private GameObject icon;
     // Use this for initialization
     void Start () {
@@ -70,6 +71,10 @@ public class PlayerMoving : MonoBehaviour {
             clearTime.gameObject.SetActive(false);
             clearKD = GameObject.Find("ClearKD").GetComponent<UILabel>();
             clearKD.gameObject.SetActive(false);
+            continueButton = GameObject.Find("ContinueButton");
+            continueButton.SetActive(false);
+            restartButton = GameObject.Find("RestartButton");
+            restartButton.SetActive(false);
         }
         icon = GameObject.Find("Icon");
 
@@ -300,6 +305,9 @@ public class PlayerMoving : MonoBehaviour {
                     int kill = mouseAiming.enemyKilled;
                     int dead = playerStats.deadTime;
                     clearKD.text = string.Format("K/D : {0:0}/{1:0}", kill, dead);
+
+                    continueButton.SetActive(true);
+                    restartButton.SetActive(true);
                 }
             }
             transform.position += new Vector3(0, 0, 1f) * Time.deltaTime * 5;

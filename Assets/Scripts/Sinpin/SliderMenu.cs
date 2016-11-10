@@ -218,7 +218,7 @@ public class SliderMenu : MonoBehaviour {
         
     }
 
-    public void loadLevel(int index) {
-        SceneManager.LoadScene(index);
+    public void loadLevel(string name) {
+        SceneManager.LoadScene(name);
     }
 }
