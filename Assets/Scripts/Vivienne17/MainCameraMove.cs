@@ -15,12 +15,12 @@ public class MainCameraMove : MonoBehaviour {
         if (SonicMove.Instance.Died == false)
         {
             x = GameObject.Find("Sonic").transform.position.x;
-            transform.position = new Vector3(x + 6, 5f, -10);
+            transform.position = new Vector3(x + 6, 5f, -12);
         }
         else {
             x = GameObject.Find("Sonic").transform.position.x;
             y = GameObject.Find("Sonic").transform.position.y;
-            transform.position = new Vector3(x + 6, y + 4, -10);
+            transform.position = new Vector3(x + 6, y + 4, -12);
         }
 
     }
