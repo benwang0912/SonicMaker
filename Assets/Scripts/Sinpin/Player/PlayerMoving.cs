@@ -109,7 +109,7 @@ public class PlayerMoving : MonoBehaviour {
                     audioSource.Play();
                 }
             }
-            rb.AddForce(transform.up * jumpHeight, ForceMode.Acceleration);
+            rb.AddForce(transform.up * jumpHeight * 2.5f, ForceMode.Impulse);
         }
         
         if (Input.GetKey(KeyCode.RightArrow)|| Input.GetKey(KeyCode.D))
