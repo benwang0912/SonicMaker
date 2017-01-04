@@ -83,6 +83,7 @@ public class Coin : MonoBehaviour
                 break;
 
             case "Sonic":
+            case "RollingBall":
                 Destroy(gameObject);
                 ++Game.coins;
                 Game.coinslabel.text = Game.coins.ToString();

@@ -25,6 +25,7 @@ public class TemporaryGround : MonoBehaviour
         switch(collision.transform.tag)
         {
             case "Sonic":
+            case "RollingBall":
                 transform.parent.GetComponent<PlaneManager>().StartFalling();
                 break;
         }

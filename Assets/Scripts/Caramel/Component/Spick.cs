@@ -29,14 +29,12 @@ public class Spick : MonoBehaviour
                         switch (cg.tag)
                         {
                             case "Sonic":
-                                if (cg.name == "RollingBall")
-                                {
-                                    cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                                    Debug.Log("ball");
-                                }
-
+                                cg.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                                //Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                                break;
+                            case "RollingBall":
+                                cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
                                 Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
-
                                 break;
                         }
                     }

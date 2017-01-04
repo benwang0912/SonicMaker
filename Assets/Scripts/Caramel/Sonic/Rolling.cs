@@ -22,7 +22,7 @@ public class Rolling : MonoBehaviour
 
         Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
-        sonic.transform.localPosition = transform.localPosition - Vector3.up * .2f;
+        sonic.transform.localPosition = transform.localPosition - Vector3.up * .3f;
 
         switch (s)
         {
@@ -90,9 +90,11 @@ public class Rolling : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        /*
         switch (collision.transform.tag)
         {
             case "Ground":
+            case "Spick":
                 if (Game.sonicstate == GameConstants.SonicState.JUMPING && collision.contacts[0].point.y > collision.transform.position.y)
                 {
                     //jumping end
@@ -100,6 +102,7 @@ public class Rolling : MonoBehaviour
                 }
                 return;
         }
+        */
     }
     
     void Update ()
@@ -118,6 +121,12 @@ public class Rolling : MonoBehaviour
         {
             if (groundrch.distance < 1f)
             {
+                if(rb.velocity.magnitude < 1 && Game.sonicstate != GameConstants.SonicState.TOROLL)
+                {
+                    ChangeToSonic(GameConstants.SonicState.NORMAL);
+                    return;
+                }
+
                 //to calculate the movingdirection
                 Vector3 normal = groundrch.normal;
 
@@ -191,11 +200,13 @@ public class Rolling : MonoBehaviour
                 if (Input.GetAxis("Horizontal") > 0f && facedirection != 1f)
                 {
                     //face left => add right force
+                    Debug.Log("???");
                     rb.AddForce(Vector3.right * WalkSpeed);
                 }
                 else if (Input.GetAxis("Horizontal") < 0f && facedirection == 1f)
                 {
                     //face right => add left force
+                    Debug.Log("???");
                     rb.AddForce(Vector3.left * WalkSpeed);
                 }
 

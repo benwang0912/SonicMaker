@@ -29,7 +29,7 @@ public class Top : MonoBehaviour
     {
         switch (collision.transform.tag)
         {
-            case "Sonic":
+            case "RollingBall":
                 if(!start && collision.contacts[0].point.y > transform.position.y + 1f)
                 {
                     start = true;
@@ -38,10 +38,7 @@ public class Top : MonoBehaviour
                     if(stage != null)
                         Destroy(stage.gameObject);
 
-                    if (collision.transform.name == "RollingBall")
-                    {
-                        collision.transform.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                    }
+                    collision.transform.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
 
                     Game.sonic.GetComponent<Sonic>().Ontop();
                     Game.sonic.GetComponent<Sonic>().GetHurt += hurt;
