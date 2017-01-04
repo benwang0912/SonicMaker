@@ -30,6 +30,7 @@ public class UIHandler : MonoBehaviour {
     }
 
     public void backToMenu() {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 

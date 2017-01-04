@@ -29,15 +29,16 @@ public class BossAI : MonoBehaviour
         Camera.isMoving = false;
 
         //to active the block wall
-        Block0.SetActive(true);
-        Block1.SetActive(true);
+        BlockLeft.SetActive(true);
+        BlockRight.SetActive(true);
+        BlockUp.SetActive(true);
     }
 
     void OnCollisionEnter(Collision collision)
     {
         Transform ct = collision.transform;
 
-        switch (ct.name)
+        switch (ct.tag)
         {
             case "Sonic":
                 ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
@@ -72,14 +73,56 @@ public class BossAI : MonoBehaviour
 
                 ct.GetComponent<Rolling>().JumpBack(collision.relativeVelocity);
                 break;
+
+            case "BlockUp":
+                {
+                    switch(bam)
+                    {
+                        case BossAttacMode.Far:
+                            SetDirection(Vector3.down);
+                            break;
+                        case BossAttacMode.Near:
+                            //StartCoroutine("NearAttack");
+                            SetDirection(Vector3.down);
+                            break;
+                    }
+                }
+                break;
+
+            case "Ground":
+                {
+                    switch (bam)
+                    {
+                        case BossAttacMode.Far:
+                            SetDirection(Vector3.up);
+                            break;
+                        case BossAttacMode.Near:
+                            SetDirection(Vector3.up);
+                            //SetDirection(new Vector3(GetDirection().x, -GetDirection().y));
+                            break;
+                    }
+                }
+                break;
+
+            case "BlockLeft":
+                break;
+            case "BlockRight":
+                break;
         }
     }
 
     void Endding()
     {
-        Block0.SetActive(false);
-        Block1.SetActive(false);
+        BlockLeft.SetActive(false);
+        BlockRight.SetActive(false);
+        BlockUp.SetActive(false);
         Camera.isMoving = true;
+    }
+
+    void Turn()
+    {
+        shootDirectioin = -shootDirectioin;
+        transform.localRotation = Quaternion.Euler(-transform.localRotation.eulerAngles);
     }
 
     IEnumerator Shoot()
@@ -90,57 +133,43 @@ public class BossAI : MonoBehaviour
 
             newBullet.parent = transform;
             newBullet.localScale = Bullet.localScale;
-            newBullet.localPosition = BulletInitialPosition;
-            newBullet.GetComponent<Rigidbody>().AddForce(ShootForce * ShootDirectioin);
+            newBullet.localPosition = bulletInitialPosition;
+            newBullet.GetComponent<Rigidbody>().velocity = ShootSpeed * shootDirectioin;
             Destroy(newBullet.gameObject, BulletDisappearTime);
 
             yield return shootInterval;
         }
     }
-    
+
+    IEnumerator NearAttack()
+    {
+        Vector3 sonicPosition = sonic.position;
+        yield return new WaitForSeconds(1f);
+
+        SetDirection((sonicPosition - transform.position));
+    }
+
+
     void Update ()
     {
 	    if(active)
         {
-            switch(bs)
+            float d = sonic.position.x - transform.position.x;
+            switch (bs)
             {
                 case BossState.Normal:
-                    if (Mathf.Abs(transform.position.x - sonic.position.x) >= 5f)
-                    {
-                        SetBam(BossAttacMode.Far);
-                        SetDirection(transform.position.y > UpperBound ? Vector3.down : transform.position.y < LowerBound ? Vector3.up : direction);
-                    }
-                    else
-                    {
-                        SetBam(BossAttacMode.Near);
-                        SetDirection(transform.position.y > UpperBound ? Vector3.down : transform.position.y < LowerBound ? Vector3.up : direction);
-                    }
+                    SetIsFaceRight(d > 0f);
+                    SetBam(Mathf.Abs(d) >= 10f ? BossAttacMode.Far : BossAttacMode.Near);
                     break;
 
                 case BossState.Anger:
-                    if (Mathf.Abs(transform.position.x - sonic.position.x) >= 5f)
-                    {
-                        SetBam(BossAttacMode.Far);
-                        SetDirection(transform.position.y > UpperBound ? Vector3.down : transform.position.y < LowerBound ? Vector3.up : direction);
-                    }
-                    else
-                    {
-                        SetBam(BossAttacMode.Near);
-                        SetDirection(transform.position.y > UpperBound ? Vector3.down : transform.position.y < LowerBound ? Vector3.up : direction);
-                    }
+                    SetIsFaceRight(d > 0f);
+                    SetBam(Mathf.Abs(d) >= 10f ? BossAttacMode.Far : BossAttacMode.Near);
                     break;
 
                 case BossState.Fury:
-                    if (Mathf.Abs(transform.position.x - sonic.position.x) >= 5f)
-                    {
-                        SetBam(BossAttacMode.Far);
-                        SetDirection(transform.position.y > UpperBound ? Vector3.down : transform.position.y < LowerBound ? Vector3.up : direction);
-                    }
-                    else
-                    {
-                        SetBam(BossAttacMode.Near);
-                        SetDirection(transform.position.y > UpperBound ? Vector3.down : transform.position.y < LowerBound ? Vector3.up : direction);
-                    }
+                    SetIsFaceRight(d > 0f);
+                    SetBam(Mathf.Abs(d) >= 10f ? BossAttacMode.Far : BossAttacMode.Near);
                     break;
                 default:
 #if UNITY_EDITOR
@@ -148,21 +177,15 @@ public class BossAI : MonoBehaviour
 #endif
                     break;
             }
-
-            if(rb.velocity.normalized != GetDirection())
-            {
-                rb.velocity = MovingSpeed * GetDirection();
-            }
         }
 	}
 
     public CameraMoving Camera;
-    public GameObject Block0, Block1;
+    public GameObject BlockLeft, BlockRight, BlockUp;
     public Transform Bullet;
-    public float MovingSpeed, UpperBound, LowerBound;
-
-    public Vector3 ShootDirectioin, BulletInitialPosition;
-    public float ShootForce, BulletDisappearTime, ShootInterval;
+    public float MovingSpeed;
+    
+    public float ShootSpeed, BulletDisappearTime, ShootInterval;
 
     enum BossState
     {
@@ -208,9 +231,26 @@ public class BossAI : MonoBehaviour
                         case BossAttacMode.Far:
                             StartCoroutine("Shoot");
                             break;
+
+                        case BossAttacMode.Near:
+                            SetDirection(Vector3.up);
+                            //StartCoroutine("NearAttack");
+                            break;
                     }
                     break;
             }
+        }
+    }
+
+    bool GetIsFaceRight() { return isFaceRight; }
+    void SetIsFaceRight(bool b)
+    {
+        bool old = isFaceRight;
+        if(old != b)
+        {
+            //on changed
+            isFaceRight = b;
+            Turn();
         }
     }
 
@@ -219,8 +259,9 @@ public class BossAI : MonoBehaviour
     Transform sonic, rollingBall;
     WaitForSeconds shootInterval;
     Vector3 direction = Vector3.zero;
+    Vector3 shootDirectioin = Vector3.left, bulletInitialPosition = new Vector3(0f, .1f, .1f);
     BossState bs = BossState.Normal;
     BossAttacMode bam = BossAttacMode.Near;
-    int health = 10;
-    bool active = false;
+    int health = 5;
+    bool active = false, isFaceRight = false;
 }

@@ -1,0 +1,151 @@
+fileFormatVersion: 2
+guid: 104b61d7a49465040ad49ffbcbd574e3
+timeCreated: 1475078953
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: antenka_leva
+    100004: antenka_prava
+    100006: Armature
+    100008: Back
+    100010: Camera
+    100012: hlava
+    100014: hlava 1
+    100016: hlava_end
+    100018: Lamp
+    100020: noha_leva
+    100022: noha_leva 1
+    100024: noha_leva_end
+    100026: noha_prava
+    100028: noha_prava 1
+    100030: noha_prava_end
+    100032: oko_leva
+    100034: oko_prava
+    100036: ruka_leva
+    100038: ruka_leva 1
+    100040: ruka_leva_end
+    100042: ruka_prava
+    100044: ruka_prava 1
+    100046: ruka_prava_end
+    100048: telo
+    400000: //RootNode
+    400002: antenka_leva
+    400004: antenka_prava
+    400006: Armature
+    400008: Back
+    400010: Camera
+    400012: hlava
+    400014: hlava 1
+    400016: hlava_end
+    400018: Lamp
+    400020: noha_leva
+    400022: noha_leva 1
+    400024: noha_leva_end
+    400026: noha_prava
+    400028: noha_prava 1
+    400030: noha_prava_end
+    400032: oko_leva
+    400034: oko_prava
+    400036: ruka_leva
+    400038: ruka_leva 1
+    400040: ruka_leva_end
+    400042: ruka_prava
+    400044: ruka_prava 1
+    400046: ruka_prava_end
+    400048: telo
+    2300000: antenka_leva
+    2300002: antenka_prava
+    2300004: hlava 1
+    2300006: noha_leva 1
+    2300008: noha_prava 1
+    2300010: oko_leva
+    2300012: oko_prava
+    2300014: ruka_leva 1
+    2300016: ruka_prava 1
+    2300018: telo
+    3300000: antenka_leva
+    3300002: antenka_prava
+    3300004: hlava 1
+    3300006: noha_leva 1
+    3300008: noha_prava 1
+    3300010: oko_leva
+    3300012: oko_prava
+    3300014: ruka_leva 1
+    3300016: ruka_prava 1
+    3300018: telo
+    4300000: telo
+    4300002: hlava
+    4300004: antenka_prava
+    4300006: antenka_leva
+    4300008: oko_prava
+    4300010: oko_leva
+    4300012: ruka_leva
+    4300014: ruka_prava
+    4300016: noha_leva
+    4300018: noha_prava
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
