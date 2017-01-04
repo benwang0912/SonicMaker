@@ -1,1 +1,0 @@
-It is only for icelynn to store the scripts he need
