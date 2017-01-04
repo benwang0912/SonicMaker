@@ -5,13 +5,13 @@ public class Force_Field : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+        transform.position = GameObject.Find("Sonic").transform.position;
+        transform.position += new Vector3(-2, 20, 0) * 0.1f;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = GameObject.Find("Sonic").transform.position;
-        transform.position += 2.0f * new Vector3(0, 1, 0);
+        transform.position = GameObject.Find("Sonic").transform.position + new Vector3(-2, 20, 0) * 0.1f;
     }
 
     void OnTriggerEnter(Collider collision)
@@ -35,8 +35,9 @@ public class Force_Field : MonoBehaviour {
             }
         }
 
-        if (collision.gameObject.name == "cone1_fbx")
+        if (collision.gameObject.tag == "Cone")
         {
+            Destroy(collision.gameObject);
             /*AudioSource audio = GetComponent<AudioSource>();
             audio.PlayOneShot(auTheCone);
 

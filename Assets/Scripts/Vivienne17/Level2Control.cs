@@ -30,9 +30,10 @@ public class Level2Control : MonoBehaviour
     public GameObject HelpButton2;
     public GameObject CloseButton2;
     public GameObject Help_image;
- //   public GameObject CloseButton;
+    public GameObject CloseButton;
     public GameObject Restart_Button2;
     public GameObject InputName;
+    public GameObject MissionClear;
  //   public GameObject LeaderBoardEntry1;
  //   public GameObject LeaderBoardEntry2;
  //   public GameObject LeaderBoardEntry3;
@@ -57,8 +58,9 @@ public class Level2Control : MonoBehaviour
         Restart_Button.SetActive(false);
         HelpButton2.SetActive(false);
         CloseButton2.SetActive(false);
-        //      CloseButton.SetActive(false);
+        CloseButton.SetActive(false);
         Restart_Button2.SetActive(false);
+        MissionClear.SetActive(false);
         //      HelpButton.SetActive(true);
         //      PlayButton.SetActive(true);
         //      StartImage.SetActive(true);
@@ -75,48 +77,18 @@ public class Level2Control : MonoBehaviour
     void Update()
     {
         time2 += Time.deltaTime;
-        if (SonicMove2.Instance.Died == false)
+        if (SonicMove2.Instance.Died == true)
         {
-            if (time2 > 0.5f && time2 < 1f)
+            GameOver.SetActive(true);
+           /* if (time2 > 0.5f && time2 < 1f)
             {
                 AddScore(5);
                 time2 = 0;
-            }
+            }*/
         }
-        else {
-            GameOver.SetActive(true);
-        }
-        /* if (startPlay == true)
-         {
-             time += Time.deltaTime;
-             if (time >= 4.0f && firstTime == true)
-             {
-                 time2 += Time.deltaTime;
-                 isPlaying = true;
-                 firstTime = false;
-                 if (SonicMove2.Instance.Died == false)
-                 {
-                     if (time2 > 0.5f && time2 < 1f)
-                     {
-                         AddScore(5);
-                         time2 = 0;
-                     }
-                 }
-                 else {
-                     GameOver.SetActive(true);
-                 }
-             }
-             if (firstTime == false && SonicMove2.Instance.Died == false)
-             {
-                 time2 += Time.deltaTime;
-                 if (time2 > 0.5f && time2 < 1f)
-                 {
-                     AddScore(5);
-                     time2 = 0;
-                 }
-             }
-         }*/
-
+        //else {
+          //  GameOver.SetActive(true);
+        //}
     }
 
     public void AddScore(int num)
@@ -125,34 +97,25 @@ public class Level2Control : MonoBehaviour
         ScoreText.text = Score.ToString();
     }
 
-    public void StartGame()
+ /*   public void StartGame()
     {
         startPlay = true;
-
- //       Count_Down.SetActive(true);
         StopButton.SetActive(true);
- //       HelpButton.SetActive(false);
- //       PlayButton.SetActive(false);
- //       StartImage.SetActive(false);
- //       LeaderBoardEntry1.SetActive(false);
- //       LeaderBoardEntry2.SetActive(false);
- //       LeaderBoardEntry3.SetActive(false);
+    }*/
 
-    }
-
-  /*  public void TutorialOn()
+    public void TutorialOn()
     {
         Help_image.SetActive(true);
-     //   CloseButton.SetActive(true);
+        CloseButton.SetActive(true);
         /*   PlayButton.SetActive(false);
            HelpButton.SetActive(false);
            Restart_Button.SetActive(false);
            StopButton.SetActive(false);
            CloseButton2.SetActive(false);
            HelpButton2.SetActive(false);
-           Pause_Image.SetActive(false);
+           Pause_Image.SetActive(false);*/
         StopButton.SetActive(false);
-    }*/
+    }
 
  /*    public void TutorialOff()
     {
@@ -166,7 +129,7 @@ public class Level2Control : MonoBehaviour
     public void TutorialOff2()
     {
         Help_image.SetActive(false);
- //       CloseButton.SetActive(false);
+        CloseButton.SetActive(false);
         Restart_Button.SetActive(true);
         StopButton.SetActive(true);
         CloseButton2.SetActive(true);
@@ -204,10 +167,19 @@ public class Level2Control : MonoBehaviour
         LeaderBoard.Instance.sortTheBoard();
     }
 
-    public void RestartGame()
+    public void Finish()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("ViviLevel2");
+        MissionClear.SetActive(true);
+        Restart_Button2.SetActive(true);
+        InputName.SetActive(true);
+        Enter.SetActive(true);
+  //      LeaderBoard.Instance.sortTheBoard();
     }
+
+    /*   public void RestartGame()
+       {
+           UnityEngine.SceneManagement.SceneManager.LoadScene("ViviLevel2");
+       }*/
 
     public void EnterTheName()
     {

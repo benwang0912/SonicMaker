@@ -8,17 +8,15 @@ public class Clone_SubLife : MonoBehaviour {
 	void Start () {
  //       xPos = transform.position.x;
     }
-	
-	// Update is called once per frame
 
-/*    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.name == "Sonic")
-        {
-            
-            Destroy(this.gameObject);
+    // Update is called once per frame
+    void Update() {
+        if (SonicMove2.Instance.shieldOn == true) {
+            if (transform.position.x - SonicMove2.Instance.Sonic.transform.position.x < 3 && transform.position.x - SonicMove2.Instance.Sonic.transform.position.x > -3) {
+                Destroy(this.gameObject);
+            }
         }
-    }*/
+    }
 
     void OnTriggerEnter(Collider collision)
     {
