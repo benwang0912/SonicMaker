@@ -3,14 +3,11 @@ using System.Collections;
 
 public class ClearMove : MonoBehaviour {
 
-    private float this_xpos, this_ypos;
     private float x_distance, y_distance;
     public GameObject Sonic;
 
 	// Use this for initialization
 	void Start () {
-        this_xpos = transform.position.x;
-        this_ypos = transform.position.y;
         Sonic = GameObject.Find("Sonic");
     }
 	

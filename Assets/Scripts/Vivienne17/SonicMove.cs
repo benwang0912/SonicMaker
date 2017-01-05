@@ -115,7 +115,7 @@ public class SonicMove : MonoBehaviour {
                 else if (Input.GetKeyDown(KeyCode.Space) && transform.position.y < 1.2)
                 {
                     anim.SetTrigger("isJumping");
-                    rigid.AddForce(transform.up * 35000.0f);
+                    rigid.AddForce(transform.up * 40000.0f);
                     jump_sound.Play();
                 }
                 else if (anim.GetCurrentAnimatorStateInfo(0).fullPathHash != tripState) {

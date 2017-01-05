@@ -4,7 +4,6 @@ using System.Collections;
 public class BallMove : MonoBehaviour {
 
     float xSpeed = 4.0f;
-    float ySpeed = 2.4f;
     float xPos;
     private GameObject Sonic;
 	// Use this for initialization
