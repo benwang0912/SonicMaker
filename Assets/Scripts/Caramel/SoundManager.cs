@@ -36,7 +36,6 @@ public class SoundManager : MonoBehaviour {
 
     public void PlaySoundEffectSource(AudioClip clip)
     {
-        Debug.Log("enter");
         float randomPitch = UnityEngine.Random.Range(LowPitchRange, HighPitchRange);
         SoundEffectSource.pitch = randomPitch;
         SoundEffectSource.clip = clip;

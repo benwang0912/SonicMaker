@@ -9,7 +9,7 @@ public class Sonic : MonoBehaviour
     //in the Sonic
 
     public Vector3 ontopccenter = new Vector3(0f, .8f, 0f);
-    public float ontopcheight, ontopcradius, scheight, walkspeed, hurtxv, hurtyv;
+    public float ontopcheight, ontopcradius, scheight, walkspeed, hurtxv, hurtyv, AddedGravity;
     public UILabel time, coins;
     public GameObject rollingball;
     public Action<Vector3> GetHurt;
@@ -197,6 +197,9 @@ public class Sonic : MonoBehaviour
 
     void Update()
     {
+        //to add gravity
+        rb.AddForce(AddedGravity * Vector3.down);
+
         //falling
         if (transform.localPosition.y < -10.0f)
             GameOver();

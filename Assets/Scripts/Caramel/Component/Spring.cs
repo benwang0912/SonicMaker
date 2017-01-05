@@ -13,7 +13,7 @@ public class Spring : MonoBehaviour
     }
 
     public SpringMode sm;
-    public float UDVelocity = 30f, RLVelocity = 30f;
+    public static float UDVelocity = 50f, RLVelocity = 50f;
     
     void Awake()
     {
@@ -35,6 +35,7 @@ public class Spring : MonoBehaviour
                 if (active = collision.contacts[0].point.y - transform.position.y > surface)
                 {
                     collision.rigidbody.velocity = UDVelocity * Vector3.up;
+                    Debug.Log("up");
                 }
 
                 break;
@@ -43,6 +44,7 @@ public class Spring : MonoBehaviour
                 if(active = collision.contacts[0].point.x - transform.position.x > surface)
                 {
                     collision.rigidbody.velocity = RLVelocity * Vector3.right;
+                    Debug.Log("right");
                 }
 
                 break;
@@ -51,6 +53,7 @@ public class Spring : MonoBehaviour
                 if (active = collision.contacts[0].point.y - transform.position.y < surface)
                 {
                     collision.rigidbody.velocity = UDVelocity * Vector3.down;
+                    Debug.Log("down");
                 }
                 break;
 
@@ -58,6 +61,7 @@ public class Spring : MonoBehaviour
                 if (active = collision.contacts[0].point.x - transform.position.x < surface)
                 {
                     collision.rigidbody.velocity = RLVelocity * Vector3.left;
+                    Debug.Log("left");
                 }
 
                 break;

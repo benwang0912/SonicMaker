@@ -5,7 +5,7 @@ public class Rolling : MonoBehaviour
 {
     //in the Rolling Ball
 
-    public float QuickRollingSpeed, SlowRollingSpeed, JumpForce, WalkSpeed, Vibration, SpringForce;
+    public float QuickRollingSpeed, SlowRollingSpeed, JumpForce, WalkSpeed, Vibration, SpringForce, AddedGravity;
     public UILabel time, coins;
     public GameObject sonic;
     
@@ -108,6 +108,9 @@ public class Rolling : MonoBehaviour
     
     void Update ()
     {
+        //to add gravity
+        rb.AddForce(AddedGravity * Vector3.down);
+
         //falling
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
@@ -120,7 +123,7 @@ public class Rolling : MonoBehaviour
         groundray = new Ray(transform.position, Vector3.down);
         if (Physics.Raycast(groundray, out groundrch))
         {
-            if (groundrch.distance < 1f)
+            if (groundrch.transform.tag == "Ground" && groundrch.distance < 1f)
             {
                 if(rb.velocity.magnitude < 1 && Game.sonicstate != GameConstants.SonicState.TOROLL)
                 {
