@@ -42,27 +42,35 @@ public class BossAI : MonoBehaviour
         {
             case "Sonic":
                 ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                if (nearPrepare)
+                {
+                    Vector3 dir = GetDirection();
+                    dir = new Vector3(dir.x, -dir.y, dir.z);
+                    SetDirection(dir);
+                    nearPrepare = false;
+                }
+
+                if (Game.sonicstate == GameConstants.SonicState.DEAD)
+                {
+                    Game.CongratulationsLabel.text = "DEAD!!!!";
+                    Game.CongratulationsLabel.gameObject.SetActive(true);
+                    Game.CongratulationsLabel.GetComponent<TweenScale>().enabled = true;
+                }
                 break;
             case "RollingBall":
                 SoundManager.instance.PlaySoundEffectSource(GameConstants.AttackSoundEffect);
-                if (--health >= 7 && bs != BossState.Normal)
+                if (--health >= 3 && bs != BossState.Normal)
                 {
                     //to change bs to normal
                     bs = BossState.Normal;
                     rb.velocity = MovingSpeed * GetDirection();
                 }
-                else if(health >= 4 && bs != BossState.Anger)
+                else if(health >= 1 && bs != BossState.Anger)
                 {
                     //to change bs to anger
                     bs = BossState.Anger;
+                    MovingSpeed *= 2;
                     rb.velocity = MovingSpeed * GetDirection();
-                }
-                else if(health >= 1 && bs != BossState.Fury)
-                {
-                    //to change bs to fury
-                    bs = BossState.Fury;
-                    rb.velocity = MovingSpeed * GetDirection();
-                    //to change to red?
                 }
                 else if(health <= 0 && bs != BossState.Death)
                 {
@@ -72,6 +80,7 @@ public class BossAI : MonoBehaviour
                     Destroy(gameObject);
                 }
 
+                SetDirection(1.5f * Vector3.up);
                 ct.GetComponent<Rolling>().JumpBack(collision.relativeVelocity);
                 break;
 
@@ -80,11 +89,11 @@ public class BossAI : MonoBehaviour
                     switch(bam)
                     {
                         case BossAttacMode.Far:
+                            Debug.Log("down");
                             SetDirection(Vector3.down);
                             break;
                         case BossAttacMode.Near:
-                            //StartCoroutine("NearAttack");
-                            SetDirection(Vector3.down);
+                            StartCoroutine("NearAttack");
                             break;
                     }
                 }
@@ -98,7 +107,19 @@ public class BossAI : MonoBehaviour
                             SetDirection(Vector3.up);
                             break;
                         case BossAttacMode.Near:
-                            SetDirection(Vector3.up);
+                            if(nearPrepare)
+                            {
+                                Vector3 dir = GetDirection();
+                                dir = new Vector3(dir.x, -dir.y, dir.z);
+                                SetDirection(dir);
+                                nearPrepare = false;
+                            }
+                            else
+                            {
+                                SetDirection(Vector3.up);
+                            }
+
+                            //SetDirection(Vector3.up);
                             //SetDirection(new Vector3(GetDirection().x, -GetDirection().y));
                             break;
                     }
@@ -117,7 +138,10 @@ public class BossAI : MonoBehaviour
         BlockLeft.SetActive(false);
         BlockRight.SetActive(false);
         BlockUp.SetActive(false);
-        Camera.isMoving = true;
+        //Camera.isMoving = true;
+
+        Game.CongratulationsLabel.gameObject.SetActive(true);
+        Game.CongratulationsLabel.gameObject.GetComponent<TweenScale>().enabled = true;
     }
 
     void Turn()
@@ -145,9 +169,9 @@ public class BossAI : MonoBehaviour
     IEnumerator NearAttack()
     {
         Vector3 sonicPosition = sonic.position;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
 
-        SetDirection((sonicPosition - transform.position));
+        SetDirection((sonicPosition - transform.position).normalized);
     }
 
 
@@ -167,17 +191,13 @@ public class BossAI : MonoBehaviour
                     SetIsFaceRight(d > 0f);
                     SetBam(Mathf.Abs(d) >= 10f ? BossAttacMode.Far : BossAttacMode.Near);
                     break;
-
-                case BossState.Fury:
-                    SetIsFaceRight(d > 0f);
-                    SetBam(Mathf.Abs(d) >= 10f ? BossAttacMode.Far : BossAttacMode.Near);
-                    break;
                 default:
 #if UNITY_EDITOR
                     Debug.Log("Unexpected");
 #endif
                     break;
             }
+            Debug.Log("bam = " + GetBam());
         }
 	}
 
@@ -192,7 +212,6 @@ public class BossAI : MonoBehaviour
     {
         Normal,
         Anger,
-        Fury,
         Death
     }
 
@@ -224,20 +243,28 @@ public class BossAI : MonoBehaviour
             bam = b;
             StopAllCoroutines();
 
-            switch (bs)
+            switch (bam)
             {
-                case BossState.Normal:
-                    switch (bam)
+                case BossAttacMode.Far:
+                    Debug.Log("shoot");
+                    nearPrepare = false;
+                    if (transform.localPosition.y > 8.3f)
                     {
-                        case BossAttacMode.Far:
-                            StartCoroutine("Shoot");
-                            break;
-
-                        case BossAttacMode.Near:
-                            SetDirection(Vector3.up);
-                            //StartCoroutine("NearAttack");
-                            break;
+                        SetDirection(Vector3.down);
                     }
+                    StartCoroutine("Shoot");
+                    break;
+
+                case BossAttacMode.Near:
+                    Debug.Log("near");
+
+                    if (transform.localPosition.y > 8.3f)
+                    {
+                        StartCoroutine("NearAttack");
+                    }
+
+                    SetDirection(Vector3.up);
+                    nearPrepare = true;
                     break;
             }
         }
@@ -264,5 +291,5 @@ public class BossAI : MonoBehaviour
     BossState bs = BossState.Normal;
     BossAttacMode bam = BossAttacMode.Near;
     int health = 5;
-    bool active = false, isFaceRight = false;
+    bool active = false, isFaceRight = false, nearPrepare = false;
 }

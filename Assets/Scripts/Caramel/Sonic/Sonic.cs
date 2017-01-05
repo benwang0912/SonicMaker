@@ -10,7 +10,7 @@ public class Sonic : MonoBehaviour
 
     public Vector3 ontopccenter = new Vector3(0f, .8f, 0f);
     public float ontopcheight, ontopcradius, scheight, walkspeed, hurtxv, hurtyv, AddedGravity;
-    public UILabel time, coins;
+    public UILabel time, coins, CongratulationsLabel;
     public GameObject rollingball;
     public Action<Vector3> GetHurt;
     
@@ -41,6 +41,8 @@ public class Sonic : MonoBehaviour
         Game.rollingball = rollingball.transform;
         Game.coinslabel = coins;
         Game.timelabel = time;
+        Game.CongratulationsLabel = CongratulationsLabel;
+        Game.CongratulationsLabel.gameObject.SetActive(false);
 
         //GetHurt action
         GetHurt = (relativeVelocity) =>
@@ -50,6 +52,7 @@ public class Sonic : MonoBehaviour
                  if (Game.coins != 0)
                  {
                      hurting = true;
+                     SoundManager.instance.PlaySoundEffectSource(GameConstants.HurtSoundEffect);
 
                      Coin.ThrowAllCoins(transform.position);
 
@@ -82,6 +85,7 @@ public class Sonic : MonoBehaviour
 
         Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
+        Debug.Log("change to ball");
         rollingball.transform.localPosition = transform.localPosition + Vector3.up;
 
         switch (s)
@@ -92,6 +96,10 @@ public class Sonic : MonoBehaviour
             case GameConstants.SonicState.TOROLL:
                 Game.sonicstate = GameConstants.SonicState.TOROLL;
                 rollingball.SendMessage("BackToBall", GameConstants.SonicState.TOROLL);
+                return;
+            case GameConstants.SonicState.ROLLING:
+                Game.sonicstate = GameConstants.SonicState.ROLLING;
+                rollingball.SendMessage("BackToBall", GameConstants.SonicState.ROLLING);
                 return;
         }
     }
@@ -152,6 +160,7 @@ public class Sonic : MonoBehaviour
                 Vector3 normal = groundrch.normal;
 
                 float y = -(normal.x * facedirection) / normal.y;
+                y += .5f;
                 movingdirection = new Vector3(facedirection, y);
             }
             else
@@ -160,7 +169,7 @@ public class Sonic : MonoBehaviour
             }
         }
 
-        //Debug.Log("movingdirection = " + movingdirection);
+        Debug.Log("sonic movingdirection = " + movingdirection);
     }
 
     public void Ontop()
@@ -278,6 +287,10 @@ public class Sonic : MonoBehaviour
 
             case GameConstants.SonicState.DEAD:
                 return;
+
+            default:
+                ChangeToBall(GameConstants.SonicState.ROLLING);
+                break;
         }
     }
 

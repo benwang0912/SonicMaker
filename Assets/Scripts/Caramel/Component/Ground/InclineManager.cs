@@ -5,9 +5,6 @@ public class InclineManager : MonoBehaviour
 {
     //in the Incline
 
-    public int GroundCount;
-    public float Angle;
-
     void Awake()
     {
         Transform ground = transform.GetChild(0);
@@ -16,9 +13,24 @@ public class InclineManager : MonoBehaviour
         {
             Transform newground = Instantiate(ground);
             newground.parent = transform;
-            newground.localPosition = new Vector3(i, 0f);
+            newground.localPosition = i * Distance * Vector3.right;
+        }
+
+        if (isBoxCollider)
+        {
+            //to add incline collider
+            inclineCollider = gameObject.AddComponent<BoxCollider>();
+            inclineCollider.center = new Vector3(GroundCount / 2.0f - .5f, 0);
+            inclineCollider.size = new Vector3(GroundCount, 1, 3);
         }
 
         transform.localRotation = Quaternion.Euler(Vector3.forward * Angle);
     }
+    
+    public int GroundCount;
+    public float Distance = 1f;
+    public float Angle;
+    public bool isBoxCollider = true;
+
+    BoxCollider inclineCollider;
 }

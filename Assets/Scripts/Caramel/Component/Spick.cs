@@ -17,7 +17,6 @@ public class Spick : MonoBehaviour
         if(!Spicks.isSpick)
         {
             Spicks.isSpick = true;
-            Debug.Log("YO");
 
             GameObject cg = collision.gameObject;
 
@@ -30,7 +29,6 @@ public class Spick : MonoBehaviour
                         {
                             case "Sonic":
                                 cg.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
-                                //Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
                                 break;
                             case "RollingBall":
                                 cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
@@ -38,6 +36,11 @@ public class Spick : MonoBehaviour
                                 break;
                         }
                     }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
+
                     break;
 
                 case Directions.Down:
@@ -46,16 +49,19 @@ public class Spick : MonoBehaviour
                         switch (cg.tag)
                         {
                             case "Sonic":
-                                if (cg.name == "RollingBall")
-                                {
-                                    cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                                }
-
+                                cg.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                                break;
+                            case "RollingBall":
+                                cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
                                 Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
-
                                 break;
                         }
                     }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
+
                     break;
 
                 case Directions.Left:
@@ -64,18 +70,19 @@ public class Spick : MonoBehaviour
                         switch (cg.tag)
                         {
                             case "Sonic":
-                                if (cg.name == "RollingBall")
-                                {
-                                    cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                                    cg.transform.localPosition -= 10f * Vector3.right;
-                                    //Debug.Log("ball");
-                                }
-
+                                cg.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                                break;
+                            case "RollingBall":
+                                cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
                                 Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
-
                                 break;
                         }
                     }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
+
                     break;
 
                 case Directions.Right:
@@ -84,16 +91,19 @@ public class Spick : MonoBehaviour
                         switch (cg.tag)
                         {
                             case "Sonic":
-                                if (cg.name == "RollingBall")
-                                {
-                                    cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
-                                }
-
+                                cg.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
+                                break;
+                            case "RollingBall":
+                                cg.GetComponent<Rolling>().ChangeToSonic(GameConstants.SonicState.NORMAL);
                                 Game.sonic.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
-
                                 break;
                         }
                     }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
+
                     break;
             }
 

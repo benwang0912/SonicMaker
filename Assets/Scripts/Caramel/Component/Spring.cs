@@ -13,11 +13,17 @@ public class Spring : MonoBehaviour
     }
 
     public SpringMode sm;
-    public static float UDVelocity = 50f, RLVelocity = 50f;
+    public static float UDVelocity = 40f, RLVelocity = 40f;
     
     void Awake()
     {
         an = GetComponent<Animator>();
+    }
+
+    void Start()
+    {
+        rollingBall = Game.rollingball.gameObject;
+        rollingBallRb = rollingBall.GetComponent<Rigidbody>();
     }
     
     void Jumptime()
@@ -29,48 +35,62 @@ public class Spring : MonoBehaviour
     {
         bool active = false;
         
-        switch (sm)
-        {
-            case SpringMode.Up:
-                if (active = collision.contacts[0].point.y - transform.position.y > surface)
-                {
-                    collision.rigidbody.velocity = UDVelocity * Vector3.up;
-                    Debug.Log("up");
-                }
+        if(collision.transform.tag == "Sonic" || collision.transform.tag == "RollingBall")
+            switch (sm)
+            {
+                case SpringMode.Up:
+                    if (active = collision.contacts[0].point.y - transform.position.y > surface)
+                    {
+                        collision.rigidbody.velocity = UDVelocity * Vector3.up;
+                    }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
 
-                break;
+                    break;
 
-            case SpringMode.Right:
-                if(active = collision.contacts[0].point.x - transform.position.x > surface)
-                {
-                    collision.rigidbody.velocity = RLVelocity * Vector3.right;
-                    Debug.Log("right");
-                }
+                case SpringMode.Right:
+                    if (active = collision.contacts[0].point.x - transform.position.x > surface)
+                    {
+                        collision.rigidbody.velocity = RLVelocity * Vector3.right;
+                    }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
 
-                break;
+                    break;
 
-            case SpringMode.Down:
-                if (active = collision.contacts[0].point.y - transform.position.y < surface)
-                {
-                    collision.rigidbody.velocity = UDVelocity * Vector3.down;
-                    Debug.Log("down");
-                }
-                break;
+                case SpringMode.Down:
+                    if (active = collision.contacts[0].point.y - transform.position.y < surface)
+                    {
+                        collision.rigidbody.velocity = UDVelocity * Vector3.down;
+                    }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
 
-            case SpringMode.Left:
-                if (active = collision.contacts[0].point.x - transform.position.x < surface)
-                {
-                    collision.rigidbody.velocity = RLVelocity * Vector3.left;
-                    Debug.Log("left");
-                }
+                    break;
 
-                break;
+                case SpringMode.Left:
+                    if (active = collision.contacts[0].point.x - transform.position.x < surface)
+                    {
+                        collision.rigidbody.velocity = RLVelocity * Vector3.left;
+                    }
+                    else
+                    {
+                        Game.ComponentNotEffected();
+                    }
 
-            default:
-                return;
-        }
+                    break;
 
-        if(active)
+                default:
+                    return;
+            }
+
+        if (active)
         {
             //spring animation
             SoundManager.instance.PlaySoundEffectSource(GameConstants.SpringSoundEffect);
@@ -79,6 +99,9 @@ public class Spring : MonoBehaviour
         }
     }
 
+    GameObject rollingBall;
+    Rigidbody rollingBallRb;
+    
     Animator an;
     float surface = 2.5f;
 }

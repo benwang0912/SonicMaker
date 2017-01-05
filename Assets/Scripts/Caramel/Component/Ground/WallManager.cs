@@ -17,7 +17,13 @@ public class WallManager : MonoBehaviour
                 newTf.localPosition = i * Vector3.right + j * Vector3.up;
             }
         }
+
+        //to add plane collider
+        wallCollider = gameObject.AddComponent<BoxCollider>();
+        wallCollider.center = new Vector3(0, YGroundCount / 2.0f - .5f);
+        wallCollider.size = new Vector3(XGroundCount, YGroundCount, 3);
     }
 
     public int XGroundCount, YGroundCount;
+    BoxCollider wallCollider;
 }

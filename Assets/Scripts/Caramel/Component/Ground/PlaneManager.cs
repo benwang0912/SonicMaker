@@ -17,14 +17,13 @@ public class PlaneManager : MonoBehaviour
     void Awake ()
     {
         Transform ground = transform.GetChild(0);
-        Vector3 position = ground.localPosition;
 
         //normal plane ground
         for (int i = 1; i < groundcount; ++i)
         {
             Transform newground = Instantiate(ground);
             newground.parent = transform;
-            newground.localPosition = i * Distance * Vector3.right + position;
+            newground.localPosition = i * Distance * Vector3.right;
         }
 
         if(temporary)
@@ -32,7 +31,16 @@ public class PlaneManager : MonoBehaviour
             for(int i = 0; i < groundcount; ++i)
                 transform.GetChild(i).gameObject.AddComponent<TemporaryGround>();
         }
-	}
+
+        if (isBoxCollider)
+        {
+            //to add plane collider
+            planeCollider = gameObject.AddComponent<BoxCollider>();
+            planeCollider.center = new Vector3(groundcount / 2.0f - .5f, 0);
+            planeCollider.size = new Vector3(groundcount, 1, 3);
+        }
+
+    }
 
     IEnumerator ChildrenFalling()
     {
@@ -50,7 +58,8 @@ public class PlaneManager : MonoBehaviour
 
     public float Distance = 1f;
     public int groundcount;
-    public bool temporary = false, isStartFalling = false;
+    public bool temporary = false, isStartFalling = false, isBoxCollider = true;
 
     WaitForSeconds waiting = new WaitForSeconds(1f), delay = new WaitForSeconds(.3f);
+    BoxCollider planeCollider;
 }

@@ -85,7 +85,6 @@ public class Coin : MonoBehaviour
 
             case "Sonic":
             case "RollingBall":
-                Debug.Log("YOOOO");
                 SoundManager.instance.PlaySoundEffectSource(GameConstants.CoinSoundEffect);
                 Destroy(gameObject);
                 ++Game.coins;

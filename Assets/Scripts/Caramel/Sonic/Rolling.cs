@@ -52,6 +52,9 @@ public class Rolling : MonoBehaviour
                 SoundManager.instance.PlaySoundEffectSource(GameConstants.SpeedUpSoundEffect);
                 QuickRolling((sonic.transform.localRotation.eulerAngles.y - 91f) < 0 ? 1f : -1f);
                 break;
+            default:
+                SlowRolling();
+                break;
         }
     }
 
@@ -111,6 +114,8 @@ public class Rolling : MonoBehaviour
         //to add gravity
         rb.AddForce(AddedGravity * Vector3.down);
 
+        Debug.Log(Game.sonicstate);
+
         //falling
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
@@ -121,12 +126,13 @@ public class Rolling : MonoBehaviour
 
         //isground
         groundray = new Ray(transform.position, Vector3.down);
-        if (Physics.Raycast(groundray, out groundrch))
+        if (Physics.Raycast(groundray, out groundrch) && Game.sonicstate != GameConstants.SonicState.CURVEMOTION)
         {
             if (groundrch.transform.tag == "Ground" && groundrch.distance < 1f)
             {
-                if(rb.velocity.magnitude < 1 && Game.sonicstate != GameConstants.SonicState.TOROLL)
+                if((rb.velocity.magnitude < 1 && Game.sonicstate != GameConstants.SonicState.TOROLL) || Game.sonicstate == GameConstants.SonicState.JUMPING)
                 {
+                    Debug.Log("Change to sonic");
                     ChangeToSonic(GameConstants.SonicState.NORMAL);
                     return;
                 }
@@ -135,8 +141,9 @@ public class Rolling : MonoBehaviour
                 Vector3 normal = groundrch.normal;
 
                 float y = -(normal.x * facedirection) / normal.y;
+                Debug.Log("y = " + y);
+                y *= .3f;
                 movingdirection = new Vector3(facedirection, y);
-                //movingdirection = Vector3.right;
                 isground = true;
                 if(Game.sonicstate == GameConstants.SonicState.ROLLING && rb.velocity.normalized != movingdirection)
                 {
@@ -148,8 +155,6 @@ public class Rolling : MonoBehaviour
                 movingdirection = Vector3.zero;
                 isground = false;
             }
-
-            Debug.Log("ball movingdirection = " + movingdirection);
         }
 
         //to correct the moving direction
