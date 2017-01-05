@@ -85,7 +85,6 @@ public class Sonic : MonoBehaviour
 
         Game.velocity = rb.velocity;
         rb.velocity = Vector3.zero;
-        Debug.Log("change to ball");
         rollingball.transform.localPosition = transform.localPosition + Vector3.up;
 
         switch (s)
@@ -168,8 +167,6 @@ public class Sonic : MonoBehaviour
                 movingdirection = Vector3.zero;
             }
         }
-
-        Debug.Log("sonic movingdirection = " + movingdirection);
     }
 
     public void Ontop()

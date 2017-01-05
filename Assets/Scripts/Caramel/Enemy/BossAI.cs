@@ -49,13 +49,6 @@ public class BossAI : MonoBehaviour
                     SetDirection(dir);
                     nearPrepare = false;
                 }
-
-                if (Game.sonicstate == GameConstants.SonicState.DEAD)
-                {
-                    Game.CongratulationsLabel.text = "DEAD!!!!";
-                    Game.CongratulationsLabel.gameObject.SetActive(true);
-                    Game.CongratulationsLabel.GetComponent<TweenScale>().enabled = true;
-                }
                 break;
             case "RollingBall":
                 SoundManager.instance.PlaySoundEffectSource(GameConstants.AttackSoundEffect);
@@ -89,7 +82,6 @@ public class BossAI : MonoBehaviour
                     switch(bam)
                     {
                         case BossAttacMode.Far:
-                            Debug.Log("down");
                             SetDirection(Vector3.down);
                             break;
                         case BossAttacMode.Near:
@@ -197,7 +189,13 @@ public class BossAI : MonoBehaviour
 #endif
                     break;
             }
-            Debug.Log("bam = " + GetBam());
+            
+            if (Game.sonicstate == GameConstants.SonicState.DEAD)
+            {
+                Game.CongratulationsLabel.text = "DEAD!!!!";
+                Game.CongratulationsLabel.gameObject.SetActive(true);
+                Game.CongratulationsLabel.GetComponent<TweenScale>().enabled = true;
+            }
         }
 	}
 
@@ -246,7 +244,6 @@ public class BossAI : MonoBehaviour
             switch (bam)
             {
                 case BossAttacMode.Far:
-                    Debug.Log("shoot");
                     nearPrepare = false;
                     if (transform.localPosition.y > 8.3f)
                     {
@@ -256,8 +253,6 @@ public class BossAI : MonoBehaviour
                     break;
 
                 case BossAttacMode.Near:
-                    Debug.Log("near");
-
                     if (transform.localPosition.y > 8.3f)
                     {
                         StartCoroutine("NearAttack");

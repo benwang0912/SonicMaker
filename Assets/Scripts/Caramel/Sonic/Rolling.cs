@@ -114,8 +114,6 @@ public class Rolling : MonoBehaviour
         //to add gravity
         rb.AddForce(AddedGravity * Vector3.down);
 
-        Debug.Log(Game.sonicstate);
-
         //falling
         if (transform.localPosition.y < -10.0f)
             ChangeToSonic(GameConstants.SonicState.DEAD);
@@ -132,7 +130,6 @@ public class Rolling : MonoBehaviour
             {
                 if((rb.velocity.magnitude < 1 && Game.sonicstate != GameConstants.SonicState.TOROLL) || Game.sonicstate == GameConstants.SonicState.JUMPING)
                 {
-                    Debug.Log("Change to sonic");
                     ChangeToSonic(GameConstants.SonicState.NORMAL);
                     return;
                 }
