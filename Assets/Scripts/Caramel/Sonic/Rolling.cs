@@ -49,6 +49,7 @@ public class Rolling : MonoBehaviour
                 JumpRolling(Vector3.up * JumpForce);
                 break;
             case GameConstants.SonicState.TOROLL:
+                SoundManager.instance.PlaySoundEffectSource(GameConstants.SpeedUpSoundEffect);
                 QuickRolling((sonic.transform.localRotation.eulerAngles.y - 91f) < 0 ? 1f : -1f);
                 break;
         }
@@ -177,6 +178,7 @@ public class Rolling : MonoBehaviour
                 {
                     //to keep rolling
                     //music!?
+                    SoundManager.instance.PlaySoundEffectSource(GameConstants.SpeedUpSoundEffect);
                 }
                 
                 break;

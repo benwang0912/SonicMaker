@@ -29,6 +29,7 @@ public class Enemy1AI : MonoBehaviour
                 ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
                 break;
             case "RollingBall":
+                SoundManager.instance.PlaySoundEffectSource(GameConstants.AttackSoundEffect);
                 Destroy(gameObject);
                 break;
         }

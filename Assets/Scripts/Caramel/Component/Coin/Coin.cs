@@ -57,6 +57,7 @@ public class Coin : MonoBehaviour
         {
             case "Sonic":
             case "RollingBall":
+                Debug.Log("YOOOO??");
                 Destroy(gameObject);
                 ++Game.coins;
                 Game.coinslabel.text = Game.coins.ToString();
@@ -84,6 +85,8 @@ public class Coin : MonoBehaviour
 
             case "Sonic":
             case "RollingBall":
+                Debug.Log("YOOOO");
+                SoundManager.instance.PlaySoundEffectSource(GameConstants.CoinSoundEffect);
                 Destroy(gameObject);
                 ++Game.coins;
                 Game.coinslabel.text = Game.coins.ToString();

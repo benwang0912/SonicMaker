@@ -44,7 +44,8 @@ public class BossAI : MonoBehaviour
                 ct.GetComponent<Sonic>().GetHurt(collision.relativeVelocity);
                 break;
             case "RollingBall":
-                if(--health >= 7 && bs != BossState.Normal)
+                SoundManager.instance.PlaySoundEffectSource(GameConstants.AttackSoundEffect);
+                if (--health >= 7 && bs != BossState.Normal)
                 {
                     //to change bs to normal
                     bs = BossState.Normal;

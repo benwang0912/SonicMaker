@@ -28,8 +28,8 @@ public class Spring : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         bool active = false;
-
-        switch(sm)
+        
+        switch (sm)
         {
             case SpringMode.Up:
                 if (active = collision.contacts[0].point.y - transform.position.y > surface)
@@ -58,7 +58,6 @@ public class Spring : MonoBehaviour
                 if (active = collision.contacts[0].point.x - transform.position.x < surface)
                 {
                     collision.rigidbody.velocity = RLVelocity * Vector3.left;
-                    Debug.Log("Spring Left");
                 }
 
                 break;
@@ -70,6 +69,7 @@ public class Spring : MonoBehaviour
         if(active)
         {
             //spring animation
+            SoundManager.instance.PlaySoundEffectSource(GameConstants.SpringSoundEffect);
             an.SetBool("Jump", true);
             Invoke("Jumptime", .1f);
         }
