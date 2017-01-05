@@ -23,7 +23,7 @@ public class SonicMove2 : MonoBehaviour
     public GameObject healthBar;
     public bool Died = false;
     public static SonicMove2 Instance;
-    public int collectNum = 4;
+    public int collectNum = 0;
 
     public ParticleSystem shingshing;
     public GameObject shing;

@@ -1,7 +1,27 @@
-﻿function PlayAgain() {
-	Application.LoadLevel(1);
+﻿
+// #pragma strict
+
+import UnityEngine.SceneManagement;
+
+function PlayAgain() {
+	SceneManager.LoadScene("frigidzone", LoadSceneMode.Single);
 }
 
 function Menu() {
-	Application.LoadLevel(0);
+	SceneManager.LoadScene("TitleMenu", LoadSceneMode.Single);
 }
+
+
+// public class DeathButtonClass extends MonoBehaviour {
+// 	function PlayAgain() {
+// 		SceneManager.LoadScene("frigidzone", LoadSceneMode.Additive);
+// 	}
+
+// 	function Menu() {
+// 		SceneManager.LoadScene("TitleMenu", LoadSceneMode.Additive);
+// 	}
+
+// }
+
+
+

@@ -2,20 +2,15 @@
 using System.Collections;
 
 public class Clone_SubLife : MonoBehaviour {
- //   private float xPos;
 
-	// Use this for initialization
-	void Start () {
- //       xPos = transform.position.x;
+    // Use this for initialization
+
+    void Start () {
     }
 
     // Update is called once per frame
     void Update() {
-        if (SonicMove2.Instance.shieldOn == true) {
-            if (transform.position.x - SonicMove2.Instance.Sonic.transform.position.x < 3 && transform.position.x - SonicMove2.Instance.Sonic.transform.position.x > -3) {
-                Destroy(this.gameObject);
-            }
-        }
+        
     }
 
     void OnTriggerEnter(Collider collision)

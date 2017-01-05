@@ -78,7 +78,7 @@ public class PlayerMoving : MonoBehaviour {
         }
         icon = GameObject.Find("Icon");
 
-        jumpHeight = 65;
+        jumpHeight = 80;
     }
 
     // Update is called once per frame

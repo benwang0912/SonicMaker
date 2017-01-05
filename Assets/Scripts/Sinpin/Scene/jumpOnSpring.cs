@@ -12,7 +12,7 @@ public class jumpOnSpring : MonoBehaviour {
         player = GameObject.Find("Sonic").GetComponent<PlayerMoving>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        bounceHeight = rb.mass * 400;
+        bounceHeight = rb.mass * 500;
     }
 	
 	// Update is called once per frame
@@ -35,6 +35,7 @@ public class jumpOnSpring : MonoBehaviour {
                 player.audioSource.Play();
             }
             rb.AddForce(transform.up * bounceHeight);
+            Debug.Log("XD");
             animator.SetInteger("Jump", 1);
         }
 
